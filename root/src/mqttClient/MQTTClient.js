@@ -5,9 +5,10 @@ const game = require("../game/Berg_Tal_Fahrt");
 const { Game } = require('../game/Berg_Tal_Fahrt');
 // var Game = require("../game/Berg_Tal_Fahrt.js");
 const mqtt = require("async-mqtt");
-const client = mqtt.connect("mqtt://localhost:4242"); // MQTT-Broker-Host und Port anpassen
+const client = mqtt.connect("mqtt://localhost:1883"); // MQTT-Broker-Host und Port anpassen
 
-const TOPIC = "kegeln/pins";
+const TOPICIncoming = "kegelnbahn/bahn";
+const TOPICOutgoing = "kegelbahn/game";
 
 client.once("error", () => {
   game.game();
@@ -16,12 +17,12 @@ client.once("error", () => {
 
 client.on("connect", () => {
   console.log("Verbunden mit dem MQTT-Broker");
-  client.subscribe(TOPIC);
-  console.log("Subscribed to " + TOPIC.toString());
+  client.subscribe(TOPICIncoming);
+  console.log("Subscribed to " + TOPICIncoming.toString());
 });
 
 client.on("message", (topic, message) => {
-  if (topic === TOPIC) {
+  if (topic === TOPICIncoming) {
     const scoreData = JSON.parse(message);
     console.log("Neue Punktzahl erhalten:", scoreData);
     scoreData.forEach(scoreDataElement => {
@@ -34,6 +35,13 @@ client.on("message", (topic, message) => {
     game.printScores();
   }
 });
+
+client.once("message", (topic, message) => {
+  if (topic === TOPICIncoming) {
+    const sendData = JSON.stringify({topicSend: "test", valieSend: "test 2"});
+    client.publish(TOPICOutgoing, sendData);
+  }
+})
 
 client.on("error", (errorTopic, errorMessage) => {
   console.error(errorTopic + ": " + errorMessage);
