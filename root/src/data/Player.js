@@ -3,12 +3,14 @@ const { Score } = require('./Score');
 
 playerName = "Player 1";
 playerIndex = 0;
-var score = require("./Score");
+var scoreImport = require("./Score");
+var score = 0;
 
 this.PlayerConstructor = (name, index) => {
     playerName = name;
     playerIndex = index;
-    score = require("./Score");
+    scoreImport = require("./Score");
+    score = scoreImport;
     score.ScoreConstructor();
     // score = new Score();
 }
