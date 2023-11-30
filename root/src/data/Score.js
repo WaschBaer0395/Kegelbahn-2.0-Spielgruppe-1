@@ -1,4 +1,4 @@
-var score = 0;
+score = 0;
 
 this.ScoreConstructor = () => {
     score = 0 * 1;
@@ -6,6 +6,7 @@ this.ScoreConstructor = () => {
 }
 
 this.updateScore = (count) => {
+    console.log("score "+score+" + "+count);
     score += count;
 }
 
@@ -14,7 +15,7 @@ this.currentScore = () => {
         score = 0;
         console.log("JJJJJ");
     }
-    return this.score;
+    return score;
 }
 // module.exports = { currentScore, updateScore, score };
 exports = this;
