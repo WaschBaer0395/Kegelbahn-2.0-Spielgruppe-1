@@ -1,17 +1,18 @@
 // import { Berg_Tal_Fahrt } from "../game/Berg_Tal_Fahrt";
 // const Berg_Tal_Fahrt = require("../game/Berg_Tal_Fahrt");
 // import { game } from "../game/Berg_Tal_Fahrt";
-const game = require("../game/Berg_Tal_Fahrt");
-const { Game } = require('../game/Berg_Tal_Fahrt');
+// const game = require("../game/Berg_Tal_Fahrt");
+// const { Game } = require('../game/Berg_Tal_Fahrt');
 // var Game = require("../game/Berg_Tal_Fahrt.js");
+const { macheZug, printScores, sendScore, players } = require('../game/Berg_Tal_Fahrt');
 const mqtt = require("async-mqtt");
 const client = mqtt.connect("mqtt://localhost:1883"); // MQTT-Broker-Host und Port anpassen
 
-const TOPICIncoming = "kegelnbahn/bahn";
+const TOPICIncoming = "kegelbahn/bahn";
 const TOPICOutgoing = "kegelbahn/game";
 
 client.once("error", () => {
-  game.game();
+  // game.game();
   // spiel = new Game();
 });
 
@@ -30,15 +31,15 @@ client.on("message", (topic, message) => {
     });
     // Anbindung an Gamelogik
     // const game = new Berg_Tal_Fahrt();
-    game.printScores();
-    game.macheZug(0, 1);
-    game.printScores();
+    // game.printScores();
+    // game.macheZug(0, 1);
+    // game.printScores();
   }
 });
 
 client.once("message", (topic, message) => {
   if (topic === TOPICIncoming) {
-    const sendData = JSON.stringify({topicSend: "test", valieSend: "test 2"});
+    const sendData = JSON.stringify({ topicSend: "test", valueSend: "test 2" });
     client.publish(TOPICOutgoing, sendData);
   }
 })
@@ -48,8 +49,11 @@ client.on("error", (errorTopic, errorMessage) => {
   // const game = new Berg_Tal_Fahrt();
   //  game = new Game()
   // game.game();
-  game.printScores();
-  game.macheZug(0, 1);
-  game.printScores();
-
-})
+  // game.printScores();
+  // game.macheZug(0, 1);
+  // game.printScores();
+  printScores();
+  macheZug(players[0], 1);
+  macheZug(players[1], 2);
+  printScores();
+});
