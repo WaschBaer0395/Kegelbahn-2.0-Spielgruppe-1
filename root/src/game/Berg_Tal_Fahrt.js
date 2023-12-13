@@ -95,6 +95,10 @@
 
 // exports = this;
 
+// Frontend
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 40842 });
+
 
 // const mqtt = require('mqtt');
 const { players, addPlayer, removePlayer, updateScore } = require('../data/Player');
@@ -123,12 +127,20 @@ function macheZug(player, newScore) {
     } else {
         console.warn(`Warnung: ${player} nicht gefunden.`);
     }
+    updateFrontend("");
 }
 
 function printScores() {
     players.forEach((player) => {
         console.log(`${player.name} hat ${player.score}m erreicht.`);
     })
+    updateFrontend(players);
+}
+
+function updateFrontend(outputData) {
+    wss.clients.forEach((client) => {
+        client.send(JSON.stringify({ type: 'gameUpdate', data: outputData }));
+      });
 }
 
 module.exports = {
