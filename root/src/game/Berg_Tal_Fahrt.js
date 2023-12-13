@@ -138,9 +138,12 @@ function printScores() {
 }
 
 function updateFrontend(outputData) {
-    wss.clients.forEach((client) => {
-        client.send(JSON.stringify({ type: 'gameUpdate', data: outputData }));
-      });
+    setTimeout(function(){
+        console.log("Update Frontend");
+        wss.clients.forEach((client) => {
+            client.send(JSON.stringify({ type: 'gameUpdate', data: JSON.stringify(outputData) }));
+        });
+    }, 10000);
 }
 
 module.exports = {

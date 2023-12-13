@@ -23,6 +23,14 @@
     <script>
       const socket = new WebSocket('ws://localhost:40842');
 
+        socket.addEventListener('open', (event) => {
+        console.log('Websocket-Verbindung geöffnet:', event);
+        });
+
+        socket.addEventListener('error', (error) => {
+        console.error('Fehler bei der Websocket-Verbindung:', error);
+        });
+
       socket.addEventListener('message', (event) => {
         const data = JSON.parse(event.data);
         console.log("Recieved");
