@@ -127,7 +127,7 @@ function macheZug(player, newScore) {
     } else {
         console.warn(`Warnung: ${player} nicht gefunden.`);
     }
-    updateFrontend("");
+    // updateFrontend("");
 }
 
 function printScores() {
