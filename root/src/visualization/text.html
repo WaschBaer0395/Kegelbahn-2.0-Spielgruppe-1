@@ -36,7 +36,15 @@
         console.log("Recieved");
         if (data.type === 'gameUpdate') {
           // Aktualisierte Spielinformationen verarbeiten und darstellen
-          document.getElementById('gameStatus').innerText = `Aktueller Spielstatus: ${data.data /* Aktualisierte Informationen hier */}`;
+          var lastChildOfGamestatus = document.getElementById('gameStatus').lastChild;
+          var lastChildOfGamestatusText = lastChildOfGamestatus.innerText;
+          document.getElementById('gameStatus').lastChild.innerText = (lastChildOfGamestatusText.substring(24));
+          const nextOutput = document.createTextNode(`Aktueller Spielstatus: ${data.data /* Aktualisierte Informationen hier */}`);
+          // nextOutput.innerText = 
+          document.getElementById('gameStatus').removeChild(document.getElementById('gameStatus').lastChild);
+          document.getElementById('gameStatus').appendChild(lastChildOfGamestatus);
+          document.getElementById('gameStatus').appendChild( nextOutput);
+          // document.getElementById('gameStatus').lastChild.innerText = `Aktueller Spielstatus: ${data.data /* Aktualisierte Informationen hier */}`;
         }
       });
     </script>
