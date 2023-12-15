@@ -57,21 +57,22 @@ html, body, #root, .App{
   margin-right: 5px; /* Adjusted margin */
 }
 
-.settings_menu {
+.progress_bar {
   position: absolute;
-  top: calc(80vh + 20px);
+  top: calc(80vh + 10px);
+  bottom: 10px;
   left: 10px;
-  min-height: calc(20vh - 20px);
-  width: calc(10vw - 20px - 5px); /* Adjusted width with margin */
+  min-height: calc(20vh - 20px - 10px);
+  width: calc(90vw - 30px - 5px); /* Adjusted width with margin */
   background-color: #e74c3c;
   margin-right: 5px; /* Adjusted margin */
 }
 
-.progress_bar {
+.settings_menu {
   position: absolute;
-  top: calc(80vh + 20px);
-  left: calc(10vw + 15px); /* Adjusted left position */
-  min-height: calc(20vh - 20px);
-  width: calc(90vw - 30px - 5px); /* Adjusted width with margin */
+  top: calc(80vh + 10px);
+  left: calc(90vw); /* Adjusted left position */
+  min-height: calc(20vh - 20px - 10px);
+  width: calc(10vw - 20px - 5px); /* Adjusted width with margin */
   background-color: #f39c12;
 }
