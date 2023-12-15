@@ -1,23 +1,50 @@
-import mqtt from 'async-mqtt'
+import React, { useEffect, useState } from 'react'
+import mqtt from 'mqtt'
 
-const client = mqtt.connect('mqtt://10.40.72.110:1883')
+const MqttComponent: React.FC = () => {
+  const [mqttClient, setMqttClient] = useState<any>(null) // MqttClient type from the mqtt library
+  const [mqttMessages, setMqttMessages] = useState<string[]>([])
 
-export function Client_Subscribe(){
-    client.on("connect",() => {
-        console.log("Verbunden!")
-        client.subscribe("Kegelbahn/Kegel")
+  const connectToBroker = () => {
+    const client = mqtt.connect('mqtt://10.40.72.110:1883') // Replace with your MQTT broker URL
+    setMqttClient(client)
+
+    client.on('connect', () => {
+      console.log('Connected to MQTT broker')
+      client.subscribe('Kegebahn/Pins')
     })
+
+    client.on('message', (topic: string, message: Buffer) => {
+      console.log(`Received message on topic ${topic}: ${message.toString()}`)
+      setMqttMessages((prevMessages) => [...prevMessages, message.toString()])
+    })
+
+    client.on('error', (err: Error) => {
+      console.error('Error connecting to MQTT broker:', err)
+    })
+  }
+
+  useEffect(() => {
+    connectToBroker()
+
+    // Cleanup on component unmount
+    return () => {
+      if (mqttClient) {
+        mqttClient.end()
+      }
+    }
+  }, []) // Run this effect only once on component mount
+
+  return (
+    <div>
+      <p>MQTT Messages:</p>
+      <ul>
+        {mqttMessages.map((message, index) => (
+          <li key={index}>{message}</li>
+        ))}
+      </ul>
+    </div>
+  )
 }
 
-export function Client_On_Message():JSX.Element{
-    var scoredata = ""
-    Client_Subscribe()
-    client.on("message", (topic, message) =>{
-        if (topic === "Kegelbahn/Kegel"){
-            scoredata = JSON.parse(message.toString())
-            console.log(scoredata)
-        }
-    })
-    return <div>scoredata</div>
-
-}
+export default MqttComponent
