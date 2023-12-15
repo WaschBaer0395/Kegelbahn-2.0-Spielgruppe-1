@@ -6,12 +6,12 @@ const MqttComponent: React.FC = () => {
   const [mqttMessages, setMqttMessages] = useState<string[]>([])
 
   const connectToBroker = () => {
-    const client = mqtt.connect('mqtt://10.40.72.110:1883') // Replace with your MQTT broker URL
+    const client = mqtt.connect('mqtt://192.168.178.17:10443') // Replace with your MQTT broker URL
     setMqttClient(client)
 
     client.on('connect', () => {
       console.log('Connected to MQTT broker')
-      client.subscribe('Kegebahn/Pins')
+      client.subscribe('Kegelbahn/Kegel')
     })
 
     client.on('message', (topic: string, message: Buffer) => {
