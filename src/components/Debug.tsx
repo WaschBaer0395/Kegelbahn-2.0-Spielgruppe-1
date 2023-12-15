@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.css';
-import{ Client_Subscribe, Client_On_Message} from "./api/mqtt";
+import '../styles/App.css';
+import{ Client_Subscribe, Client_On_Message} from "../api/mqtt";
 
 function App() {
     return (
