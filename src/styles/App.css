@@ -76,3 +76,32 @@ html, body, #root, .App{
   width: calc(10vw - 20px - 5px); /* Adjusted width with margin */
   background-color: #f39c12;
 }
+
+
+
+#PlayerList{
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.playerName{
+  font-size: 24px;
+}
+
+.playerScores{
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.playerScores th,
+.playerScores td {
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 18px;
+  padding: 0.5vw;
+  white-space: nowrap; /* Prevent content from wrapping */
+}
+
+.listContent{
+  width: 100%;
+}

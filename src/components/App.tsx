@@ -1,12 +1,26 @@
 import React from 'react'
 import '../styles/App.css'
 import MqttComponent from '../api/mqtt'
+import Player from "./Player/player";
+import PlayerList from "./Player/players_list";
 
 function App() {
+
+  const players: Player[] = [
+    new Player(1, 'Jill'),
+    new Player(2, 'Basti'),
+    new Player(3, 'Bjarne'),
+    new Player(4, 'Melanie'),
+    new Player(5, 'Rene'),
+    // Add more players as needed
+  ];
+
   return (
     <div className="App">
       <div className="wrapper">
-        <div className="player_list">Players</div>
+        <div className="player_list">
+          <PlayerList players={players} />
+        </div>
         <div className="play_field">
           <MqttComponent />
         </div>
