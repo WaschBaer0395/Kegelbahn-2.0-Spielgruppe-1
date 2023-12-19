@@ -8,9 +8,9 @@ interface PlayerListProps {
 const PlayerList: React.FC<PlayerListProps> = ({ players }) => {
 
     return (
-        <div className="grid-container">
+        <div className="playerListContainer">
             {Array.from({ length: 8 }).map((_, index) => (
-                <div key={index} className={`grid-item ${index < players.length ? 'filled' : ''}`}>
+                <div key={index} className="grid-item">
                     <div className="playerInfo">
                         <div className="playerSprite">
                             {players[index]?.sprite}
