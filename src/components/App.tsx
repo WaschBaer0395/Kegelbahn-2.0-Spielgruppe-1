@@ -3,6 +3,8 @@ import '../styles/App.css'
 import MqttComponent from '../api/mqtt'
 import Player from "./Player/player";
 import PlayerList from "./Player/players_list";
+import Stage from "@inlet/react-pixi"
+import PlayField from "./Playfield/play_field";
 
 function App() {
 
@@ -24,7 +26,7 @@ function App() {
           <PlayerList players={players} />
         </div>
         <div className="play_field">
-          <MqttComponent />
+          <PlayField />
         </div>
         <div className="progress_bar">Distance</div>
         <div className="settings_menu">Settings</div>

@@ -1,6 +1,7 @@
-import {Sprite} from "@inlet/react-pixi";
-import {Stage} from "@pixi/react";
-import React from "react";
+import React from 'react';
+import {AnimatedSprite, Stage} from "@inlet/react-pixi";
+import * as PIXI from 'pixi.js';
+
 
 class  Player {
     name: string
@@ -15,18 +16,24 @@ class  Player {
         this.name = name;
         this.round = 0
         this.scores = [4,5,2,4,5,0,2,1]
-        this.spritesheet = "src/sprites/Riolu Sprite/tile000.png"
-        this.sprite = this.getSprite()
+        this.spritesheet = "src/sprites/Riolu Sprite/ezgif.com-gif-to-sprite-converted.json"
+        this.sprite = this.drawSprite()
         // Initialize other properties as needed
     }
 
-    getSprite() {
+    drawSprite(){
+        // Assuming 'path/to/spritesheet.json' is your sprite sheet file
+        const spriteSheetTextures = Array.from({ length: 9 }, (_, i) => {
+            return PIXI.Texture.from(`src/sprites/Riolu Sprite/tile00${i}.png`); // Adjust the path and file naming convention
+        });
+
         return (
             <Stage width={59} height={59} options={{ backgroundAlpha: 0 }}>
-                <Sprite image={this.spritesheet} />
+                <AnimatedSprite textures={spriteSheetTextures} animationSpeed={0.2} loop={true}  isPlaying/>
             </Stage>
         );
-    };
+    }
+
 
     getTotalScore(){
         let totalScore = 0
