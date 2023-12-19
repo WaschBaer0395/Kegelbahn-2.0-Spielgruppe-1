@@ -12,7 +12,9 @@ function App() {
     new Player(3, 'Bjarne'),
     new Player(4, 'Melanie'),
     new Player(5, 'Rene'),
-    // Add more players as needed
+    new Player(5, 'Rene1'),
+    new Player(5, 'Rene2'),
+    new Player(6, 'Test1')
   ];
 
   return (
