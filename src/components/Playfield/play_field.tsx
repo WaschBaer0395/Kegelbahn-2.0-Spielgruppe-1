@@ -1,21 +1,14 @@
 import React from "react";
-import {Stage} from "@inlet/react-pixi";
-
+import {Sprite, Stage} from "@inlet/react-pixi";
+import background from "../../sprites/Background/background_static.png";
 
 const PlayField: React.FC = () => {
 
-
     return (
-        <Stage
-            width={300}
-            height={300}
-            options={{
-                backgroundAlpha: 1,
-                antialias: true
-            }}>
-
+        <Stage className="playField" options={{backgroundAlpha: 1, antialias: true,}}>
+            <Sprite image={background} />
         </Stage>
-    )
+    );
 }
 
 export default PlayField

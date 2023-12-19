@@ -128,7 +128,7 @@ html, body, #root, .App{
   text-align: center;
 }
 
-.PlayField{
+.playField{
   width: 100%;
   height: 100%;
 }
