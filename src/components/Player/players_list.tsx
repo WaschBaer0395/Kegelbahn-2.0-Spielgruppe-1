@@ -13,6 +13,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, addPlayer }) => {
     const [newPlayerName, setNewPlayerName] = useState('')
     const [selectedSprite, setSelectedSprite] = useState<string | null>(null)
     const spriteVariants: string[] = ["Riolu", "Wanderer"]
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleAddPlayer = () => {
         if (newPlayerName.trim() !== '' && selectedSprite) {
@@ -23,6 +24,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, addPlayer }) => {
             setShowAddPlayerModal(false)
             setNewPlayerName('')
             setSelectedSprite(null)
+            setIsModalOpen(false); // Unblur the modal background
         }
     }
 
@@ -31,23 +33,25 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, addPlayer }) => {
     }
 
     return (
-        <div className="playerListContainer">
-            {players.map((player, index) => (
-                <div key={index} className="grid-item">
-                    <div className="playerInfo">
-                        <div className="playerSprite">{player?.playerIcon}</div>
-                        <div className="playerName">{player?.name}</div>
-                        <div className="playerScores">
-                            <PlayerScores data={player?.scores || []} />
+        <div className="playerListMain">
+            <div className={`playerListContainer ${isModalOpen ? 'blurred' : ''}`}>
+                {players.map((player, index) => (
+                    <div key={index} className="grid-item">
+                        <div className="playerInfo">
+                            <div className="playerSprite">{player?.playerIcon}</div>
+                            <div className="playerName">{player?.name}</div>
+                            <div className="playerScores">
+                                <PlayerScores data={player?.scores || []} />
+                            </div>
                         </div>
                     </div>
-                </div>
-            ))}
-            {players.length < 8 && (
-                <div className="grid-item">
-                    <button onClick={() => setShowAddPlayerModal(true)}>+</button>
-                </div>
-            )}
+                ))}
+                {players.length < 8 && (
+                    <div className="grid-item-button">
+                        <button onClick={() => { setShowAddPlayerModal(true); setIsModalOpen(true); }}>Klick to add a Player</button>
+                    </div>
+                )}
+            </div>
             {showAddPlayerModal && (
                 <div className="modal-container">
                     <div className="addPlayerModal">
@@ -74,7 +78,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, addPlayer }) => {
                             onChange={(e) => setNewPlayerName(e.target.value)}
                         />
                         <button onClick={handleAddPlayer}>Add Player</button>
-                        <button onClick={() => setShowAddPlayerModal(false)}>Cancel</button>
+                        <button onClick={() => { setShowAddPlayerModal(true); setIsModalOpen(true); }}>Cancel</button>
                     </div>
                 </div>
             )}
