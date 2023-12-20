@@ -4,13 +4,16 @@ import PlayerScores from "./player_scores";
 import '../../styles/PlayerList.css'
 import AddPlayerModal from "./add_player_modal";
 
-interface PlayerListProps {
-    players: Player[];
-    addPlayer: (player: Player) => void;
-}
 
-const PlayerList: React.FC<PlayerListProps> = ({ players, addPlayer }) => {
+const PlayerList: React.FC = () => {
     const [showAddPlayerModal, setShowAddPlayerModal] = useState(false)
+
+
+    const [players, setPlayers] = useState<Player[]>([]);
+
+    const addPlayer = (newPlayer: Player) => {
+        setPlayers([...players, newPlayer]);
+    };
 
 
     return (

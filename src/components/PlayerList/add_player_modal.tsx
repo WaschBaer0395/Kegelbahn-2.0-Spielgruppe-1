@@ -19,10 +19,10 @@ const AddPlayerModal: React.FC<PlayerListProps> = ({players,addPlayer, showAddPl
             const spriteLoc: string = "src/sprites/playerSprites/" + selectedSprite
             const player = new Player(players.length + 1, newPlayerName, spriteLoc)
             addPlayer(player)
-            console.log(spriteLoc)
             showAddPlayerModal(false)
             setNewPlayerName('')
             setSelectedSprite(null)
+            console.log(player.id)
         }
     }
 
@@ -30,6 +30,11 @@ const AddPlayerModal: React.FC<PlayerListProps> = ({players,addPlayer, showAddPl
         setSelectedSprite(spriteVariant === selectedSprite ? null : spriteVariant)
     }
 
+    const handleEnterKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleAddPlayer();
+        }
+    };
 
     return (
         <div className="modal-container">
@@ -55,6 +60,7 @@ const AddPlayerModal: React.FC<PlayerListProps> = ({players,addPlayer, showAddPl
                     placeholder="Enter player name"
                     value={newPlayerName}
                     onChange={(e) => setNewPlayerName(e.target.value)}
+                    onKeyDown={handleEnterKeyPress}
                 />
                 <button onClick={handleAddPlayer}>Add Player</button>
                 <button onClick={() => { showAddPlayerModal(false)}}>Cancel</button>
