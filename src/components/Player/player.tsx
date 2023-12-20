@@ -15,7 +15,7 @@ class  Player {
         this.id = id;
         this.name = name;
         this.round = 0
-        this.scores = [4,5,2,4,5,0,2,1]
+        this.scores = [0,0,0,0,0,0,0,0]
         this.spriteLoc = _spriteLoc
         this.playerIcon = this.getPlayerIcon()
         // Initialize other properties as needed

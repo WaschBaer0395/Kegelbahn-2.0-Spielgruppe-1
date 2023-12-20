@@ -3,12 +3,42 @@
     grid-template-rows: repeat(8, 1fr); /* 8 equal-height rows */
 }
 
+.grid-item,
+.grid-item-button{
+    background-color: #f5f5f5;
+    padding: 16px;
+    border-radius: 8px;
+    border: solid 3px black;
+    box-shadow:
+            0 0 10px rgba(0, 0, 0, 0.1), /* Inner shadow */
+            0 0 5px rgba(255, 255, 255, 0.5) inset, /* Highlight from the top */
+            0 0 5px rgba(0, 0, 0, 0.5) inset; /* Shadow from the bottom */
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    margin-bottom: 3px;
+    position: relative;
+}
+
+.grid-item-button button{
+    background-color: transparent;
+    font-size: x-large;
+    width: 100%;
+    height: 100%;
+    border: 0px;
+}
+
+.grid-item:hover,
+.grid-item-button:hover{
+    transform: scale(1.05);
+    background-color: #b3d9ff; /* Subtle highlight color, adjust as needed */
+}
 
 .playerInfo {
     display: grid;
+    flex-direction: column;
+    align-items: center;
     grid-template-columns: 0.5fr 1fr 5fr; /* 1:2:4 ratio columns */
-    border: 1px solid #282c34;
     margin-bottom: 1px;
+
 }
 
 .playerSprite {
@@ -17,6 +47,11 @@
     height: 56px;
     max-width: 100%;
     max-height: 100%;
+    overflow: hidden;
+}
+.playerSprite img {
+    width: 59px;
+    height: 59px;
 }
 
 .playerName {
@@ -28,7 +63,8 @@
     text-overflow: ellipsis;
     height: 3.4em;
     line-height: 1.7em;
-    border-left: 1px solid #282c34;
+    margin-top: 8px;
+    font-weight: bold;
 }
 
 
@@ -37,6 +73,7 @@
     grid-row: 1;
     font-size: medium;
     height: 100%;
+    margin-top: 8px;
 }
 
 .playerName,
@@ -46,7 +83,7 @@
 
 .playerScores th,
 .playerScores td {
-    border-left: 1px solid #282c34;
+    border: 1px solid #282c34;
     text-align: center;
 }
 
@@ -54,14 +91,20 @@
     position: relative;
 }
 
+.playerListContainer.blurred {
+    filter: blur(5px); /* Adjust the blur amount as needed */
+    transition: filter 0.3s ease-in-out; /* Add a smooth transition effect */
+}
+
 .modal-container {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    background: rgba(255, 255, 255, 1); /* Semi-transparent white background */
     padding: 20px;
     border-radius: 8px;
+    border: 3px solid black;
     text-align: center;
 }
 
