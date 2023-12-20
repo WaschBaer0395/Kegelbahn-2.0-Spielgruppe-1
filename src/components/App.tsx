@@ -14,9 +14,6 @@ function App() {
     new Player(3, 'Bjarne'),
     new Player(4, 'Melanie'),
     new Player(5, 'Rene'),
-    new Player(5, 'Becker Schweizer'),
-    new Player(5, 'Rene2'),
-    new Player(6, 'Test1')
   ];
 
   return (

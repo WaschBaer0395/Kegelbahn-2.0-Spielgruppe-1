@@ -9,7 +9,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players }) => {
 
     return (
         <div className="playerListContainer">
-            {Array.from({ length: 8 }).map((_, index) => (
+            {Array.from({ length: players.length }).map((_, index) => (
                 <div key={index} className="grid-item">
                     <div className="playerInfo">
                         <div className="playerSprite">

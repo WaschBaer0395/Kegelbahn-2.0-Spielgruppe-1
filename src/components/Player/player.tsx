@@ -1,5 +1,5 @@
 import React from 'react';
-import {AnimatedSprite, Stage} from "@inlet/react-pixi";
+import {AnimatedSprite, Sprite, Stage} from "@inlet/react-pixi";
 import * as PIXI from 'pixi.js';
 
 
@@ -23,13 +23,13 @@ class  Player {
 
     drawSprite(){
         // Assuming 'path/to/spritesheet.json' is your sprite sheet file
-        const spriteSheetTextures = Array.from({ length: 9 }, (_, i) => {
-            return PIXI.Texture.from(`src/sprites/Riolu Sprite/tile00${i}.png`); // Adjust the path and file naming convention
+        const spriteSheetTextures = Array.from({ length: 8 }, (_, i) => {
+            return PIXI.Texture.from(`src/sprites/WandererChar/WandererMan${i+1}.png`); // Adjust the path and file naming convention
         });
-
+        //<AnimatedSprite textures={spriteSheetTextures} animationSpeed={0.2} loop={true}  isPlaying={true}/>
         return (
-            <Stage width={59} height={59} options={{ backgroundAlpha: 0 }}>
-                <AnimatedSprite textures={spriteSheetTextures} animationSpeed={0.2} loop={true}  isPlaying/>
+            <Stage width={100} height={100} options={{ backgroundAlpha: 0 }}>
+                <Sprite image={"src/sprites/WandererChar/WandererMan1.png"} ></Sprite>
             </Stage>
         );
     }
