@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import '../styles/App.css'
 import Player from "./Player/player";
-import PlayerList from "./Player/players_list";
+import PlayerList from "./PlayerList/players_list";
 import PlayField from "./Playfield/play_field";
 
 function App() {
