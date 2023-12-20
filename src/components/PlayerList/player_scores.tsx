@@ -7,17 +7,17 @@ interface PlayerTableProps {
 
 const PlayerScores: React.FC<PlayerTableProps> = ({ data }) => {
     const rowData = (
-            data.map((value, index) => (
-                <td key={index}>
-                    {value}
-                </td>
-            ))
+        data.map((value, index) => (
+            <td key={index}>
+                {value}
+            </td>
+        ))
     );
 
     return (
         <table className="playerScores">
             <tbody>
-            <tr>{rowData}</tr>
+                <tr>{rowData}</tr>
             </tbody>
         </table>
     );

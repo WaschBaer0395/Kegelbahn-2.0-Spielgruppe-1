@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import mqtt from 'mqtt'
+import mqtt, { MqttClient } from 'mqtt'
 
 const MqttComponent: React.FC = () => {
-  const [mqttClient, setMqttClient] = useState<any>(null) // MqttClient type from the mqtt library
+  const [mqttClient, setMqttClient] = useState<MqttClient>() // MqttClient type from the mqtt library
   const [mqttMessages, setMqttMessages] = useState<string[]>([])
 
   const connectToBroker = () => {
     const client = mqtt.connect('mqtt://192.168.178.17:10443') // Replace with your MQTT broker URL
     setMqttClient(client)
+
+    client.once("error", () => {
+      client.eventNames();
+      console.log(client.eventNames());
+
+    })
 
     client.on('connect', () => {
       console.log('Connected to MQTT broker')
