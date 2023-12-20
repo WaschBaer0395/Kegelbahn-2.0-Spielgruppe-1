@@ -1,26 +1,24 @@
-import React from 'react'
+import React, {useState} from 'react'
 import '../styles/App.css'
-import MqttComponent from '../api/mqtt'
 import Player from "./Player/player";
 import PlayerList from "./Player/players_list";
-import Stage from "@inlet/react-pixi"
 import PlayField from "./Playfield/play_field";
 
 function App() {
 
-  const players: Player[] = [
-    new Player(1, 'Jill'),
-    new Player(2, 'Basti'),
-    new Player(3, 'Bjarne'),
-    new Player(4, 'Melanie'),
-    new Player(5, 'Rene'),
-  ];
+  const [players, setPlayers] = useState([
+    new Player(1, 'Jill', "src/sprites/playerSprites/Riolu"),
+  ]);
+
+  const addPlayer = (newPlayer: Player) => {
+    setPlayers([...players, newPlayer]);
+  };
 
   return (
     <div className="App">
       <div className="wrapper">
         <div className="player_list">
-          <PlayerList players={players} />
+          <PlayerList players={players} addPlayer={addPlayer} />
         </div>
         <div className="play_field">
           <PlayField />

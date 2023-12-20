@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@inlet/react-pixi": "^6.8.0",
+    "@pixi/react": "^7.1.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "async-mqtt": "^2.6.3",
+    "list-react-files": "^0.2.0",
     "mqtt": "^5.3.3",
     "node": "^21.2.0",
     "pixi.js": "^7.3.2",
