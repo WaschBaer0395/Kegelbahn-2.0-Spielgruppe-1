@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Player from '../Player/player'
 import PlayerScores from "./player_scores";
 import '../../styles/PlayerList.css'
 import AddPlayerModal from "./add_player_modal";
+import { GameContext, useGameContext } from "../../api/GameLogicDataContext";
 
 
 const PlayerList: React.FC = () => {
     const [showAddPlayerModal, setShowAddPlayerModal] = useState(false)
 
 
-    const [players, setPlayers] = useState<Player[]>([]);
+    // const [players, setPlayers] = useState<Player[]>([]);
+    const { players, setPlayers } = useContext(GameContext);
 
     const addPlayer = (newPlayer: Player) => {
         setPlayers([...players, newPlayer]);
+        console.log("test " + JSON.stringify(players));
+
     };
 
 
@@ -32,7 +36,7 @@ const PlayerList: React.FC = () => {
                 ))}
                 {players.length < 8 && (
                     <div className="grid-item-button">
-                        <button onClick={() => { setShowAddPlayerModal(true)}}>Klick to add a Player</button>
+                        <button onClick={() => { setShowAddPlayerModal(true) }}>Klick to add a Player</button>
                     </div>
                 )}
             </div>
