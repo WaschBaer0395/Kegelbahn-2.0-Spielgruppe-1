@@ -1,12 +1,10 @@
 import React from "react";
+import MqttComponent from "../../api/mqtt";
 
 const PlayField: React.FC = () => {
 
     return (
-        <div>
-            Hier könnte ein Spielfeld sein
-        </div>
-
+        <MqttComponent />
     );
 }
 
