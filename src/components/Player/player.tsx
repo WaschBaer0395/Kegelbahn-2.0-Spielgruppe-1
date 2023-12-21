@@ -1,6 +1,4 @@
 import React from 'react';
-import * as PIXI from 'pixi.js';
-import {Sprite, Stage} from "@pixi/react";
 
 
 class  Player {
