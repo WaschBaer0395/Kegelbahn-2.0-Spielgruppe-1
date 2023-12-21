@@ -126,7 +126,7 @@
 }
 
 .sprite-selection .sprite-variant .rounded-square {
-    border: 2px solid #000; /* Set the border color as needed */
+    border: 0px solid #000; /* Set the border color as needed */
     border-radius: 8px; /* Adjust the border-radius to make it rounded */
     overflow: hidden;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Add a light shadow for a 3D effect */
@@ -137,8 +137,8 @@
 }
 
 .sprite-selection .sprite-variant.selected .rounded-square {
-    border-color: #4e8bf5; /* Set a more subtle highlight color */
-    box-shadow: 2px 2px 5px rgba(78, 139, 245, 0.6); /* Adjust the shadow for the selected effect */
+    border-color: #000; /* Set a more subtle highlight color */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6); /* Adjust the shadow for the selected effect */
 }
 
 .sprite-selection {
@@ -166,5 +166,5 @@
 }
 
 .sprite-variant.selected .rounded-square {
-    border: 2px solid #00f; /* Highlight color */
+    border: 2px solid #000; /* Highlight color */
 }
