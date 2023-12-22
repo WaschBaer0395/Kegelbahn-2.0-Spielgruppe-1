@@ -1,4 +1,3 @@
-import 'Player/player'
 import Player from "./Player/player";
 
 class Game {

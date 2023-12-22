@@ -1,12 +1,9 @@
-import React, {useState} from 'react'
+import React from 'react'
 import '../styles/App.css'
 import PlayerList from "./PlayerList/players_list";
 import PlayField from "./Playfield/play_field";
-import Game from "./Game";
 
 function App() {
-
-  let gameObject: Game = null
   return (
     <div className="App">
       <div className="wrapper">

@@ -20,7 +20,7 @@ const MqttComponent: React.FC = () => {
   const [mqttMessages, setMqttMessages] = useState<string[]>([])
 
   const connectToBroker = () => {
-    const client = mqtt.connect("mqtt://"+import.meta.env.MQTT_BROKER) // Replace with your MQTT broker URL
+    const client = mqtt.connect("mqtt://localhost:10443") // Replace with your MQTT broker URL
     setMqttClient(client)
 
     client.on('connect', () => {
@@ -69,7 +69,7 @@ const MqttComponent: React.FC = () => {
 }
 
 const manageData= (sensordata: SensorData) => {
-  game = new Game(players)
+  //game = new Game(players)
 
   return true
 }
