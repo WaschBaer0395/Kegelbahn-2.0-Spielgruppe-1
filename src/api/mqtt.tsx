@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import mqtt, { MqttClient } from 'mqtt'
+import Game from "../components/Game";
+
+// {
+// 	"sensors":[false,false,true,true,true,true,true,false,false],
+// 	"rounds_played":1,
+// 	"total_pins_downed":4,
+// 	"pins_downed":4
+// }
+export interface SensorData {
+  sensors: boolean[];
+  rounds_played: number;
+  total_pins_downed: number;
+  pins_downed: number;
+}
 
 const MqttComponent: React.FC = () => {
   const [mqttClient, setMqttClient] = useState<MqttClient>() // MqttClient type from the mqtt library
   const [mqttMessages, setMqttMessages] = useState<string[]>([])
 
   const connectToBroker = () => {
-    const client = mqtt.connect('mqtt://192.168.178.17:10443') // Replace with your MQTT broker URL
+    const client = mqtt.connect("mqtt://localhost:10443") // Replace with your MQTT broker URL
     setMqttClient(client)
 
     client.once("error", () => {
@@ -21,8 +35,15 @@ const MqttComponent: React.FC = () => {
     })
 
     client.on('message', (topic: string, message: Buffer) => {
-      console.log(`Received message on topic ${topic}: ${message.toString()}`)
-      setMqttMessages((prevMessages) => [...prevMessages, message.toString()])
+      // parsing the json data received into the interface SensorData for later use
+      let jsonObj = JSON.parse(message.toString());
+      if (manageData(jsonObj as SensorData)) {
+        console.log(`Received message on topic ${topic}: ${message.toString()}`)
+        setMqttMessages((prevMessages) => [...prevMessages, message.toString()])
+      }
+      else {
+        console.log(`error Data malformed`)
+      }
     })
 
     client.on('error', (err: Error) => {
@@ -51,6 +72,12 @@ const MqttComponent: React.FC = () => {
       </ul>
     </div>
   )
+}
+
+const manageData = (sensordata: SensorData) => {
+  //game = new Game(players)
+
+  return true
 }
 
 export default MqttComponent

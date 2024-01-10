@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import '../styles/App.css'
-import Player from "./Player/player";
 import PlayerList from "./PlayerList/players_list";
 import PlayField from "./Playfield/play_field";
 import { GameLogicDataProvider } from '../api/GameLogicDataContext';
 
 function App() {
-
   return (
     <div className="App">
       <GameLogicDataProvider>
