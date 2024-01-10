@@ -3,6 +3,7 @@ import '../styles/App.css'
 import PlayerList from "./PlayerList/players_list";
 import PlayField from "./Playfield/play_field";
 import { GameLogicDataProvider } from '../api/GameLogicDataContext';
+import DistanceBar from './Others/DistanceBar';
 
 function App() {
   return (
@@ -16,7 +17,9 @@ function App() {
           <div className="play_field">
             <PlayField />
           </div>
-          <div className="progress_bar">Distance</div>
+          <div className="progress_bar">
+            <DistanceBar />
+          </div>
           <div className="settings_menu">Settings</div>
         </div>
       </GameLogicDataProvider>
