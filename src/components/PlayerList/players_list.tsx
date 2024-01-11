@@ -18,7 +18,7 @@ const PlayerList: React.FC = () => {
 
     return (
         <div className="playerListMain">
-            <div className={`playerListContainer ${showAddPlayerModal ? 'blurred' : ''}`}>
+            <div className={`playerListContainer`}>
                 {players.map((player, index) => (
                     <div key={index} className="grid-item">
                         <div className="playerInfo">
@@ -30,13 +30,7 @@ const PlayerList: React.FC = () => {
                         </div>
                     </div>
                 ))}
-                {players.length < 8 && (
-                    <div className="grid-item-button">
-                        <button onClick={() => { setShowAddPlayerModal(true)}}>Klick to add a Player</button>
-                    </div>
-                )}
             </div>
-            {showAddPlayerModal && <AddPlayerModal players={players} addPlayer={addPlayer} showAddPlayerModal={setShowAddPlayerModal} />}
         </div>
     )
 }
