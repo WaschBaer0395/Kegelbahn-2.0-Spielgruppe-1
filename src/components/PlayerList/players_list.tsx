@@ -2,12 +2,14 @@ import React, { useContext, useState } from "react";
 import Player from '../Player/player'
 import PlayerScores from "./player_scores";
 import '../../styles/PlayerList.css'
-import AddPlayerModal from "./add_player_modal";
+import player from "../Player/player";
 import { GameContext, useGameContext } from "../../api/GameLogicDataContext";
-
 
 const PlayerList: React.FC = () => {
     const [showAddPlayerModal, setShowAddPlayerModal] = useState(false)
+
+    let playerList = mockPlayerList()
+
 
 
     // const [players, setPlayers] = useState<Player[]>([]);
@@ -22,8 +24,8 @@ const PlayerList: React.FC = () => {
 
     return (
         <div className="playerListMain">
-            <div className={`playerListContainer ${showAddPlayerModal ? 'blurred' : ''}`}>
-                {players.map((player, index) => (
+            <div className={`playerListContainer`}>
+                {playerList.map((player, index) => (
                     <div key={index} className="grid-item">
                         <div className="playerInfo">
                             <div className="playerSprite">{player?.playerIcon}</div>
@@ -40,9 +42,26 @@ const PlayerList: React.FC = () => {
                     </div>
                 )}
             </div>
-            {showAddPlayerModal && <AddPlayerModal players={players} addPlayer={addPlayer} showAddPlayerModal={setShowAddPlayerModal} />}
         </div>
     )
+}
+
+function mockPlayerList() {
+    let jsonObj = JSON.parse('[' +
+        '{"name": "Male_1", "gender": "m", "color": "yellow", "hair": "brown"},' +
+        '{"name": "Female_2", "gender": "f", "color": "blue", "hair": "black"},' +
+        '{"name": "Female_3", "gender": "f", "color": "yellow", "hair": "brown"},' +
+        '{"name": "Male_4", "gender": "m", "color": "red", "hair": "brown"},' +
+        '{"name": "Male_5", "gender": "m", "color": "violet", "hair": "brown"},' +
+        '{"name": "Female_6", "gender": "f", "color": "green", "hair": "brown"}' +
+        ']'
+    );
+    let players_list = new Array<player>()
+    for (let i = 0; i < jsonObj.length; i++) {
+        console.log(jsonObj[i].gender + '__' + jsonObj[i].color)
+        players_list.push(new Player(i, jsonObj[i].name, jsonObj[i].gender, jsonObj[i].color, jsonObj[i].hair))
+    }
+    return players_list
 }
 
 export default PlayerList
