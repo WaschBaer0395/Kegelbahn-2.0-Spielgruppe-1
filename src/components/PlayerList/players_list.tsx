@@ -6,21 +6,11 @@ import player from "../Player/player";
 import { GameContext, useGameContext } from "../../api/GameLogicDataContext";
 
 const PlayerList: React.FC = () => {
-    const [showAddPlayerModal, setShowAddPlayerModal] = useState(false)
 
     let playerList = mockPlayerList()
 
-
-
     // const [players, setPlayers] = useState<Player[]>([]);
     const { players, setPlayers } = useContext(GameContext);
-
-    const addPlayer = (newPlayer: Player) => {
-        setPlayers([...players, newPlayer]);
-        console.log("test " + JSON.stringify(players));
-
-    };
-
 
     return (
         <div className="playerListMain">
@@ -36,11 +26,6 @@ const PlayerList: React.FC = () => {
                         </div>
                     </div>
                 ))}
-                {players.length < 8 && (
-                    <div className="grid-item-button">
-                        <button onClick={() => { setShowAddPlayerModal(true) }}>Klick to add a Player</button>
-                    </div>
-                )}
             </div>
         </div>
     )
