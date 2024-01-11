@@ -8,8 +8,6 @@ const PlayerList: React.FC = () => {
 
     let playerList= mockPlayerList()
 
-
-    console.log("TEST")
     return (
         <div className="playerListMain">
             <div className={`playerListContainer`}>
@@ -19,7 +17,7 @@ const PlayerList: React.FC = () => {
                             <div className="playerSprite">{player?.playerIcon}</div>
                             <div className="playerName">{player?.name}</div>
                             <div className="playerScores">
-                                <PlayerScores data={player?.scores || []} />
+                                <PlayerScores data={player?.scores} />
                             </div>
                         </div>
                     </div>
@@ -36,12 +34,12 @@ function mockPlayerList() {
         '{"name": "Female_3", "gender": "f", "color": "yellow", "hair": "brown"},' +
         '{"name": "Male_4", "gender": "m", "color": "red", "hair": "brown"},' +
         '{"name": "Male_5", "gender": "m", "color": "violet", "hair": "brown"},' +
+        '{"name": "Male_9", "gender": "m", "color": "red", "hair": "brown"},' +
         '{"name": "Female_6", "gender": "f", "color": "green", "hair": "brown"}' +
         ']'
     );
     let players_list = new Array<player>()
     for (let i = 0; i < jsonObj.length; i++) {
-        console.log(jsonObj[i].gender + '__' + jsonObj[i].color)
         players_list.push(new Player(i, jsonObj[i].name, jsonObj[i].gender, jsonObj[i].color, jsonObj[i].hair))
     }
     return players_list
