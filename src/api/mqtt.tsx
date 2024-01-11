@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import mqtt from 'mqtt'
 import Game from "../components/Game";
+import {json} from "stream/consumers";
+import players_list from "../components/PlayerList/players_list";
+import player from "../components/Player/player";
+import Player from "../components/Player/player";
 
 // {
 // 	"sensors":[false,false,true,true,true,true,true,false,false],
@@ -67,6 +71,7 @@ const MqttComponent: React.FC = () => {
     </div>
   )
 }
+
 
 const manageData= (sensordata: SensorData) => {
   //game = new Game(players)
