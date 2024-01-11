@@ -12,7 +12,7 @@ class  Player {
     spriteLoc: string
     playerIcon: JSX.Element
 
-    constructor(id: number, name: string, hair: string, color: string, gender: string) {
+    constructor(id: number, name: string, gender: string, color: string, hair: string) {
         this.id = id;
         this.name = name;
         this.color = color
@@ -20,20 +20,19 @@ class  Player {
         this.gender = gender
         this.round = 0
         this.scores = [0,0,0,0,0,0,0,0]
-        this.spriteLoc = this.findSprite(this.hair, this.color, this.gender)
+        this.spriteLoc = this.findSprite(this.gender, this.color, this.hair)
         this.playerIcon = this.getPlayerIcon()
         // Initialize other properties as needed
     }
 
     getPlayerIcon(){
         const previewImagePath = `${this.spriteLoc}/preview.png`;
-        console.log(`${this.spriteLoc}/preview.png`)
         return (
             <img src={previewImagePath} alt="Player Icon/Sprite" width={59} height={59}/>
         );
     }
 
-    findSprite(hair: string, color: string, gender: string){
+    findSprite(gender: string, color: string, hair: string){
 
         let availableColors= ['blue', 'green', 'pink', 'red', 'violet', 'yellow']
 
@@ -47,8 +46,18 @@ class  Player {
             this.color = 'blue' //default if wrong color was given
         }
 
-        this.gender = "Male"
-        this.color = "yellow"
+
+        //for testing purposes while not all sprite colors are available
+        if( this.gender == 'Male' && this.color != 'red' && this.color != 'yellow'){
+            this.gender = 'Male'
+            this.color = 'yellow'
+        }
+        else if( this.gender == 'Female' && this.color != 'blue' && this.color != 'green'){
+            this.gender = 'Female'
+            this.color = 'green'
+        }
+
+        console.log(this.gender + '__' + this.color)
 
         return 'src/sprites/playerSprites/' + this.gender + '/' + this.color
     }
