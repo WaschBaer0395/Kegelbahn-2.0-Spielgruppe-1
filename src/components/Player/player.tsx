@@ -8,7 +8,7 @@ class Player {
     gender: string
     id: number
     round: number = 0
-    scores: number[] = [0, 0, 0, 0, 0, 0, 0, 0]
+    scores: number[][]
     spriteLoc: string
     playerIcon: JSX.Element
 
@@ -19,7 +19,7 @@ class Player {
         this.hair = hair
         this.gender = gender
         this.round = 0
-        this.scores = [0, 0, 0, 0, 0, 0, 0, 0]
+        this.scores = [[9, 2], [8, 1], [7, 4], [9, 1], [6, 7], [4, 2]]
         this.spriteLoc = this.findSprite(this.gender, this.color, this.hair)
         this.playerIcon = this.getPlayerIcon()
         // Initialize other properties as needed
@@ -57,8 +57,6 @@ class Player {
             this.color = 'green'
         }
 
-        console.log(this.gender + '__' + this.color)
-
         return 'src/sprites/playerSprites/' + this.gender + '/' + this.color
     }
 
@@ -66,12 +64,13 @@ class Player {
     getTotalScore() {
         let totalScore = 0
         for (let i = 0; this.scores.length; i++) {
-            if (i + 1 % 2 !== 0) {
-                totalScore += this.scores[i]
-            }
-            else {
-                totalScore -= this.scores[i]
-                if (totalScore < 0) totalScore = 0
+            for (let j = 0; this.scores.length; j++) {
+                if (i + 1 % 2 !== 0) {
+                    totalScore += this.scores[i][j]
+                } else {
+                    totalScore -= this.scores[i][j]
+                    if (totalScore < 0) totalScore = 0
+                }
             }
         }
         return totalScore
@@ -79,8 +78,11 @@ class Player {
 
     updateScore = (round: number, newCount: number) => {
         if (round < 8) {
-            this.round = round
-            this.scores[this.round] += newCount
+            if (round == this.round) {
+
+                this.round = round
+                this.scores[this.round][1] += newCount
+            }
         }
     }
 
