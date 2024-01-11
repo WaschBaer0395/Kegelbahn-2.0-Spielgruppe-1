@@ -42,7 +42,7 @@ html, body, #root, .App{
   top: 10px;
   left: 10px;
   height: calc(80vh - 20px);
-  width: calc(40vw - 20px - 5px); /* Adjusted width with margin */
+  width: calc(20vw - 20px - 5px); /* Adjusted width with margin */
   background-color: #3498db;
   margin-right: 5px; /* Adjusted margin */
 }
@@ -50,9 +50,9 @@ html, body, #root, .App{
 .play_field {
   position: absolute;
   top: 10px;
-  left: calc(40vw + 15px); /* Adjusted left position */
+  left: calc(20vw + 15px); /* Adjusted left position */
   height: calc(80vh - 20px);
-  width: calc(60vw - 30px - 5px); /* Adjusted width with margin */
+  width: calc(80vw - 30px - 5px); /* Adjusted width with margin */
   background-color: #2ecc71;
   margin-right: 5px; /* Adjusted margin */
 }
