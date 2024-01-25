@@ -20,6 +20,7 @@ const Debug = () => {
             '{"name": "Female_6", "gender": "f", "color": "green", "hair": "brown"}' +
             ']'
         console.log('Sending list: {}', jsonString);
+        mqttHandler.sendMessage('Kegelbahn/Management', jsonString);
     };
 
     const handleEmptyPlayerList = () => {
