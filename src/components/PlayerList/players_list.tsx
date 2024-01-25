@@ -4,13 +4,10 @@ import '../../styles/PlayerList.css'
 import { GameContext } from "../../api/GameLogicDataContext";
 import Player from "../Player/player";
 
-interface PlayerListProps {
-    pList: Player[];
-}
 
-const PlayerList: React.FC<PlayerListProps> = ({pList}) => {
+const PlayerList: React.FC = () => {
 
-    let playerList = pList
+    let playerList: Player[] = [];
 
     // const [players, setPlayers] = useState<Player[]>([]);
     const { players, setPlayers } = useContext(GameContext);
