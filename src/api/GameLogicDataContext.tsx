@@ -6,6 +6,7 @@ const PlayerListTest: Player[] = []
 
 export const GameContext = createContext({ players: PlayerListTest, setPlayers: (player: React.SetStateAction<Player[]>) => { } });
 
+// @ts-ignore
 export const GameLogicDataProvider = ({ children }) => {
     const [players, setPlayers] = useState<Player[]>([]); // Hier könnte Ihre Spielerliste stehen
 

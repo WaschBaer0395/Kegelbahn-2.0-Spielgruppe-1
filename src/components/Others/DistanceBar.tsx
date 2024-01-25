@@ -1,5 +1,4 @@
-import React, { PureComponent, useContext } from 'react';
-// import '../../styles/DistanceBar.css';
+import React from 'react';
 import { useGameContext } from '../../api/GameLogicDataContext';
 
 type DistanceBarProps = {}

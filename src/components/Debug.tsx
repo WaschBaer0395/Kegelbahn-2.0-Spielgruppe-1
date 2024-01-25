@@ -26,7 +26,7 @@ const Debug = () => {
         console.log('Emptying player list...');
     };
 
-    const handleSensorButtonClick = (sensorNumber) => {
+    const handleSensorButtonClick = (sensorNumber: number) => {
         let sensorString = ''
 
         if(sensorNumber == 1){

@@ -1,6 +1,6 @@
 // MqttComponent.tsx
 import React, { useEffect, useState } from 'react';
-import MqttHandler, { SensorData } from './MqttHandler';
+import MqttHandler from './MqttHandler';
 
 interface MqttComponentProps {
   mqttHandler: MqttHandler;
