@@ -4,7 +4,7 @@ import MqttComponent from "../../api/mqtt";
 const PlayField: React.FC = () => {
 
     return (
-        <MqttComponent />
+        <h1>PlayField</h1>
     );
 }
 
