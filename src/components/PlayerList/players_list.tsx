@@ -1,13 +1,16 @@
-import React, { useContext, useState } from "react";
-import Player from '../Player/player'
+import React, { useContext } from "react";
 import PlayerScores from "./player_scores";
 import '../../styles/PlayerList.css'
-import player from "../Player/player";
-import { GameContext, useGameContext } from "../../api/GameLogicDataContext";
+import { GameContext } from "../../api/GameLogicDataContext";
+import Player from "../Player/player";
 
-const PlayerList: React.FC = () => {
+interface PlayerListProps {
+    pList: Player[];
+}
 
-    let playerList = mockPlayerList()
+const PlayerList: React.FC<PlayerListProps> = ({pList}) => {
+
+    let playerList = pList
 
     // const [players, setPlayers] = useState<Player[]>([]);
     const { players, setPlayers } = useContext(GameContext);
@@ -29,24 +32,6 @@ const PlayerList: React.FC = () => {
             </div>
         </div>
     )
-}
-
-function mockPlayerList() {
-    let jsonObj = JSON.parse('[' +
-        '{"name": "Male_1", "gender": "m", "color": "yellow", "hair": "brown"},' +
-        '{"name": "Female_2", "gender": "f", "color": "blue", "hair": "black"},' +
-        '{"name": "Female_3", "gender": "f", "color": "yellow", "hair": "brown"},' +
-        '{"name": "Male_4", "gender": "m", "color": "red", "hair": "brown"},' +
-        '{"name": "Male_5", "gender": "m", "color": "violet", "hair": "brown"},' +
-        '{"name": "Male_9", "gender": "m", "color": "red", "hair": "brown"},' +
-        '{"name": "Female_6", "gender": "f", "color": "green", "hair": "brown"}' +
-        ']'
-    );
-    let players_list = new Array<player>()
-    for (let i = 0; i < jsonObj.length; i++) {
-        players_list.push(new Player(i, jsonObj[i].name, jsonObj[i].gender, jsonObj[i].color, jsonObj[i].hair))
-    }
-    return players_list
 }
 
 export default PlayerList
