@@ -19,7 +19,6 @@ const Debug = () => {
             '{"name": "Male_9", "gender": "m", "color": "red", "hair": "brown"},' +
             '{"name": "Female_6", "gender": "f", "color": "green", "hair": "brown"}' +
             ']'
-        console.log('Sending list: {}', jsonString);
         mqttHandler.sendMessage('Kegelbahn/Management', jsonString);
     };
 
@@ -42,8 +41,6 @@ const Debug = () => {
         else if (sensorNumber == 4){
             sensorString = '{"sensors":[true,true,false,false,false,false,false,true,false],"rounds_played":4,"total_pins_downed":0,"pins_downed":0}'
         }
-        console.log("sending string: {}", sensorString)
-
         mqttHandler.sendMessage('Kegelbahn/SensorTopic', sensorString);
     };
 

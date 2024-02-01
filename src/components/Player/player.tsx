@@ -19,7 +19,7 @@ class Player {
         this.hair = hair
         this.gender = gender
         this.round = 0
-        this.scores = [[9, 2], [8, 1], [7, 4], [9, 1], [6, 7], [4, 2]]
+        this.scores = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
         this.spriteLoc = this.findSprite(this.gender, this.color, this.hair)
         this.playerIcon = this.getPlayerIcon()
         // Initialize other properties as needed

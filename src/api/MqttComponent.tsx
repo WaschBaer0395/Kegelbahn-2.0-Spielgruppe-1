@@ -7,19 +7,30 @@ interface MqttComponentProps {
 }
 
 const MqttComponent: React.FC<MqttComponentProps> = ({ mqttHandler }) => {
-  const [mqttMessages, setMqttMessages] = useState<string[]>([]);
+    const [mqttMessages, setMqttMessages] = useState<string[]>([]);
 
-  useEffect(() => {
-    mqttHandler.connectToBroker();
+    useEffect(() => {
+        mqttHandler.connectToBroker();
 
-    return () => {
-      mqttHandler.closeConnection();
-    };
-  }, [mqttHandler]);
+        return () => {
+            mqttHandler.closeConnection();
+        };
+    }, [mqttHandler]);
 
-  const handleSendMessage = (topic: string, message: string) => {
-    mqttHandler.sendMessage(topic, message);
-  };
+    useEffect(() => {
+        const handleMessage = (topic: string, message: string) => {
+            // Update the state with the received message
+            setMqttMessages(prevMessages => [...prevMessages, message]);
+        };
+
+        // Subscribe to the 'message' event of the mqttHandler to receive messages
+        mqttHandler.onMessage(handleMessage);
+
+        return () => {
+            // Unsubscribe from the 'message' event when component unmounts
+            mqttHandler.offMessage(handleMessage);
+        };
+    }, [mqttHandler]);
 
   return (
       <div>

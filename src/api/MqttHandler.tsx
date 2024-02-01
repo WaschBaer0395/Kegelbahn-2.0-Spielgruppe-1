@@ -1,5 +1,6 @@
 // MqttHandler.ts
 import mqtt, { MqttClient } from 'mqtt';
+import Player from "../components/Player/player";
 
 export interface SensorData {
     sensors: boolean[];
@@ -10,10 +11,11 @@ export interface SensorData {
 
 class MqttHandler {
     private mqttClient: MqttClient | null = null;
+    private messageHandlers: { [topic: string]: (message: string, s: string) => void } = {};
 
     public connectToBroker() {
         this.mqttClient = mqtt.connect("mqtt://localhost:10443");
-
+        let playerList: Player[] = []
         this.mqttClient.once("error", () => {
             this.mqttClient!.eventNames();
             console.log(this.mqttClient!.eventNames());
@@ -25,17 +27,23 @@ class MqttHandler {
         });
 
         this.mqttClient.on('message', (topic: string, message: Buffer) => {
-            let jsonObj = JSON.parse(message.toString());
-            if (this.manageData(jsonObj as SensorData)) {
-                console.log(`Received message on topic ${topic}: ${message.toString()}`);
-            } else {
-                console.log(`Error: Data malformed`);
+            const messageHandler = this.messageHandlers[topic];
+            if (messageHandler) {
+                messageHandler(topic, message.toString());
             }
         });
+    }
 
-        this.mqttClient.on('error', (err: Error) => {
-            console.error('Error connecting to MQTT broker:', err);
-        });
+    public onMessage(callback: (topic: string, message: string) => void) {
+        this.messageHandlers['Kegelbahn/Kegel'] = callback;
+        this.messageHandlers['Kegelbahn/Player'] = callback;
+        this.messageHandlers['Kegelbahn/Management'] = callback;
+    }
+
+    public offMessage(callback: (topic: string, message: string) => void) {
+        delete this.messageHandlers['Kegelbahn/Kegel'];
+        delete this.messageHandlers['Kegelbahn/Player'];
+        delete this.messageHandlers['Kegelbahn/Management'];
     }
 
     public sendMessage(topic: string, message: string) {

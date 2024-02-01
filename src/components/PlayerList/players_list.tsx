@@ -7,15 +7,13 @@ import Player from "../Player/player";
 
 const PlayerList: React.FC = () => {
 
-    let playerList: Player[] = [];
-
     // const [players, setPlayers] = useState<Player[]>([]);
     const { players, setPlayers } = useContext(GameContext);
 
     return (
         <div className="playerListMain">
             <div className={`playerListContainer`}>
-                {playerList.map((player, index) => (
+                {players.map((player, index) => (
                     <div key={index} className="grid-item">
                         <div className="playerInfo">
                             <div className="playerSprite">{player?.playerIcon}</div>
