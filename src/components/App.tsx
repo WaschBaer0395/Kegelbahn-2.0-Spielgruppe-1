@@ -1,11 +1,15 @@
 import React from 'react'
 import '../styles/App.css'
 import AppRouter from "./AppRouter";
+import { GameLogicDataProvider } from '../api/GameLogicDataContext';
 
 function App() {
   return (
     <div className="App">
-      <AppRouter />
+      <GameLogicDataProvider>
+        <AppRouter />
+
+      </GameLogicDataProvider>
     </div >
   )
 }

@@ -1,14 +1,35 @@
 import PlayerList from "./PlayerList/players_list";
 import PlayField from "./Playfield/play_field";
 import DistanceBar from "./Others/DistanceBar";
-import {GameContext, GameLogicDataProvider} from "../api/GameLogicDataContext";
-import React, {useContext, useEffect, useState} from "react";
+import { GameContext, GameLogicDataProvider } from "../api/GameLogicDataContext";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import MqttHandler from "../api/MqttHandler";
 import Player from "./Player/player";
 const MainScreen = () => {
 
     const { players, setPlayers } = useContext(GameContext);
     const [isPlayersReceived, setIsPlayersReceived] = useState(false);
+    const [showPlayers, setShowPlayers] = useState(false)
+
+    function convertPlayers(players: Player[]): Player[] {
+        const moduleGroups = players.map((player, index): any => {
+            var playerNew = new Player(index, player.name, player.gender, player.color, player.hair);
+            return {
+                id: player.id ? player.id : 0,
+                name: player.name,
+                color: player.color,
+                hair: player.hair,
+                gender: player.gender,
+                round: player.round ? player.round : 0,
+                scores: player.scores ? player.scores : [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]],
+                spriteLoc: player.spriteLoc ? player.spriteLoc : playerNew.findSprite(player.gender, player.color, player.hair),
+                playerIcon: player.playerIcon ? player.playerIcon : playerNew.getPlayerIcon()
+            };
+        }
+        );
+        return moduleGroups;
+    }
+
 
     useEffect(() => {
         const mqttHandler = new MqttHandler();
@@ -17,12 +38,19 @@ const MainScreen = () => {
         mqttHandler.onMessage((topic, message) => {
             if (topic === 'Kegelbahn/Management') {
                 try {
-                    const parsedPlayers = JSON.parse(message) as Player[];
+                    const parsePlayers = JSON.parse(message) as Player[];
+                    const parsedPlayers = convertPlayers(parsePlayers);
+
+
+
+
                     // Check if the parsed message contains player objects
                     if (Array.isArray(parsedPlayers) && parsedPlayers.length > 0) {
                         console.log(parsedPlayers)
                         setPlayers(parsedPlayers); // Update player list
                         setIsPlayersReceived(true); // Set flag to indicate players are received
+                        console.log(players);
+                        setShowPlayers(false);
                     }
                 } catch (error) {
                     console.error('Error parsing players:', error);
@@ -35,9 +63,22 @@ const MainScreen = () => {
         };
     }, []);
 
+    useEffect(() => {
+        if (isPlayersReceived) {
+            console.log("receive change detected");
+            setIsPlayersReceived(false);
+            setShowPlayers(true);
+            // setPlayers(players);
+            console.log(players);
+
+        }
+    }, [isPlayersReceived, players]);
+
+
     return (
-        <GameLogicDataProvider>
-            <div className={`wrapper ${isPlayersReceived ? '' : 'blurred'}`}>
+        // <GameLogicDataProvider>
+        <>
+            <div className={`wrapper ${showPlayers ? '' : 'blurred'}`}>
                 <div className="player_list">
                     <PlayerList />
                 </div>
@@ -45,16 +86,17 @@ const MainScreen = () => {
                     <PlayField />
                 </div>
                 <div className="progress_bar">
-                    <DistanceBar />
+                    {/* <DistanceBar /> */}
                 </div>
                 <div className="settings_menu">Settings</div>
             </div>
-            {!isPlayersReceived && (
+            {!showPlayers && (
                 <div className="overlay">
                     <p>Waiting for players...</p>
                 </div>
             )}
-        </GameLogicDataProvider>
+        </>
+        // </GameLogicDataProvider>
     );
 };
 
