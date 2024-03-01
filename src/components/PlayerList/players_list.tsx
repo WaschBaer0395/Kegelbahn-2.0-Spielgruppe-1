@@ -8,12 +8,12 @@ import Player from "../Player/player";
 const PlayerList: React.FC = () => {
 
     // const [players, setPlayers] = useState<Player[]>([]);
-    const { players, setPlayers } = useContext(GameContext);
+    const { players, setPlayers, game } = useContext(GameContext);
 
     return (
         <div className="playerListMain">
             <div className={`playerListContainer`}>
-                {players.map((player, index) => (
+                {game.players.map((player, index) => (
                     <div key={index} className="grid-item">
                         <div className="playerInfo">
                             <div className="playerSprite">{player?.playerIcon}</div>
@@ -24,6 +24,17 @@ const PlayerList: React.FC = () => {
                         </div>
                     </div>
                 ))}
+                {/* {players.map((player, index) => (
+                    <div key={index} className="grid-item">
+                        <div className="playerInfo">
+                            <div className="playerSprite">{player?.playerIcon}</div>
+                            <div className="playerName">{player?.name}</div>
+                            <div className="playerScores">
+                                <PlayerScores data={player?.scores} />
+                            </div>
+                        </div>
+                    </div>
+                ))} */}
             </div>
         </div>
     )
