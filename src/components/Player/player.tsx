@@ -82,6 +82,8 @@ class Player {
 
                 this.round = round
                 this.scores[this.round][1] += newCount
+            } else {
+                this.scores[this.round][0] += newCount
             }
         }
     }

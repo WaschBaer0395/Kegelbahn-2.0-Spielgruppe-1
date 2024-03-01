@@ -57,3 +57,43 @@ export function printScores() {
 //         });
 //     }, 10000);
 // }
+
+export class GameLogic {
+    players: Player[];
+    // even turn = positive round, odd turn = negative round
+    turn: number;
+    constructor(players: Player[]) {
+        this.players = players;
+        this.turn = 0;
+    }
+
+    getTurnPlayer() {
+        return this.players[((this.turn - this.turn % 2 + 1) % players.length)];
+    }
+    isTurnNegative() {
+        return this.turn % 2;
+    }
+    makeMove(score: number) {
+        var turnplayer = this.getTurnPlayer();
+        var newScore;
+        if (this.turn % 2) {
+            // Negative Round
+            // Missing all Pins counts as -9
+            if (score = 0) score = 9;
+            if (turnplayer.getTotalScore() - score < 0) {
+                newScore = 0;
+                // change score so getTotalScore wont sum up below 0
+                score = -(turnplayer.getTotalScore() - score);
+            } else {
+                newScore = turnplayer.getTotalScore() - score;
+            }
+            turnplayer.updateScore(this.getTurnPlayer().round + 1, newScore);
+        } else {
+            // Positive Round
+            newScore = turnplayer.getTotalScore() + score;
+            turnplayer.updateScore(this.getTurnPlayer().round + 1, newScore);
+        }
+        // TODO: Check if turnplayer changes are in players[] or have to be changed
+        this.turn = this.turn + 1;
+    }
+};
