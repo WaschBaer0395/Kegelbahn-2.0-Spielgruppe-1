@@ -46,10 +46,11 @@ const MainScreen = () => {
 
                     // Check if the parsed message contains player objects
                     if (Array.isArray(parsedPlayers) && parsedPlayers.length > 0) {
-                        console.log(parsedPlayers)
+                        //console.log(players)
                         setPlayers(parsedPlayers); // Update player list
+                        //console.log(players)
                         setIsPlayersReceived(true); // Set flag to indicate players are received
-                        console.log(players);
+                        //console.log(players);
                         setShowPlayers(false);
                     }
                 } catch (error) {
@@ -65,12 +66,12 @@ const MainScreen = () => {
 
     useEffect(() => {
         if (isPlayersReceived) {
-            console.log("receive change detected");
+            //console.log("receive change detected");
             setIsPlayersReceived(false);
             setShowPlayers(true);
             // setPlayers(players);
             console.log(players);
-
+            // TODO create game object here, fill list of players in game object with players received, set round to 0, current player to first in list, and make playerlist display the players out of this game objects playerlist
         }
     }, [isPlayersReceived, players]);
 
