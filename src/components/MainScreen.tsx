@@ -82,7 +82,6 @@ const MainScreen = () => {
                 <div className="progress_bar">
                     {/* <DistanceBar /> */}
                 </div>
-                <div className="settings_menu">Settings</div>
             </div>
             {!showPlayers && (
                 <div className="overlay">
