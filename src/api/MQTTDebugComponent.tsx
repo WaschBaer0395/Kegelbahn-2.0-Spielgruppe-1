@@ -6,7 +6,7 @@ interface MqttComponentProps {
   mqttHandler: MqttHandler;
 }
 
-const MqttComponent: React.FC<MqttComponentProps> = ({ mqttHandler }) => {
+const MQTTDebugComponent: React.FC<MqttComponentProps> = ({ mqttHandler }) => {
     const [mqttMessages, setMqttMessages] = useState<string[]>([]);
 
     useEffect(() => {
@@ -44,4 +44,4 @@ const MqttComponent: React.FC<MqttComponentProps> = ({ mqttHandler }) => {
   );
 };
 
-export default MqttComponent;
+export default MQTTDebugComponent;

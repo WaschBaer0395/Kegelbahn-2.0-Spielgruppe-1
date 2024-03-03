@@ -1,10 +1,6 @@
 // const WebSocket = require('ws');
 // const wss = new WebSocket.Server({ port: 40842 });
 
-import { useContext, useState } from "react";
-import Player from "../components/Player/player";
-import { GameContext, useGameContext } from "./GameLogicDataContext";
-
 // const { players, addPlayer, removePlayer, updateScore } = require('../data/Player');
 
 
@@ -12,7 +8,7 @@ import { GameContext, useGameContext } from "./GameLogicDataContext";
 // const player1 = addPlayer('Spieler 1');
 // const player2 = addPlayer('Spieler 2');
 // const [players, setPlayers] = useState<Player[]>();
-const { players, setPlayers } = useContext(GameContext);
+//const game = useContext(GameContext);
 
 // Beispiel: Funktion zum Senden einer Punktzahl für einen Spieler
 // export function sendScore(player: Player, score) {
@@ -33,21 +29,21 @@ const { players, setPlayers } = useContext(GameContext);
 //     );
 // }
 
-export function makeMove(player: Player, newScore: number) {
-    if (players.includes(player)) {
-        player.updateScore(player.round, newScore);
-    } else {
-        console.warn(`Warnung: ${player} nicht gefunden.`);
-    }
-    // updateFrontend("");
-}
+// export function makeMove(player: Player, newScore: number) {
+//     if (game.players.includes(player)) {
+//         player.updateScore(player.round, newScore);
+//     } else {
+//         console.warn(`Warnung: ${player} nicht gefunden.`);
+//     }
+//     // updateFrontend("");
+// }
 
-export function printScores() {
-    players.forEach((player) => {
-        console.log(`${player.name} hat ${player.getTotalScore()}m erreicht.`);
-    })
-    // updateFrontend(players);
-}
+// export function printScores() {
+//     game.players.forEach((player) => {
+//         console.log(`${player.name} hat ${player.getTotalScore()}m erreicht.`);
+//     })
+//     // updateFrontend(players);
+// }
 
 // function updateFrontend(outputData) {
 //     setTimeout(function(){
@@ -58,42 +54,77 @@ export function printScores() {
 //     }, 10000);
 // }
 
+import {Player} from "../components/Player/player";
+
 export class GameLogic {
     players: Player[];
+    currentPlayer: number
+    currentRound: number
+    private maxRounds: number
+    private gameStarted: boolean
     // even turn = positive round, odd turn = negative round
-    turn: number;
-    constructor(players: Player[]) {
-        this.players = players;
-        this.turn = 0;
+    private turn: number;
+    constructor(players_: Player[]) {
+        this.players = players_;
+        this.gameStarted = false;
+        this.turn = 1;
+        this.currentPlayer = 0
+        this.currentRound = 1
+        this.maxRounds = 8 // means 8 throws total, 2 throws per person
     }
 
-    getTurnPlayer() {
-        return this.players[((this.turn - this.turn % 2 + 1) % players.length)];
+    setPlayers(players_: Player[]){
+        this.players = players_
     }
-    isTurnNegative() {
-        return this.turn % 2;
+
+    getPlayers(){
+        return this.players
     }
+
+    startGame(){
+        this.gameStarted = true
+        //console.log('startGame: ' + this.gameStarted)
+    }
+
+    stopGame(){
+        this.gameStarted = false
+        //console.log('stopGame: ' + this.gameStarted)
+    }
+
+    hasStarted(){
+        //console.log('hasStarted: ' + this.gameStarted)
+        return this.gameStarted
+    }
+
     makeMove(score: number) {
-        var turnplayer = this.getTurnPlayer();
-        var newScore;
-        if (this.turn % 2) {
-            // Negative Round
-            // Missing all Pins counts as -9
-            if (score = 0) score = 9;
-            if (turnplayer.getTotalScore() - score < 0) {
-                newScore = 0;
-                // change score so getTotalScore wont sum up below 0
-                score = -(turnplayer.getTotalScore() - score);
-            } else {
-                newScore = turnplayer.getTotalScore() - score;
+        const currentPlayer: Player = this.players[this.currentPlayer]
+        if (this.currentRound <= this.maxRounds){
+            // odd throw = scores are positive
+            if (this.turn % 2) {
+                currentPlayer.updateScore(this.currentRound, score)
+                this.turn = 2
             }
-            turnplayer.updateScore(this.getTurnPlayer().round + 1, newScore);
-        } else {
-            // Positive Round
-            newScore = turnplayer.getTotalScore() + score;
-            turnplayer.updateScore(this.getTurnPlayer().round + 1, newScore);
+            // even throw = scores are negative
+            else {
+                currentPlayer.updateScore(this.currentRound, 0 - score)
+                this.currentPlayer += 1
+                this.turn = 1
+            }
+
+            // check if last player has done their throw, and switch to new round and begin with player 0 again
+            if (this.currentPlayer + 1 == this.players.length) {
+                this.currentPlayer = 0
+                this.currentRound += 1
+            }
         }
-        // TODO: Check if turnplayer changes are in players[] or have to be changed
-        this.turn = this.turn + 1;
+        else{
+            console.log('Game Over')
+            this.currentPlayer = 0
+            this.currentRound = 1
+            this.turn = 1
+            this.players.forEach((player) => {
+                player.resetScore()
+            });
+        }
     }
-};
+}
