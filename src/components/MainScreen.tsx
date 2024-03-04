@@ -30,8 +30,6 @@ const MainScreen = () => {
                     const parsePlayers = JSON.parse(message) as Player[];
                     const parsedPlayers = convertPlayers(parsePlayers);
 
-
-
                     // Check if the parsed message contains player objects
                     if (Array.isArray(parsedPlayers) && parsedPlayers.length > 0) {
                         game?.setPlayers(parsedPlayers); // Update player list
@@ -78,7 +76,6 @@ const MainScreen = () => {
             setIsPlayersReceived(false);
             setShowPlayers(true);
             console.log(game?.getPlayers);
-            // TODO create game object here, fill list of players in game object with players received, set round to 0, current player to first in list, and make playerlist display the players out of this game objects playerlist
         }
     }, [isPlayersReceived, game]);
 
