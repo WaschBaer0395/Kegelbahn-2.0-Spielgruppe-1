@@ -2,7 +2,6 @@
 import React from 'react';
 import MQTTDebugComponent from "../api/MQTTDebugComponent";  // Import the component
 import MqttHandler from "../api/MqttHandler";
-import {Player} from "./Player/player";  // Import the handler
 
 const Debug = () => {
     const mqttHandler = new MqttHandler(['Kegelbahn/Management', 'Kegelbahn/Kegel'],'Debugg_Page');  // Create an instance of MqttHandler
@@ -11,11 +10,11 @@ const Debug = () => {
         const jsonString =
             '[' +
             '{"name": "Male_1", "gender": "m", "color": "yellow", "hair": "brown"},' +
-            /*'{"name": "Female_2", "gender": "f", "color": "blue", "hair": "black"},' +
+            '{"name": "Female_2", "gender": "f", "color": "blue", "hair": "black"},' +
             '{"name": "Female_3", "gender": "f", "color": "yellow", "hair": "brown"},' +
             '{"name": "Male_4", "gender": "m", "color": "red", "hair": "brown"},' +
             '{"name": "Male_5", "gender": "m", "color": "violet", "hair": "brown"},' +
-            '{"name": "Male_9", "gender": "m", "color": "red", "hair": "brown"},' +*/
+            '{"name": "Male_9", "gender": "m", "color": "red", "hair": "brown"},' +
             '{"name": "Female_6", "gender": "f", "color": "green", "hair": "brown"}' +
             ']'
         mqttHandler.sendMessage('Kegelbahn/Management', jsonString);

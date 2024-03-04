@@ -26,8 +26,7 @@
     border: 0px;
 }
 
-.grid-item:hover,
-.grid-item-button:hover{
+.grid-item.current-player{
     transform: scale(1.05);
     background-color: #b3d9ff; /* Subtle highlight color, adjust as needed */
 }

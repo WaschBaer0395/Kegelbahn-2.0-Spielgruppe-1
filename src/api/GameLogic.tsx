@@ -1,61 +1,6 @@
-// const WebSocket = require('ws');
-// const wss = new WebSocket.Server({ port: 40842 });
-
-// const { players, addPlayer, removePlayer, updateScore } = require('../data/Player');
-
-
-
-// const player1 = addPlayer('Spieler 1');
-// const player2 = addPlayer('Spieler 2');
-// const [players, setPlayers] = useState<Player[]>();
-//const game = useContext(GameContext);
-
-// Beispiel: Funktion zum Senden einer Punktzahl für einen Spieler
-// export function sendScore(player: Player, score) {
-//     const scoreData = {
-//         player: player.name,
-//         score: score,
-//     };
-
-//     // Nachricht an den MQTT-Broker senden
-//     //   client.publish(TOPIC, JSON.stringify(scoreData));
-// }
-
-// function updateScore(player:Player, newScore:number) {
-//     setPlayers((prevPlayers) =>
-//         prevPlayers.map((listPlayer) =>
-//         listPlayer.id === player.id ? { ...listPlayer, points: listPlayer.score + newPoints } : player
-//       )
-//     );
-// }
-
-// export function makeMove(player: Player, newScore: number) {
-//     if (game.players.includes(player)) {
-//         player.updateScore(player.round, newScore);
-//     } else {
-//         console.warn(`Warnung: ${player} nicht gefunden.`);
-//     }
-//     // updateFrontend("");
-// }
-
-// export function printScores() {
-//     game.players.forEach((player) => {
-//         console.log(`${player.name} hat ${player.getTotalScore()}m erreicht.`);
-//     })
-//     // updateFrontend(players);
-// }
-
-// function updateFrontend(outputData) {
-//     setTimeout(function(){
-//         console.log("Update Frontend");
-//         wss.clients.forEach((client) => {
-//             client.send(JSON.stringify({ type: 'gameUpdate', data: JSON.stringify(outputData) }));
-//         });
-//     }, 10000);
-// }
-
-import { log } from "console";
 import {Player} from "../components/Player/player";
+
+type GameLogicChangeListener = () => void;
 
 export class GameLogic {
     players: Player[];
@@ -65,6 +10,8 @@ export class GameLogic {
     private gameStarted: boolean
     // even turn = positive round, odd turn = negative round
     private turn: number;
+    gameLogicChangeListener: GameLogicChangeListener[];
+
     constructor(players_: Player[]) {
         this.players = players_;
         this.gameStarted = false;
@@ -72,6 +19,7 @@ export class GameLogic {
         this.currentPlayer = 0
         this.currentRound = 1
         this.maxRounds = 8 // means 8 throws total, 2 throws per person
+        this.gameLogicChangeListener = [];
     }
 
     setPlayers(players_: Player[]){
@@ -95,6 +43,21 @@ export class GameLogic {
     hasStarted(){
         //console.log('hasStarted: ' + this.gameStarted)
         return this.gameStarted
+    }
+
+    // Method to subscribe to score change events
+    subscribeToScoreChanges(listener: GameLogicChangeListener) {
+        this.gameLogicChangeListener.push(listener);
+
+        // Return a function to unsubscribe from score changes
+        return () => {
+            this.gameLogicChangeListener = this.gameLogicChangeListener.filter(l => l !== listener);
+        };
+    }
+
+    // Method to trigger score change events
+    triggerScoreChange() {
+        this.gameLogicChangeListener.forEach(listener => listener());
     }
 
     makeMove(score: number) {
@@ -136,5 +99,6 @@ export class GameLogic {
                 player.resetScore()
             });
         }
+        this.triggerScoreChange();
     }
 }
