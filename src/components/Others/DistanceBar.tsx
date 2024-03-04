@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useGameContext } from '../../api/GameLogicDataContext';
 
+import '../../styles/DistanceBar.css'
+
 type DistanceBarProps = {}
 
 export default function DistanceBar({ }: DistanceBarProps) {
@@ -24,27 +26,23 @@ export default function DistanceBar({ }: DistanceBarProps) {
 
   return (
     <div>
-      <div className='DistanceBarHead'>Distance</div>
+      {/* <div className='DistanceBarHead'>Distance</div> */}
       <div className='DistanceBarBody'>
         <table>
-
           {game.players.map((player, index) => (
             <tr>
-              {/* {player.scores.map((score, scoreIndex) => (
-                <td>{((calculateScoreOnce == scoreIndex) ?
-                  player.getPlayerIcon() : ""
-                  )}</td>
-                ))} */}
-              {calculateScoreOnce = player.getTotalScore() * 10}
-              {/* {distance.map((distanceMeter, indexMeter) => (
-                calculateScoreOnce == distanceMeter ? player.name : `\t`
-              ))} */}
-              {("\t").repeat(calculateScoreOnce)}
-              {player.name}
+              <div key={player.id} style={{ display: 'inline' }}>
+                <div key={player.id} style={{ marginLeft: `${player.getTotalScore() * 10}px`, display: 'flex' }}>
+                  <div className='playerSprite' style={{ maxWidth: '1em', maxHeight: '1em', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    {player.playerIcon}
+                  </div>
+                  <div className='distanceBarPlayerText'>
+                    {player.getTotalScore() * 10}m
+                  </div>
+                </div>
+              </div>
             </tr>
-          )
-          )}
-
+          ))}
         </table>
       </div>
     </div>
