@@ -28,7 +28,7 @@ export class Player {
     getPlayerIcon() {
         const previewImagePath = `${this.spriteLoc}/preview.png`;
         return (
-            <img src={previewImagePath} alt="Player Icon/Sprite" width={59} height={59} />
+            <img src={previewImagePath} alt="Player Icon/Sprite" width={96} height={96} />
         );
     }
 
