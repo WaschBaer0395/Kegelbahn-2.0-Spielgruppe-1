@@ -1,30 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGameContext } from '../../api/GameLogicDataContext';
 
 type DistanceBarProps = {}
 
 export default function DistanceBar({ }: DistanceBarProps) {
-  const { players, setPlayers } = useGameContext()
-  var distanceLength: number = 10;
-  const distance: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const game = useGameContext()
+  var distanceLength: number = 100;
+  const distance: number[] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
   var calculateScoreOnce: number;
+
+  const [updateFlag, setUpdateFlag] = useState(false);
+
+  useEffect(() => {
+    // Subscribe to score changes in GameLogic and trigger re-render
+    const unsubscribe = game.subscribeToScoreChanges(() => {
+      setUpdateFlag(prevFlag => !prevFlag);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [game]);
+
   return (
     <div>
       <div className='DistanceBarHead'>Distance</div>
       <div className='DistanceBarBody'>
         <table>
 
-          {players.map((player, index) => (
+          {game.players.map((player, index) => (
             <tr>
-              {calculateScoreOnce = player.getTotalScore()}
               {/* {player.scores.map((score, scoreIndex) => (
                 <td>{((calculateScoreOnce == scoreIndex) ?
                   player.getPlayerIcon() : ""
-                )}</td>
+                  )}</td>
+                ))} */}
+              {calculateScoreOnce = player.getTotalScore() * 10}
+              {/* {distance.map((distanceMeter, indexMeter) => (
+                calculateScoreOnce == distanceMeter ? player.name : `\t`
               ))} */}
-              {distance.map((distanceMeter, indexMeter) => (
-                index == distanceMeter ? player.getPlayerIcon() : `\t`
-              ))}
+              {("\t").repeat(calculateScoreOnce)}
+              {player.name}
             </tr>
           )
           )}

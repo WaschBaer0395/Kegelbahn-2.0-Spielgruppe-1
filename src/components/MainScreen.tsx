@@ -4,6 +4,7 @@ import { GameContext, GameLogicDataProvider } from "../api/GameLogicDataContext"
 import React, { useContext, useEffect, useState } from "react";
 import MqttHandler from "../api/MqttHandler";
 import { Player } from "./Player/player";
+import DistanceBar from "./Others/DistanceBar";
 const MainScreen = () => {
 
     const game = useContext(GameContext);
@@ -92,7 +93,7 @@ const MainScreen = () => {
                     )}
                 </div>
                 <div className="progress_bar">
-                    {/* <DistanceBar /> */}
+                    <DistanceBar />
                 </div>
             </div>
             {!showPlayers && (
