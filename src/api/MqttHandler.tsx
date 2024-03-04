@@ -1,6 +1,6 @@
 // MqttHandler.ts
 import mqtt, { MqttClient } from 'mqtt';
-import Player from "../components/Player/player";
+import {Player} from "../components/Player/player";
 
 export interface SensorData {
     sensors: boolean[];
@@ -12,9 +12,17 @@ export interface SensorData {
 class MqttHandler {
     private mqttClient: MqttClient | null = null;
     private messageHandlers: { [topic: string]: (message: string, s: string) => void } = {};
+    private readonly topic: string[]
+    private readonly id: string
 
+    constructor(topic_: string[], id_: string){
+        this.topic = topic_
+        this.id = id_
+    }
+
+    // topics 'Kegelbahn/Kegel', 'Kegelbahn/Player', 'Kegelbahn/Management'
     public connectToBroker() {
-        this.mqttClient = mqtt.connect("mqtt://localhost:10443");
+        this.mqttClient = mqtt.connect("mqtt://localhost:10443", {clientId: this.id});
         let playerList: Player[] = []
         this.mqttClient.once("error", () => {
             this.mqttClient!.eventNames();
@@ -23,7 +31,7 @@ class MqttHandler {
 
         this.mqttClient.on('connect', () => {
             console.log('Connected to MQTT broker');
-            this.mqttClient!.subscribe(['Kegelbahn/Kegel', 'Kegelbahn/Player', 'Kegelbahn/Management']);
+            this.mqttClient!.subscribe(this.topic);
         });
 
         this.mqttClient.on('message', (topic: string, message: Buffer) => {
