@@ -21,8 +21,8 @@ const PlayField: React.FC = () => {
                     game.makeMove(score)
                     setCurrentPlayerName(game.players[game.currentPlayer].name)
                     setCurrentPlayerScore(game.players[game.currentPlayer].scores[game.currentRound-1])
-                    console.log(`Current player is: ${game.currentPlayer}`)
-                    console.log(`Current player Score is: ${game.players[game.currentPlayer].scores[game.currentRound-1]}`)
+                    //console.log(`Current player is: ${game.currentPlayer}`)
+                    //console.log(`Current player Score is: ${game.players[game.currentPlayer].scores[game.currentRound-1]}`)
                 } catch (error) {
                     console.error(error);
                 }

@@ -54,6 +54,7 @@
 //     }, 10000);
 // }
 
+import { log } from "console";
 import {Player} from "../components/Player/player";
 
 export class GameLogic {
@@ -100,21 +101,30 @@ export class GameLogic {
         const currentPlayer: Player = this.players[this.currentPlayer]
         if (this.currentRound <= this.maxRounds){
             // odd throw = scores are positive
-            if (this.turn % 2) {
+            if (this.turn % 2) {                
                 currentPlayer.updateScore(this.currentRound, score)
                 this.turn = 2
+
+                console.log('Positiv: ', currentPlayer, currentPlayer.getTotalScore());
+                console.log('----------');
             }
             // even throw = scores are negative
             else {
                 currentPlayer.updateScore(this.currentRound, 0 - score)
                 this.currentPlayer += 1
                 this.turn = 1
-            }
 
-            // check if last player has done their throw, and switch to new round and begin with player 0 again
-            if (this.currentPlayer + 1 == this.players.length) {
-                this.currentPlayer = 0
-                this.currentRound += 1
+
+                // check if last player has done their throw, and switch to new round and begin with player 0 again
+                if (this.currentPlayer == this.players.length) {
+                    this.currentPlayer = 0
+                    this.currentRound += 1
+                    console.log(this.players);                
+                }
+
+                console.log('Negativ: ', currentPlayer, currentPlayer.getTotalScore());
+                console.log('Next: ', this.players[this.currentPlayer]);   
+                console.log('----------');
             }
         }
         else{
