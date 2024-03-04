@@ -1,23 +1,14 @@
 // PlayerContext.js
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useMemo, useState } from 'react';
 import { GameLogic } from './GameLogic';
 
-const gameLogic: GameLogic = new GameLogic([])
+const gameLogicInstance: GameLogic = new GameLogic([]);
 
-export const GameContext = createContext(gameLogic);
+export const GameContext = createContext(gameLogicInstance);
 
 // @ts-ignore
 export const GameLogicDataProvider = ({ children }) => {
-    //const [players, setPlayers] = useState<Player[]>([]); // Hier könnte Ihre Spielerliste stehen
-    const [gameLogic] = useState<GameLogic>(new GameLogic([])); // Hier könnte Ihre Spielerliste stehen
-
-    // const setPlayer = (player: Player) => {
-    //     setPlayers([...players, player]);
-    // };
-
-    // Weitere Funktionen oder Daten, die Sie teilen möchten
-
-    const contextValue = { gameLogic };
+    const gameLogic = useMemo(() => gameLogicInstance, []); // Initialize once
 
     return (
         <GameContext.Provider value={gameLogic}>

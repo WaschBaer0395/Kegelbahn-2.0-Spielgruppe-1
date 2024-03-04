@@ -6,10 +6,9 @@ import { GameLogicDataProvider } from '../api/GameLogicDataContext';
 function App() {
   return (
     <div className="App">
-      <GameLogicDataProvider>
-        <AppRouter />
-
-      </GameLogicDataProvider>
+        <GameLogicDataProvider>
+            <AppRouter />
+        </GameLogicDataProvider>
     </div >
   )
 }
