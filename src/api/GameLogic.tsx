@@ -73,6 +73,10 @@ export class GameLogic {
             }
             // even throw = scores are negative
             else {
+                if (score == 0) {
+                    // missing all pins counts as -10
+                    score = 10;
+                }
                 currentPlayer.updateScore(this.currentRound, 0 - score)
                 this.currentPlayer += 1
                 this.turn = 1
