@@ -37,9 +37,18 @@ export class Player {
         let availableColors = ['blue', 'green', 'pink', 'red', 'violet', 'yellow']
 
         // setting gender
-        if (gender == 'm') this.gender = 'Male'
-        else if (gender == 'f') this.gender = 'Female'
-        else this.gender = 'Female'
+        if (gender == 'm'){
+            this.gender = 'Male'
+            this.hair = '/' + hair
+        }
+        else if (gender == 'f') {
+            this.gender = 'Female'
+            this.hair = ''
+        }
+        else {
+            this.gender = 'Female'
+            this.hair = ''
+        }
 
         // determing player color hair is not used yet!
         if (availableColors.indexOf(color) < 0) {
@@ -57,7 +66,7 @@ export class Player {
             this.color = 'green'
         }
 
-        return 'src/sprites/playerSprites/' + this.gender + '/' + this.color
+        return 'src/sprites/playerSprites/' + this.gender + '/' + this.color + this.hair
     }
 
     public updateScore(round: number, score: number): void{

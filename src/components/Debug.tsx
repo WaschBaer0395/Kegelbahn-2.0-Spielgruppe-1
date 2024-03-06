@@ -9,11 +9,11 @@ const Debug = () => {
     const handleSendPlayerList = () => {
         const jsonString =
             '[' +
-            '{"name": "Male_1", "gender": "m", "color": "yellow", "hair": "brown"},' +
+            '{"name": "Male_1", "gender": "m", "color": "yellow", "hair": "blond"},' +
             '{"name": "Female_2", "gender": "f", "color": "blue", "hair": "black"},' +
             '{"name": "Female_3", "gender": "f", "color": "yellow", "hair": "brown"},' +
             '{"name": "Male_4", "gender": "m", "color": "red", "hair": "brown"},' +
-            '{"name": "Male_5", "gender": "m", "color": "violet", "hair": "brown"},' +
+            '{"name": "Male_5", "gender": "m", "color": "violet", "hair": "black"},' +
             '{"name": "Male_9", "gender": "m", "color": "red", "hair": "brown"},' +
             '{"name": "Female_6", "gender": "f", "color": "green", "hair": "brown"}' +
             ']'
