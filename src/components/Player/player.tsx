@@ -7,7 +7,7 @@ export class Player {
     hair: string
     gender: string
     id: number
-    turn: number = 0
+    turn: number = 1
     scores: number[]
     spriteLoc: string
     playerIcon: JSX.Element
@@ -18,7 +18,7 @@ export class Player {
         this.color = color
         this.hair = hair
         this.gender = gender
-        this.turn = 0
+        this.turn = 1
         this.scores = [0,0,0,0,0,0,0,0]
         this.spriteLoc = this.findSprite(this.gender, this.color, this.hair)
         this.playerIcon = this.getPlayerIcon()

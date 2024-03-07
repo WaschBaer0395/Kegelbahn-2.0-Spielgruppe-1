@@ -28,10 +28,10 @@ const PlayerList: React.FC = () => {
                             <div className="playerSprite">{player?.playerIcon}</div>
                             <div className="playerName">{player?.name}</div>
                             <div className="playerScores">Distanz: {player?.getTotalScore() * 10}m</div>
-                            { player.turn == 1 && (
-                                <div className="positiveThrow" style={{ visibility: game.currentPlayer == index ? 'visible' : 'hidden' }}>Positiver Wurf!</div>
+                            { player.turn === 1 && (
+                                <div className="positiveThrow" style={{ visibility: game.currentPlayer === index ? 'visible' : 'hidden' }}>Positiver Wurf!</div>
                             )}
-                            { player.turn == 2 && (
+                            { player.turn === 2 && (
                                 <div className="negativeThrow">Negativer Wurf!</div>
                             )}
                         </div>
