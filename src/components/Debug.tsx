@@ -14,8 +14,9 @@ const Debug = () => {
             '{"name": "Female_3", "gender": "f", "color": "yellow", "hair": "brown"},' +
             '{"name": "Male_4", "gender": "m", "color": "red", "hair": "brown"},' +
             '{"name": "Male_5", "gender": "m", "color": "violet", "hair": "black"},' +
-            '{"name": "Male_9", "gender": "m", "color": "red", "hair": "brown"},' +
-            '{"name": "Female_6", "gender": "f", "color": "green", "hair": "brown"}' +
+            '{"name": "Male_6", "gender": "m", "color": "red", "hair": "brown"},' +
+            '{"name": "Male_7", "gender": "m", "color": "green", "hair": "black"},' +
+            '{"name": "Female_8", "gender": "f", "color": "green", "hair": "brown"}' +
             ']'
         mqttHandler.sendMessage('Kegelbahn/Management', jsonString);
     };

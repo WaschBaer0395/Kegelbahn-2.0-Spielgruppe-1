@@ -87,13 +87,15 @@ const MainScreen = () => {
                 <div className="player_list">
                     <PlayerList />
                 </div>
-                <div className="play_field">
-                    {hasStarted && (
-                        <PlayField />
-                    )}
-                </div>
-                <div className="progress_bar">
-                    <DistanceBar />
+                <div className="play_field_container">
+                    <div className="play_field">
+                        {hasStarted && (
+                            <PlayField />
+                        )}
+                    </div>
+                    <div className="progress_bar">
+                        <DistanceBar />
+                    </div>
                 </div>
             </div>
             {!showPlayers && (

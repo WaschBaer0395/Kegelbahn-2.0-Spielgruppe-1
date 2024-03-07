@@ -23,11 +23,17 @@ const PlayerList: React.FC = () => {
         <div className="playerListMain">
             <div className={`playerListContainer`}>
                 {game.getPlayers().map((player, index) => (
-                    <div key={index} className={`grid-item ${index === game.currentPlayer ? 'current-player' : ''}`}>
+                    <div key={index} className={`grid-item ${index === game.currentPlayer ? 'current-player' : ''}`} style={{ borderColor: index === game.currentPlayer && player.turn === 1 ? '#3333cc' : (index === game.currentPlayer && player.turn === 2 ? '#ff5050' : 'black') }}>
                         <div className="playerInfo">
                             <div className="playerSprite">{player?.playerIcon}</div>
                             <div className="playerName">{player?.name}</div>
-                            <div className="playerScores">Distance: {player?.getTotalScore() * 10}m</div>
+                            <div className="playerScores">Distanz: {player?.getTotalScore() * 10}m</div>
+                            { player.turn == 1 && (
+                                <div className="positiveThrow" style={{ visibility: game.currentPlayer == index ? 'visible' : 'hidden' }}>Positiver Wurf!</div>
+                            )}
+                            { player.turn == 2 && (
+                                <div className="negativeThrow">Negativer Wurf!</div>
+                            )}
                         </div>
                     </div>
                 ))}

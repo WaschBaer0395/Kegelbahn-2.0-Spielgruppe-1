@@ -7,10 +7,6 @@ type DistanceBarProps = {}
 
 export default function DistanceBar({ }: DistanceBarProps) {
   const game = useGameContext()
-  var distanceLength: number = 100;
-  const distance: number[] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-  var calculateScoreOnce: number;
-
   const [updateFlag, setUpdateFlag] = useState(false);
 
   useEffect(() => {
@@ -24,51 +20,19 @@ export default function DistanceBar({ }: DistanceBarProps) {
     };
   }, [game]);
 
+
   return (
-    <div>
-      {/* <div className='DistanceBarHead'>Distance</div> */}
-      <div className='DistanceBarBody'>
-        <table>
-          {game.players.map((player, index) => (
-            <tr>
-              <div key={player.id} style={{ display: 'inline' }}>
-                <div key={player.id} style={{ marginLeft: `${player.getTotalScore() * 10}px`, display: 'flex' }}>
-                  <div className='playerSprite' style={{ maxWidth: '1em', maxHeight: '1em', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    {player.playerIcon}
-                  </div>
-                  <div className='distanceBarPlayerText'>
-                    {player.getTotalScore() * 10}m
-                  </div>
-                </div>
+      <div className="beam-chart">
+        <div className="beam"></div>
+        <img src={"src/sprites/finish.png"} className="finish" style={{right: `${0}px`}} alt={"finish Flag"}></img>
+        {game.getPlayers().map((player, index) => (
+            <div key={player.id} className="marker-pin" style={{ left: `${(((player.getTotalScore()*game.getMultiplier())+30)/(game.getMultiplier()*game.getMaxScore()))*93}%`, zIndex: index }}>
+              <div className="marker-pin-circle">
+                <img src={player.spriteLoc + "/preview.png"} alt={player.name} className="avatar" />
               </div>
-            </tr>
-          ))}
-        </table>
+            </div>
+        ))}
+        <img src={"src/sprites/start.png"} className="start" style={{left: `${0}px`}} alt={"start Flag"}></img>
       </div>
-    </div>
   )
-  // // Annahme: Zielfortschrittslänge beträgt 100 Meter
-  // const zielfortschrittsLänge = 100;
-
-  // return (
-  //   <div style={{ position: 'relative', height: '20px', width: '100%', backgroundColor: '#ccc' }}>
-  //     {players.map((player) => (
-  //       <div
-  //         key={player.id}
-  //         style={{
-  //           position: 'absolute',
-  //           height: '100%',
-  //           width: `${(player.getTotalScore() / zielfortschrittsLänge) * 100}%`, // Prozentualer Fortschritt
-  //           backgroundColor: 'blue',
-  //           color: 'white',
-  //           textAlign: 'center',
-  //           lineHeight: '20px',
-  //         }}
-  //       >
-  //         {player.name}
-  //       </div>
-  //     ))}
-  //   </div>
-  // )
-
 }

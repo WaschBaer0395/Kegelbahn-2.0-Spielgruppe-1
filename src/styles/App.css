@@ -55,43 +55,53 @@ html, body, #root, .App{
 
 
 .player_list,
-.play_field,
-.settings_menu,
 .progress_bar {
   box-sizing: border-box;
-  border-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px
+}
+
+.player_list,
+.play_field{
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px
 }
 
 .player_list {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  bottom: 10px;
-  width: calc(20vw - 20px - 5px); /* Adjusted width with margin */
-  background-color: #3498db;
-  margin-right: 5px; /* Adjusted margin */
+  top: 20px;
+  left: 40px;
+  bottom: 20px;
+  width: calc(20vw - 10px - 5px);
+  background-color: #616161;
+  margin-right: 10px;
+}
+
+.play_field_container{
+  height: 100%;
+  position: absolute;
+  width: calc(100vw - 20vw - 80px);
+  left: calc(20vw + 10px + 5px);
+  right: 40px;
 }
 
 .play_field {
   position: absolute;
-  top: 10px;
-  left: calc(20vw + 15px); /* Adjusted left position */
-  height: calc(80vh - 20px);
-  width: calc(80vw - 30px - 5px); /* Adjusted width with margin */
+  top: 20px;
+  height: calc(90vh - 40px);
+  width: calc(100vw - 20vw - 80px); /* Adjusted width with margin */
   background-color: #2ecc71;
   background-image: url(../sprites/Background/background_static.png);
   background-size: cover;
-  margin-right: 5px; /* Adjusted margin */
 }
 
 .progress_bar {
   position: absolute;
-  top: calc(80vh + 10px);
-  bottom: 10px;
-  left: calc(20vw + 15px);
-  width: calc(80vw - 30px - 5px); /* Adjusted width with margin */
-  background-color: #e74c3c;
-  margin-right: 5px; /* Adjusted margin */
+  background-color: #616161;
+  height: calc(10vh - 20px);
+  top: calc(90vh - 20px);
+  bottom: 20px;
+  width: calc(100vw - 20vw - 80px); /* Adjusted width with margin */
 }
 
 .playField{
