@@ -7,27 +7,25 @@
     background-color: #f5f5f5;
     padding: 16px;
     border-radius: 8px;
-    border: solid 3px black;
+    border: solid 5px black;
     box-shadow:
             0 0 10px rgba(0, 0, 0, 0.1), /* Inner shadow */
             0 0 5px rgba(255, 255, 255, 0.5) inset, /* Highlight from the top */
             0 0 5px rgba(0, 0, 0, 0.5) inset; /* Shadow from the bottom */
     transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
-    margin-bottom: 3px;
+    margin-bottom: 10px;
     position: relative;
 }
 
 .grid-item.current-player{
     transform: scale(1.05);
-    background-color: #b3d9ff;
-    border: solid 5px darkblue;
 }
 
 .playerInfo {
     display: grid;
     flex-direction: column;
     align-items: center;
-    grid-template-columns: 2fr 3fr 5fr; /* 1:2:4 ratio columns */
+    grid-template-columns: 2fr 3fr 4fr; /* 1:2:4 ratio columns */
     margin-bottom: 1px;
 
 }
@@ -64,10 +62,27 @@
 .playerScores {
     grid-column: 3;
     grid-row: 1;
-    font-size: medium;
-    height: 100%;
+    font-size: large;
+    font-weight: bold;
     margin-top: 8px;
 }
+
+.negativeThrow{
+    grid-column: 3;
+    grid-row: 2;
+    font-size: 0.6em;
+    font-weight: bold;
+    color: mediumvioletred;
+}
+
+.positiveThrow{
+    grid-column: 3;
+    grid-row: 2;
+    font-size: 0.6em;
+    font-weight: bold;
+    color: dodgerblue;
+}
+
 
 .playerName,
 .playerScores {

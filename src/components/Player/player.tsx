@@ -7,7 +7,7 @@ export class Player {
     hair: string
     gender: string
     id: number
-    round: number = 0
+    turn: number = 0
     scores: number[]
     spriteLoc: string
     playerIcon: JSX.Element
@@ -18,7 +18,7 @@ export class Player {
         this.color = color
         this.hair = hair
         this.gender = gender
-        this.round = 0
+        this.turn = 0
         this.scores = [0,0,0,0,0,0,0,0]
         this.spriteLoc = this.findSprite(this.gender, this.color, this.hair)
         this.playerIcon = this.getPlayerIcon()
@@ -37,9 +37,18 @@ export class Player {
         let availableColors = ['blue', 'green', 'pink', 'red', 'violet', 'yellow']
 
         // setting gender
-        if (gender == 'm') this.gender = 'Male'
-        else if (gender == 'f') this.gender = 'Female'
-        else this.gender = 'Female'
+        if (gender == 'm'){
+            this.gender = 'Male'
+            this.hair = '/' + hair
+        }
+        else if (gender == 'f') {
+            this.gender = 'Female'
+            this.hair = ''
+        }
+        else {
+            this.gender = 'Female'
+            this.hair = ''
+        }
 
         // determing player color hair is not used yet!
         if (availableColors.indexOf(color) < 0) {
@@ -57,12 +66,13 @@ export class Player {
             this.color = 'green'
         }
 
-        return 'src/sprites/playerSprites/' + this.gender + '/' + this.color
+        return 'src/sprites/playerSprites/' + this.gender + '/' + this.color + this.hair
     }
 
-    public updateScore(round: number, score: number): void{
-        this.scores[round-1] += score
-        if(this.scores[round-1] <0) this.scores[round-1] = 0
+    public updateScore(currentRound: number, turn: number, score: number): void{
+        this.turn = turn
+        this.scores[currentRound-1] += score
+        if(this.scores[currentRound-1] <0) this.scores[currentRound-1] = 0
     }
 
     public resetScore(): void{

@@ -3,7 +3,7 @@ import { Player } from "../components/Player/player";
 type GameLogicChangeListener = () => void;
 
 export class GameLogic {
-    players: Player[];
+    private players: Player[];
     currentPlayer: number
     currentRound: number
     private maxRounds: number
@@ -11,6 +11,8 @@ export class GameLogic {
     // even turn = positive round, odd turn = negative round
     private turn: number;
     gameLogicChangeListener: GameLogicChangeListener[];
+    private multiplier = 10
+    private maxScore: number
 
     constructor(players_: Player[]) {
         this.players = players_;
@@ -20,6 +22,7 @@ export class GameLogic {
         this.currentRound = 1
         this.maxRounds = 8 // means 8 throws total, 2 throws per person
         this.gameLogicChangeListener = [];
+        this.maxScore = this.maxRounds*9
     }
 
     setPlayers(players_: Player[]) {
@@ -35,6 +38,13 @@ export class GameLogic {
         //console.log('startGame: ' + this.gameStarted)
     }
 
+    getMultiplier(){
+        return this.multiplier
+    }
+
+    getMaxScore(){
+        return this.maxScore
+    }
     stopGame() {
         this.gameStarted = false
         //console.log('stopGame: ' + this.gameStarted)
@@ -65,19 +75,19 @@ export class GameLogic {
         if (this.currentRound <= this.maxRounds) {
             // odd throw = scores are positive
             if (this.turn % 2) {
-                currentPlayer.updateScore(this.currentRound, score)
+                currentPlayer.updateScore(this.currentRound, 2, score)
                 this.turn = 2
 
-                console.log('Positiv: ', currentPlayer, currentPlayer.getTotalScore());
-                console.log('----------');
+                // console.log('Positiv: ', currentPlayer, currentPlayer.getTotalScore());
+                // console.log('----------');
             }
             // even throw = scores are negative
             else {
-                if (score == 0) {
-                    // missing all pins counts as -10
-                    score = 10;
-                }
-                currentPlayer.updateScore(this.currentRound, 0 - score)
+                // if (score == 0) {
+                //     // missing all pins counts as -10
+                //     score = 10;
+                // }
+                currentPlayer.updateScore(this.currentRound,1,  0 - score)
                 this.currentPlayer += 1
                 this.turn = 1
 
@@ -89,9 +99,9 @@ export class GameLogic {
                     console.log(this.players);
                 }
 
-                console.log('Negativ: ', currentPlayer, currentPlayer.getTotalScore());
-                console.log('Next: ', this.players[this.currentPlayer]);
-                console.log('----------');
+                // console.log('Negativ: ', currentPlayer, currentPlayer.getTotalScore());
+                // console.log('Next: ', this.players[this.currentPlayer]);
+                // console.log('----------');
             }
         }
         else {
