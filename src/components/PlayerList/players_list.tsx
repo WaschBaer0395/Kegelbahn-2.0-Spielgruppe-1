@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import '../../styles/PlayerList.css'
 import { GameContext } from "../../api/GameLogicDataContext";
-import { Player } from "../Player/player";
 
 
 const PlayerList: React.FC = () => {

@@ -1,0 +1,44 @@
+.parallax {
+    position: relative;
+    width: 100%;
+    overflow-x: hidden;
+    height: 100%; /* height for the parallax container */
+}
+
+.layerBack,
+.layerMiddle,
+.layerDefault,
+.layerFront {
+    position: absolute;
+    top: 0;
+}
+
+/* Mountains */
+.layerBack {
+    height: 100%;
+    width: 200%;
+    /* background-color: green; */
+}
+
+/* Clouds */
+.layerMiddle {
+    height: 100%;
+    width: 200%;
+/* background-color: red; */
+}
+
+
+/* Ground */
+.layerDefault {
+    height: 100%;
+    width: 400%;
+/* background-color: blue; */
+}
+
+/* Flowers */
+.layerFront {
+    height: 100%;
+    width: 100%;
+    transform: rotate(-7deg) translateX(0%) translateY(7%);
+/* background-color: yellow; */
+}
