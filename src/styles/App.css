@@ -92,6 +92,7 @@ html, body, #root, .App{
   width: calc(100vw - 20vw - 80px); /* Adjusted width with margin */
   background-color: #616161;
   background-size: cover;
+  overflow: hidden;
 }
 
 .progress_bar {

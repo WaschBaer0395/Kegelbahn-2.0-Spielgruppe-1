@@ -17,28 +17,24 @@
 .layerBack {
     height: 100%;
     width: 200%;
-    /* background-color: green; */
 }
 
 /* Clouds */
 .layerMiddle {
     height: 100%;
     width: 200%;
-/* background-color: red; */
 }
 
 
 /* Ground */
 .layerDefault {
     height: 100%;
-    width: 400%;
-/* background-color: blue; */
+    width: 100%;
 }
 
 /* Flowers */
 .layerFront {
     height: 100%;
     width: 100%;
-    transform: rotate(-7deg) translateX(0%) translateY(7%);
-/* background-color: yellow; */
+    transform: rotate(-11deg) translateX(0%) translateY(2%);
 }
