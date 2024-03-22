@@ -5,11 +5,10 @@ import '../../styles/PlayField.css'
 
 const PlayField: React.FC = () => {
     const game = useContext(GameContext);
-    const [scrollPosition, setScrollPosition] = useState(0);
-
+    const [scrollPositionX, setScrollPositionX] = useState(0);
     useEffect(() => {
         const unsubscribe = game.subscribeToScoreChanges(() => {
-            setScrollPosition(0)
+            setScrollPositionX(0)
             const targetScrollPosition =
                 game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] * 400;
             // Duration of animation in milliseconds
@@ -25,9 +24,9 @@ const PlayField: React.FC = () => {
                 // Calculate eased progress for smoother animation (e.g., using easeInOutQuad)
                 const easedProgress = easeInOutQuad(progress);
                 // Calculate the new scroll position
-                const newScrollPosition = scrollPosition + (targetScrollPosition - scrollPosition) * easedProgress;
+                const newScrollPosition = scrollPositionX + (targetScrollPosition - scrollPositionX) * easedProgress;
                 // Update the state with the new scroll position
-                setScrollPosition(newScrollPosition);
+                setScrollPositionX(newScrollPosition);
                 // Check if animation should continue
                 if (elapsedTime < animationDuration) {
                     requestAnimationFrame(animateScroll);
@@ -40,7 +39,7 @@ const PlayField: React.FC = () => {
         return () => {
             unsubscribe();
         };
-    }, [game, scrollPosition]);
+    }, [game, scrollPositionX]);
 
     // Easing function (you can replace this with any other easing function)
     function easeInOutQuad(t: number) {
@@ -52,10 +51,11 @@ const PlayField: React.FC = () => {
 
     return (
         <div className="parallax">
-            <img className="layerBack" src={"src/sprites/Background/Background_Layer_Mountains_widened.png"} style={{ left: `${-scrollPosition * 0.5}px` }}></img>
-            <img className="layerMiddle" src={"src/sprites/Background/Background_Layer_Clouds_widened.png"} style={{ left: `${-scrollPosition * 0.3}px` }}></img>
+            <img className="layerFarBack" src={"src/sprites/Background/Background_Layer_Mountains_1_widened.png"} style={{ left: `${-scrollPositionX * 0.5}px` }}></img>
+            <img className="layerBack" src={"src/sprites/Background/Background_Layer_Mountains_2_widened.png"} style={{ left: `${-scrollPositionX * 0.4}px` }}></img>
+            <img className="layerMiddle" src={"src/sprites/Background/Background_Layer_Clouds_widened.png"} style={{ left: `${-scrollPositionX * 0.3}px` }}></img>
             <img className="layerDefault" src={"src/sprites/Background/Background_Layer_Ground.png"}></img>
-            <img className="layerFront" src={"src/sprites/Background/Background_Layer_Flowers_horz.png"} style={{ left: `${-scrollPosition * 0.1}px` }}></img>
+            <img className="layerFront" src={"src/sprites/Background/Background_Layer_Flowers_widened.png"} style={{ left: `${-scrollPositionX * 0.1}px`, top: `${scrollPositionX * 0.02}px`  }}></img>
         </div>
     );
 }

@@ -2,9 +2,11 @@
     position: relative;
     width: 100%;
     overflow-x: hidden;
+    overflow-y: hidden;
     height: 100%; /* height for the parallax container */
 }
 
+.layerFarBack,
 .layerBack,
 .layerMiddle,
 .layerDefault,
@@ -13,7 +15,13 @@
     top: 0;
 }
 
-/* Mountains */
+/* Mountains 1 */
+.layerFarBack {
+    height: 100%;
+    width: 200%;
+}
+
+/* Mountains 2 */
 .layerBack {
     height: 100%;
     width: 200%;
@@ -35,6 +43,6 @@
 /* Flowers */
 .layerFront {
     height: 100%;
-    width: 100%;
-    transform: rotate(-11deg) translateX(0%) translateY(2%);
+    width: 200%;
+    /*transform: rotate(-11deg) translateX(0%) translateY(2%);*/
 }
