@@ -1,38 +1,32 @@
-import React, {useContext, useEffect, useState} from "react";
-import {GameContext} from "../../api/GameLogicDataContext";
-import '../../styles/PlayField.css'
-
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { GameContext } from "../../api/GameLogicDataContext";
+import { Stage, Sprite } from '@inlet/react-pixi';
+import * as PIXI from 'pixi.js';
 
 const PlayField: React.FC = () => {
     const game = useContext(GameContext);
     const [scrollPositionX, setScrollPositionX] = useState(0);
+
     useEffect(() => {
         const unsubscribe = game.subscribeToScoreChanges(() => {
-            setScrollPositionX(0)
+            setScrollPositionX(0);
             const targetScrollPosition =
-                game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] * 400;
-            // Duration of animation in milliseconds
+                game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] * 1000;
+
             const animationDuration = 5000; // 5 seconds
-            // Get the current time
             const startTime = performance.now();
-            // Define animation function
+
             function animateScroll(currentTime: number) {
-                // Calculate elapsed time since animation start
                 const elapsedTime = currentTime - startTime;
-                // Calculate progress of animation (0 to 1)
                 const progress = elapsedTime / animationDuration;
-                // Calculate eased progress for smoother animation (e.g., using easeInOutQuad)
                 const easedProgress = easeInOutQuad(progress);
-                // Calculate the new scroll position
                 const newScrollPosition = scrollPositionX + (targetScrollPosition - scrollPositionX) * easedProgress;
-                // Update the state with the new scroll position
                 setScrollPositionX(newScrollPosition);
-                // Check if animation should continue
                 if (elapsedTime < animationDuration) {
                     requestAnimationFrame(animateScroll);
                 }
             }
-            // Start the animation
+
             requestAnimationFrame(animateScroll);
         });
 
@@ -41,23 +35,25 @@ const PlayField: React.FC = () => {
         };
     }, [game, scrollPositionX]);
 
-    // Easing function (you can replace this with any other easing function)
     function easeInOutQuad(t: number) {
         return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
     }
 
-
-
-
     return (
-        <div className="parallax">
-            <img className="layerFarBack" src={"src/sprites/Background/Background_Layer_Mountains_1_widened.png"} style={{ left: `${-scrollPositionX * 0.5}px` }}></img>
-            <img className="layerBack" src={"src/sprites/Background/Background_Layer_Mountains_2_widened.png"} style={{ left: `${-scrollPositionX * 0.4}px` }}></img>
-            <img className="layerMiddle" src={"src/sprites/Background/Background_Layer_Clouds_widened.png"} style={{ left: `${-scrollPositionX * 0.3}px` }}></img>
-            <img className="layerDefault" src={"src/sprites/Background/Background_Layer_Ground.png"}></img>
-            <img className="layerFront" src={"src/sprites/Background/Background_Layer_Flowers_widened.png"} style={{ left: `${-scrollPositionX * 0.1}px`, top: `${scrollPositionX * 0.02}px`  }}></img>
+        <div style={{ width: "100%", height: "100%" }}>
+            <Stage width={window.innerWidth} height={window.innerHeight} options={{ backgroundColor: 0x616161 }}>
+                <Sprite texture={PIXI.Texture.from('src/sprites/Background/Background_Layer_Mountains_1_widened.png')} x={-scrollPositionX * 0.08} />
+                <Sprite texture={PIXI.Texture.from('src/sprites/Background/Background_Layer_Mountains_2_widened.png')} x={-scrollPositionX * 0.09} />
+                <Sprite texture={PIXI.Texture.from('src/sprites/Background/Background_Layer_Clouds_widened.png')} x={-scrollPositionX * 0.1} />
+                <Sprite texture={PIXI.Texture.from('src/sprites/Background/Background_Layer_Ground_widened.png')} />
+                <Sprite texture={PIXI.Texture.from('src/sprites/Background/Background_Layer_Flowers_horz_widened.png')}
+                        rotation={-10.6 * Math.PI / 180}
+                        x={-scrollPositionX * 0.2 - 130}
+                        y={scrollPositionX * 0.038 + 190}
+                />
+            </Stage>
         </div>
     );
-}
+};
 
-export default PlayField
+export default PlayField;
