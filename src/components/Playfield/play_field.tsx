@@ -11,7 +11,7 @@ const PlayField: React.FC = () => {
         const unsubscribe = game.subscribeToScoreChanges(() => {
             setScrollPositionX(0);
             const targetScrollPosition =
-                game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] * 1000;
+                game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] * 1000; //last number here (1000) adjust how far the image will scroll
 
             const animationDuration = 5000; // 5 seconds
             const startTime = performance.now();
@@ -47,9 +47,9 @@ const PlayField: React.FC = () => {
                 <Sprite texture={PIXI.Texture.from('src/sprites/Background/Background_Layer_Clouds_widened.png')} x={-scrollPositionX * 0.1} />
                 <Sprite texture={PIXI.Texture.from('src/sprites/Background/Background_Layer_Ground_widened.png')} />
                 <Sprite texture={PIXI.Texture.from('src/sprites/Background/Background_Layer_Flowers_horz_widened.png')}
-                        rotation={-10.6 * Math.PI / 180}
-                        x={-scrollPositionX * 0.2 - 130}
-                        y={scrollPositionX * 0.038 + 190}
+                        rotation={-10.6 * Math.PI / 180} // rotating the horizontal layer
+                        x={-scrollPositionX * 0.2 - 130} // adjusting x pos
+                        y={scrollPositionX * 0.038 + 190} // and adjusting y pos to achieve a diagonal movement
                 />
             </Stage>
         </div>
