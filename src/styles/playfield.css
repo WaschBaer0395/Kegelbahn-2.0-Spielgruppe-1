@@ -64,3 +64,10 @@
     margin: 0;
     padding: 20px 0;
 }
+
+.sprite{
+    position: absolute;
+    width: 144px;
+    height: 144px;
+    transform: translateY(410%);
+}

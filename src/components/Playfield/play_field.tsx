@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GameContext } from "../../api/GameLogicDataContext";
 import '../../styles/playfield.css'
+import Spritesheet from 'react-responsive-spritesheet';
 
 
 const PlayField: React.FC = () => {
@@ -76,13 +77,7 @@ const PlayField: React.FC = () => {
         return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
     }
 
-    // {/*{showModal && (*/}
-    // {/*    <div className="roundInfo">*/}
-    // {/*        <h2>{game.turn === 2 ? "dieser Wurf ist negativ!" : `${game.getPlayers()[game.currentPlayer].name}, in die Vollen!`}</h2>*/}
-    // {/*        <p>{countdown} seconds left</p>*/}
-    // {/*    </div>*/}
-    // {/*)}*/}
-    // {/*</div>*/}
+
 
 
     return (
@@ -94,10 +89,31 @@ const PlayField: React.FC = () => {
             <img className="Ground" src={'src/sprites/Background/Background_Layer_Ground.png'} ></img>
             <img className="Flowers" src={'src/sprites/Background/Background_Layer_Flowers_widened.png'}
                  style={{ left: `${-scrollPositionX * 0.18 - 130}px`, top: `${scrollPositionX * 0.036}px`}}></img>
-
+            <div className="sprite" style={{left: `${+scrollPositionX * 0.14}px`, top: `${-scrollPositionX * 0.028 }px`}}>
+                <Spritesheet
+                    image={`src/sprites/playerSprites/Male/orange/brown/walking.png`}
+                    widthFrame={96}
+                    heightFrame={96}
+                    steps={8}
+                    fps={8}
+                    startAt={2}
+                    endAt={7}
+                    autoplay={true}
+                    loop={true}
+                />
+            </div>
             <img className="Grass" src={'src/sprites/Background/Background_Layer_Grass_widened.png'}
                  style={{ left: `${-scrollPositionX * 0.19 - 130}px`, top: `${scrollPositionX * 0.038}px`}}></img>
+
+
+            {showModal && (
+                <div className="roundInfo">
+                    <h2>{game.turn === 2 ? "dieser Wurf ist negativ!" : `${game.getPlayers()[game.currentPlayer].name}, in die Vollen!`}</h2>
+                    <p>{countdown} seconds left</p>
+                </div>
+            )}
         </div>
+
     );
 
 
