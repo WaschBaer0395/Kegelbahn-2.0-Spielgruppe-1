@@ -49,27 +49,6 @@ const MainScreen = () => {
         };
     }, []);
 
-    /*
-    useEffect(() => {
-        const mqttHandler = new MqttHandler(['Kegelbahn/Kegel'], 'Spiel_1_STARTED');  // Create an instance of MqttHandler
-        mqttHandler.connectToBroker();
-        mqttHandler.onMessage((topic, message) => {
-            if (topic === 'Kegelbahn/Kegel') {
-                //{"sensors":[true,true,true,true,true,true,true,true,true],"rounds_played":1,"total_pins_downed":0,"pins_downed":0}
-                try {
-                    const jsonObject = JSON.parse(message);
-                    const score = jsonObject.pins_downed;
-                    game?.makeMove(score)
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-        });
-        return () => {
-            mqttHandler.closeConnection();
-        };
-    }, []);
-*/
     useEffect(() => {
     }, [game]);
 
@@ -78,11 +57,11 @@ const MainScreen = () => {
             setIsPlayersReceived(false);
             setShowPlayers(true);
             console.log(game?.getPlayers);
-            connectGame();
+            listenForSensors();
         }
     }, [isPlayersReceived, game]);
 
-    function connectGame(){
+    function listenForSensors(){
         const mqttHandler = new MqttHandler(['Kegelbahn/Kegel'], 'Spiel_1_STARTED');  // Create an instance of MqttHandler
         mqttHandler.connectToBroker();
         mqttHandler.onMessage((topic, message) => {

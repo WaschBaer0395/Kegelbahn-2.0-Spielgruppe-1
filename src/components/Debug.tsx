@@ -9,14 +9,14 @@ const Debug = () => {
     const handleSendPlayerList = () => {
         const jsonString =
             '[' +
-            '{"name": "Male_1", "gender": "m", "color": "yellow", "hair": "blond"},' +
-            '{"name": "Female_2", "gender": "f", "color": "blue", "hair": "black"},' +
-            '{"name": "Female_3", "gender": "f", "color": "yellow", "hair": "brown"},' +
-            '{"name": "Male_4", "gender": "m", "color": "red", "hair": "brown"},' +
-            '{"name": "Male_5", "gender": "m", "color": "violet", "hair": "black"},' +
-            '{"name": "Male_6", "gender": "m", "color": "red", "hair": "brown"},' +
-            '{"name": "Male_7", "gender": "m", "color": "green", "hair": "black"},' +
-            '{"name": "Female_8", "gender": "f", "color": "green", "hair": "brown"}' +
+            '{"name": "Hans", "gender": "m", "color": "blue", "hair": "blond"},' +
+            '{"name": "Sabrine", "gender": "f", "color": "blue", "hair": "black"},' +
+            '{"name": "Franziska", "gender": "f", "color": "yellow", "hair": "brown"},' +
+            '{"name": "Jörg", "gender": "m", "color": "green", "hair": "brown"},' +
+            '{"name": "Philipp", "gender": "m", "color": "orange", "hair": "black"},' +
+            '{"name": "Olaf", "gender": "m", "color": "red", "hair": "brown"},' +
+            '{"name": "Manuel", "gender": "m", "color": "yellow", "hair": "black"},' +
+            '{"name": "Lea", "gender": "f", "color": "green", "hair": "brown"}' +
             ']'
         mqttHandler.sendMessage('Kegelbahn/Management', jsonString);
     };

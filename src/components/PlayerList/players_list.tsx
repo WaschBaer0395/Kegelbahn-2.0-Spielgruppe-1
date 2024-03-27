@@ -22,7 +22,7 @@ const PlayerList: React.FC = () => {
         <div className="playerListMain">
             <div className={`playerListContainer`}>
                 {game.getPlayers().map((player, index) => (
-                    <div key={index} className={`grid-item ${index === game.currentPlayer ? 'current-player' : ''}`} style={{ borderColor: index === game.currentPlayer && player.turn === 1 ? '#3333cc' : (index === game.currentPlayer && player.turn === 2 ? '#ff5050' : 'black') }}>
+                    <div key={index} className={`grid-item ${index === game.currentPlayer ? 'current-player' : ''}`} style={{ borderColor: index === game.currentPlayer && game.turn === 1 ? '#3333cc' : (index === game.currentPlayer && game.turn === 2 ? '#ff5050' : 'black') }}>
                         <div className="playerInfo">
                             <div className="playerSprite">{player?.playerIcon}</div>
                             <div className="playerName">{player?.name}</div>

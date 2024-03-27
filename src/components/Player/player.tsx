@@ -34,7 +34,7 @@ export class Player {
 
     findSprite(gender: string, color: string, hair: string) {
 
-        let availableColors = ['blue', 'green', 'pink', 'red', 'violet', 'yellow']
+        let availableColors = ['blue', 'green', 'pink', 'red', 'orange', 'yellow']
 
         // setting gender
         if (gender == 'm'){
@@ -50,18 +50,14 @@ export class Player {
             this.hair = ''
         }
 
-        // determing player color hair is not used yet!
+        // determine player color hair is not used yet!
         if (availableColors.indexOf(color) < 0) {
             this.color = 'blue' //default if wrong color was given
         }
 
 
         //for testing purposes while not all sprite colors are available
-        if (this.gender == 'Male' && this.color != 'red' && this.color != 'yellow') {
-            this.gender = 'Male'
-            this.color = 'yellow'
-        }
-        else if (this.gender == 'Female' && this.color != 'blue' && this.color != 'green') {
+        if (this.gender == 'Female' && this.color != 'blue' && this.color != 'green') {
             this.gender = 'Female'
             this.color = 'green'
         }

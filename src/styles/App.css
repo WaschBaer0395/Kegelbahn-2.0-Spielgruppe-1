@@ -88,7 +88,7 @@ html, body, #root, .App{
 .play_field {
   position: absolute;
   top: 20px;
-  height: calc(90vh - 40px);
+  height: calc(85vh - 40px);
   width: calc(100vw - 20vw - 80px); /* Adjusted width with margin */
   background-color: #616161;
   background-size: cover;
@@ -98,8 +98,8 @@ html, body, #root, .App{
 .progress_bar {
   position: absolute;
   background-color: #616161;
-  height: calc(10vh - 20px);
-  top: calc(90vh - 20px);
+  height: calc(15vh - 20px);
+  top: calc(85vh - 20px);
   bottom: 20px;
   width: calc(100vw - 20vw - 80px); /* Adjusted width with margin */
 }

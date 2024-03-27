@@ -7,11 +7,10 @@
     "async-mqtt": "^2.6.3",
     "mqtt": "^5.5.0",
     "pixi.js": "^8.0.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-responsive-spritesheet": "^2.3.9",
-    "react-router-dom": "^6.22.3",
-    "web-vitals": "^3.5.2"
+    "react-router-dom": "^6.22.3"
   },
   "scripts": {
     "start": "vite",
@@ -47,6 +46,7 @@
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitejs/plugin-react-swc": "^3.6.0",
+    "install-peers": "^1.0.4",
     "prettier": "^3.2.5",
     "typescript": "^5.4.3",
     "vite": "5.2.6",
