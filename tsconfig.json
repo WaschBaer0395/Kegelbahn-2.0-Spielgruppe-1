@@ -14,7 +14,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
-    "jsx": "react-jsx",
+    "jsx": "react",
     "types": ["vite/client", "vite-plugin-svgr/client"]
   },
   "include": ["src", "node_modules/list-react-files"]
