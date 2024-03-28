@@ -4,7 +4,7 @@ import { GameContext, GameLogicDataProvider } from "../api/GameLogicDataContext"
 import React, { useContext, useEffect, useState } from "react";
 import MqttHandler from "../api/MqttHandler";
 import { Player } from "./Player/player";
-import DistanceBar from "./Others/DistanceBar";
+import DistanceBar from "./DistanceBar/DistanceBar";
 const MainScreen = () => {
 
     const game = useContext(GameContext);
@@ -56,7 +56,6 @@ const MainScreen = () => {
         if (isPlayersReceived) {
             setIsPlayersReceived(false);
             setShowPlayers(true);
-            console.log(game?.getPlayers);
             listenForSensors();
         }
     }, [isPlayersReceived, game]);

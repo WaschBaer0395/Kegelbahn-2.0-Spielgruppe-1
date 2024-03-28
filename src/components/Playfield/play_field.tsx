@@ -76,6 +76,23 @@ const PlayField: React.FC = () => {
         return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
     }
     // return this, return that but nobody asks about how return is doing :(
+
+
+    function initSpriteArray(spritesheet: Spritesheet){
+        spriteArray.push(spritesheet);
+    }
+
+    function handleFrames(spritesheet: Spritesheet){
+        console.log(animationComplete);
+        if(!animationComplete) {
+            spritesheet.setStartAt(2);
+            spritesheet.setEndAt(7);
+        } else {
+            spritesheet.setStartAt(1);
+            spritesheet.setEndAt(1);
+        }
+    }
+
     return (
         // <div>
         <div className="parallax">
@@ -102,11 +119,13 @@ const PlayField: React.FC = () => {
                     heightFrame={96}
                     steps={8}
                     fps={8}
-                    startAt={2}
-                    endAt={7}
+                    startAt={1}
+                    endAt={1}
                     direction={"forward"}
                     autoplay={true}
                     loop={true}
+                    onInit={initSpriteArray}
+                    onEachFrame={handleFrames}
                 />
             </div>
             {/*front Grass Layer Fastest*/}

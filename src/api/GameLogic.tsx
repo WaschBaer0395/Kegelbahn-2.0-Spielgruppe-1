@@ -81,6 +81,7 @@ export class GameLogic {
             this.turn = 1
             this.players[this.currentPlayer].setTurn(1)
             this.currentPlayer += 1
+
             // check if last player has done their throw, and switch to new round and begin with player 0 again
             if (this.currentPlayer == this.players.length) {
                 this.currentPlayer = 0
