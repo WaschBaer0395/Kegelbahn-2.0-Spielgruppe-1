@@ -80,11 +80,11 @@ const PlayField: React.FC = () => {
     function handleFrames(spritesheet: Spritesheet){
         //console.log(animationComplete);
         if(!animationComplete) {
-            spritesheet.setStartAt(2);
-            spritesheet.setEndAt(7);
+            spritesheet.setStartAt(13);
+            spritesheet.setEndAt(18);
         } else {
-            spritesheet.setStartAt(1);
-            spritesheet.setEndAt(1);
+            spritesheet.setStartAt(12);
+            spritesheet.setEndAt(12);
         }
     }
 
@@ -109,13 +109,13 @@ const PlayField: React.FC = () => {
                 {/*/falling at: tbd /*/}
                 {/*/stand up at: tbd /*/}
                 <Spritesheet
-                    image={`src/sprites/playerSprites/Male/orange/brown/walking.png`}
+                    image={`src/sprites/playerSprites/Male/orange/brown/spritesheet.png`}
                     widthFrame={96}
                     heightFrame={96}
-                    steps={8}
+                    steps={19}
                     fps={8}
-                    startAt={1}
-                    endAt={1}
+                    startAt={12}
+                    endAt={12}
                     direction={"forward"}
                     autoplay={true}
                     loop={true}
