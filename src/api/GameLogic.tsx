@@ -75,12 +75,12 @@ export class GameLogic {
     nextThrow(){
         if (this.turn % 2) {
             this.turn = 2
-
+            this.players[this.currentPlayer].setTurn(2)
         }
         else {
             this.turn = 1
+            this.players[this.currentPlayer].setTurn(1)
             this.currentPlayer += 1
-
             // check if last player has done their throw, and switch to new round and begin with player 0 again
             if (this.currentPlayer == this.players.length) {
                 this.currentPlayer = 0
@@ -94,16 +94,11 @@ export class GameLogic {
         if (this.currentRound <= this.maxRounds) {
             // odd throw = scores are positive
             if (this.turn % 2) {
-                currentPlayer.updateScore(this.currentRound, 2, score)
-                //this.turn = 2
+                currentPlayer.updateScore(this.currentRound, score)
             }
             // even throw = scores are negative
             else {
-                // if (score == 0) {
-                //     // missing all pins counts as -10
-                //     score = 10;
-                // }
-                currentPlayer.updateScore(this.currentRound,1,  0 - score)
+                currentPlayer.updateScore(this.currentRound, 0 - score)
             }
         }
         else {
@@ -117,10 +112,9 @@ export class GameLogic {
             });
         }
         this.triggerScoreChange();
-        this.nextThrow();
-        console.log("current Player: ",this.currentPlayer)
-        console.log("current Round: ",this.currentRound)
-        console.log("current RoundTurn: ",this.turn)
-        console.log("current PlayerTurn: ",this.players[this.currentPlayer].turn)
+        // console.log("current Player: ",this.currentPlayer)
+        // console.log("current Round: ",this.currentRound)
+        // console.log("current RoundTurn: ",this.turn)
+        // console.log("current PlayerTurn: ",this.players[this.currentPlayer].turn)
     }
 }

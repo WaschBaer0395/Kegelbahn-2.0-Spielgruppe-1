@@ -32,6 +32,14 @@ export class Player {
         );
     }
 
+    setTurn(_turn: number){
+        this.turn = _turn
+    }
+
+    getTurn(){
+        return this.turn
+    }
+
     findSprite(gender: string, color: string, hair: string) {
 
         let availableColors = ['blue', 'green', 'pink', 'red', 'orange', 'yellow']
@@ -65,8 +73,7 @@ export class Player {
         return 'src/sprites/playerSprites/' + this.gender + '/' + this.color + this.hair
     }
 
-    public updateScore(currentRound: number, turn: number, score: number): void{
-        this.turn = turn
+    public updateScore(currentRound: number, score: number): void{
         this.scores[currentRound-1] += score
         if(this.scores[currentRound-1] <0) this.scores[currentRound-1] = 0
     }

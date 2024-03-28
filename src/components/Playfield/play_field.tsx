@@ -10,13 +10,12 @@ const PlayField: React.FC = () => {
     const animationDuration = Number(import.meta.env.VITE_ANIMATIONSPEED) * 1000;
     const [showModal, setShowModal] = useState(true);
     const [countdown, setCountdown] = useState(10);
-    const [animationComplete, setAnimationComplete] = useState(true);
-
 
     useEffect(() => {
         const unsubscribe = game.subscribeToScoreChanges(() => {
             setScrollPositionX(0);
-            const targetScrollPosition = game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] * 1000; //last number here (1000) adjust how far the image will scroll
+            setShowModal(false)
+            const targetScrollPosition = game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] * 1000;
             const startTime = performance.now();
 
             function animateScroll(currentTime: number) {
@@ -29,67 +28,74 @@ const PlayField: React.FC = () => {
 
                 if (elapsedTime < animationDuration) {
                     requestAnimationFrame(animateScroll);
-                }else {
-                    setAnimationComplete(true); // Animation is complete
-                    setShowModal(true)
+                } else {
+                    console.log("-------- useEffect animation Start --------")
+                    console.log("Inside useEffect animation: Current round turn is: ",game.turn)
+                    console.log("Inside useEffect animation: Current player turn is: ",game.getPlayers()[game.currentPlayer].turn)
+                    console.log("Inside useEffect animation: showModalState before change is: ", showModal)
+                    setShowModal(true);
+                    console.log("Inside useEffect animation: showModalState after change is: ", showModal)
+                    // here: add trigger for next animation and animation end, then continue the rest!
+                    if(game.turn == 2){setScrollPositionX(0)}
+                    game.nextThrow();
+                    console.log("Inside useEffect animation: Current round turn after nextThrow() is: ",game.turn)
+                    console.log("Inside useEffect animation: Current player turn after nextThrow() is: ",game.getPlayers()[game.currentPlayer].turn)
+                    console.log("-------- useEffect animation End --------")
                 }
-
             }
             requestAnimationFrame(animateScroll);
         });
-
         return () => {
             unsubscribe();
         };
     }, [game, scrollPositionX]);
 
     useEffect(() => {
-        // Decrement countdown every second until it reaches 0
-        let timer: NodeJS.Timeout;
-
-        timer = setInterval(() => {
-            setCountdown((prevCountdown) => prevCountdown - 1);
-            console.log(countdown);
-        }, 1000);
-
-
-        // Clear interval when countdown reaches 0
+        let timer: NodeJS.Timeout | undefined;
+        console.log("Inside useEffect timer: showModalState before check is: ", showModal)
+        if (showModal) {
+            timer = setInterval(() => {
+                setCountdown((prevCountdown) => prevCountdown - 1);
+            }, 1000);
+        }
+        console.log("Inside useEffect timer: countdown: ", countdown)
         if (countdown === 0) {
+            console.log("-------- useEffect timer Start --------")
+            console.log("Inside useEffect timer: countdown over, clearing interval resetting modal state")
             clearInterval(timer);
+            console.log("Inside useEffect timer: showModalState before change is: ", showModal)
             setShowModal(false);
-            setAnimationComplete(false);
-            console.log("hiding modal and incrementing round");
+            setCountdown(10); // Reset countdown when complete
+            console.log("Inside useEffect timer: showModalState after change is: ", showModal)
+            console.log("-------- useEffect timer End --------")
         }
-
         return () => clearInterval(timer);
-    }, [countdown, showModal, game.totalThrows]);
-
-    useEffect(() => {
-        // If animation is complete and modal is shown, reset modal and countdown
-        if (animationComplete && showModal) {
-            console.log("Showing modal and starting Countdown")
-            setShowModal(true);
-            setCountdown(5);
-        }
-    }, [animationComplete]);
+    }, [countdown, showModal]);
 
     function easeInOutQuad(t: number) {
         return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
     }
-
-
-
-
+    // return this, return that but nobody asks about how return is doing :(
     return (
         // <div>
         <div className="parallax">
+            {/*Slowest layer, Mountains in the back*/}
             <img className="Mountains1" src={'src/sprites/Background/Background_Layer_Mountains_1_widened.png'} style={{left:`${-scrollPositionX * 0.10}px`}} ></img>
+            {/*2nd Slowest layer, Mountains in the front*/}
             <img className="Mountains2" src={'src/sprites/Background/Background_Layer_Mountains_2_widened.png'} style={{left:`${-scrollPositionX * 0.12}px`}} ></img>
+            {/*3rd slowest layer, clouds in front of mountains*/}
             <img className="Clouds" src={'src/sprites/Background/Background_Layer_Clouds_widened.png'} style={{left:`${-scrollPositionX * 0.14}px`}} ></img>
+            {/*4th slowestl layer Ground (its standing still)*/}
             <img className="Ground" src={'src/sprites/Background/Background_Layer_Ground.png'} ></img>
+            {/*front flower Layer 2nd fastest*/}
             <img className="Flowers" src={'src/sprites/Background/Background_Layer_Flowers_widened.png'}
                  style={{ left: `${-scrollPositionX * 0.18 - 130}px`, top: `${scrollPositionX * 0.036}px`}}></img>
+            {/*player Sprite moves opposite of other layers*/}
             <div className="sprite" style={{left: `${+scrollPositionX * 0.14}px`, top: `${-scrollPositionX * 0.028 }px`}}>
+                {/*/stand still at: 1 and 8/*/}
+                {/*/walking at:  2-7 /*/}
+                {/*/falling at: tbd /*/}
+                {/*/stand up at: tbd /*/}
                 <Spritesheet
                     image={`src/sprites/playerSprites/Male/orange/brown/walking.png`}
                     widthFrame={96}
@@ -98,18 +104,23 @@ const PlayField: React.FC = () => {
                     fps={8}
                     startAt={2}
                     endAt={7}
+                    direction={"forward"}
                     autoplay={true}
                     loop={true}
                 />
             </div>
+            {/*front Grass Layer Fastest*/}
             <img className="Grass" src={'src/sprites/Background/Background_Layer_Grass_widened.png'}
                  style={{ left: `${-scrollPositionX * 0.19 - 130}px`, top: `${scrollPositionX * 0.038}px`}}></img>
-
-
+            {/*Modal showing info about the next throw and player*/}
             {showModal && (
                 <div className="roundInfo">
-                    <h2>{game.turn === 2 ? "dieser Wurf ist negativ!" : `${game.getPlayers()[game.currentPlayer].name}, in die Vollen!`}</h2>
-                    <p>{countdown} seconds left</p>
+                    <h3 style={{ whiteSpace: 'pre-line' }}>
+                        {game.getPlayers()[game.currentPlayer].turn === 2 ?
+                            `aktueller Spieler:\n${game.getPlayers()[game.currentPlayer].name}\n\nAchtung! dieser Wurf zählt negativ! ${game.getPlayers()[game.currentPlayer].turn}` :
+                            `aktueller Spieler:\n${game.getPlayers()[game.currentPlayer].name}\ndieser wurf geht in die Vollen!`}
+                    </h3>
+                    <p>bitte warten {countdown}!</p>
                 </div>
             )}
         </div>
