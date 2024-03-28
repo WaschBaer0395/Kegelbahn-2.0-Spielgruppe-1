@@ -78,7 +78,7 @@ const PlayField: React.FC = () => {
     }
 
     function handleFrames(spritesheet: Spritesheet){
-        console.log(animationComplete);
+        //console.log(animationComplete);
         if(!animationComplete) {
             spritesheet.setStartAt(2);
             spritesheet.setEndAt(7);
