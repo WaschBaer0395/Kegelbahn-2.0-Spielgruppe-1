@@ -45,6 +45,7 @@
     "@types/node": "^20.11.30",
     "@types/react": "^18.2.72",
     "@types/react-dom": "^18.2.22",
+    "@types/react-responsive-spritesheet": "^1.0.3",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "install-peers": "^1.0.4",
