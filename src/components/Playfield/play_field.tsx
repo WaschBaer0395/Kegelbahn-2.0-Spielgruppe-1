@@ -18,6 +18,8 @@ const PlayField: React.FC = () => {
         const unsubscribe = game.subscribeToScoreChanges(() => {
             setScrollPositionX(0);
             setShowModal(false)
+            setAnimationComplete(false);
+
             const targetScrollPosition = game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] * 1000;
             const startTime = performance.now();
 
@@ -32,6 +34,7 @@ const PlayField: React.FC = () => {
                 if (elapsedTime < animationDuration) {
                     requestAnimationFrame(animateScroll);
                 } else {
+                    setAnimationComplete(true);
                     setShowModal(true);
                     // here: add trigger for next animation and animation end, then continue the rest!
                     if(game.turn == 2){setScrollPositionX(0)}
@@ -62,6 +65,7 @@ const PlayField: React.FC = () => {
         }
         return () => clearInterval(timer);
     }, [countdown, showModal]);
+
 
     function easeInOutQuad(t: number) {
         return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
