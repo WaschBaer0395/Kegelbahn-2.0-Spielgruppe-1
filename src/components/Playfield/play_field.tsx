@@ -10,6 +10,9 @@ const PlayField: React.FC = () => {
     const animationDuration = Number(import.meta.env.VITE_ANIMATIONSPEED) * 1000;
     const [showModal, setShowModal] = useState(true);
     const [countdown, setCountdown] = useState(10);
+    const [animationComplete, setAnimationComplete] = useState(true);
+    let spriteArray: Spritesheet[] = []; //Array, containing the Spritesheets of all players
+
 
     useEffect(() => {
         const unsubscribe = game.subscribeToScoreChanges(() => {
@@ -29,18 +32,10 @@ const PlayField: React.FC = () => {
                 if (elapsedTime < animationDuration) {
                     requestAnimationFrame(animateScroll);
                 } else {
-                    console.log("-------- useEffect animation Start --------")
-                    console.log("Inside useEffect animation: Current round turn is: ",game.turn)
-                    console.log("Inside useEffect animation: Current player turn is: ",game.getPlayers()[game.currentPlayer].turn)
-                    console.log("Inside useEffect animation: showModalState before change is: ", showModal)
                     setShowModal(true);
-                    console.log("Inside useEffect animation: showModalState after change is: ", showModal)
                     // here: add trigger for next animation and animation end, then continue the rest!
                     if(game.turn == 2){setScrollPositionX(0)}
                     game.nextThrow();
-                    console.log("Inside useEffect animation: Current round turn after nextThrow() is: ",game.turn)
-                    console.log("Inside useEffect animation: Current player turn after nextThrow() is: ",game.getPlayers()[game.currentPlayer].turn)
-                    console.log("-------- useEffect animation End --------")
                 }
             }
             requestAnimationFrame(animateScroll);
@@ -52,22 +47,18 @@ const PlayField: React.FC = () => {
 
     useEffect(() => {
         let timer: NodeJS.Timeout | undefined;
-        console.log("Inside useEffect timer: showModalState before check is: ", showModal)
+
         if (showModal) {
             timer = setInterval(() => {
                 setCountdown((prevCountdown) => prevCountdown - 1);
             }, 1000);
         }
-        console.log("Inside useEffect timer: countdown: ", countdown)
+
         if (countdown === 0) {
-            console.log("-------- useEffect timer Start --------")
-            console.log("Inside useEffect timer: countdown over, clearing interval resetting modal state")
             clearInterval(timer);
-            console.log("Inside useEffect timer: showModalState before change is: ", showModal)
             setShowModal(false);
             setCountdown(10); // Reset countdown when complete
-            console.log("Inside useEffect timer: showModalState after change is: ", showModal)
-            console.log("-------- useEffect timer End --------")
+            //setAnimationComplete(false);
         }
         return () => clearInterval(timer);
     }, [countdown, showModal]);
