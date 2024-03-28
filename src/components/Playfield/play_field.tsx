@@ -11,6 +11,24 @@ const PlayField: React.FC = () => {
     const [showModal, setShowModal] = useState(true);
     const [countdown, setCountdown] = useState(10);
     const [animationComplete, setAnimationComplete] = useState(true);
+    const [updateFlag, setUpdateFlag] = useState(false);
+    let spriteArray: Spritesheet[] = []; //Array, containing the Spritesheets of all players
+
+    useEffect(() => {
+        // Subscribe to score changes in GameLogic and trigger re-render
+        const unsubscribe = game.subscribeToScoreChanges(() => {
+            setUpdateFlag(prevFlag => !prevFlag);
+            console.log('Score change');
+            console.log(spriteArray);
+            
+            setAnimationComplete(false);
+        });
+
+        return () => {
+            unsubscribe();
+        };
+    }, [game]);
+
 
 
     useEffect(() => {
@@ -49,7 +67,7 @@ const PlayField: React.FC = () => {
 
         timer = setInterval(() => {
             setCountdown((prevCountdown) => prevCountdown - 1);
-            console.log(countdown);
+            //console.log(countdown);
         }, 1000);
 
 
@@ -57,8 +75,8 @@ const PlayField: React.FC = () => {
         if (countdown === 0) {
             clearInterval(timer);
             setShowModal(false);
-            setAnimationComplete(false);
-            console.log("hiding modal and incrementing round");
+            //setAnimationComplete(false);
+            //console.log("hiding modal and incrementing round");
         }
 
         return () => clearInterval(timer);
@@ -67,7 +85,7 @@ const PlayField: React.FC = () => {
     useEffect(() => {
         // If animation is complete and modal is shown, reset modal and countdown
         if (animationComplete && showModal) {
-            console.log("Showing modal and starting Countdown")
+            //console.log("Showing modal and starting Countdown")
             setShowModal(true);
             setCountdown(5);
         }
@@ -78,7 +96,20 @@ const PlayField: React.FC = () => {
     }
 
 
-
+    function initSpriteArray(spritesheet: Spritesheet){
+        spriteArray.push(spritesheet);
+    }
+    
+    function handleFrames(spritesheet: Spritesheet){
+        console.log(animationComplete);
+        if(!animationComplete) {
+            spritesheet.setStartAt(2);
+            spritesheet.setEndAt(7);
+        } else {
+            spritesheet.setStartAt(1);
+            spritesheet.setEndAt(1);
+        }
+    }
 
     return (
         // <div>
@@ -96,11 +127,13 @@ const PlayField: React.FC = () => {
                     heightFrame={96}
                     steps={8}
                     fps={8}
-                    startAt={2}
-                    endAt={7}
+                    startAt={1}
+                    endAt={1}
                     autoplay={true}
                     loop={true}
-                />
+                    onInit={initSpriteArray}
+                    onEachFrame={handleFrames}
+                />            
             </div>
             <img className="Grass" src={'src/sprites/Background/Background_Layer_Grass_widened.png'}
                  style={{ left: `${-scrollPositionX * 0.19 - 130}px`, top: `${scrollPositionX * 0.038}px`}}></img>

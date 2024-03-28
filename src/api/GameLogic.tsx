@@ -118,9 +118,9 @@ export class GameLogic {
         }
         this.triggerScoreChange();
         this.nextThrow();
-        console.log("current Player: ",this.currentPlayer)
-        console.log("current Round: ",this.currentRound)
-        console.log("current RoundTurn: ",this.turn)
-        console.log("current PlayerTurn: ",this.players[this.currentPlayer].turn)
+        //console.log("current Player: ",this.currentPlayer)
+        //console.log("current Round: ",this.currentRound)
+        //console.log("current RoundTurn: ",this.turn)
+        //console.log("current PlayerTurn: ",this.players[this.currentPlayer].turn)
     }
 }
