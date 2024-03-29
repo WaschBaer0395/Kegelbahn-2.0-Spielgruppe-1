@@ -9,12 +9,27 @@ const Debug = () => {
     const handleSendPlayerList = () => {
         const jsonString =
             '[' +
+            '{"name": "Hans", "gender": "m", "color": "blue", "hair": "blond"},' +
+            '{"name": "Sabrine", "gender": "f", "color": "green", "hair": "black"},' +
+            '{"name": "Franziska", "gender": "f", "color": "yellow", "hair": "brown"},' +
+            '{"name": "Jörg", "gender": "m", "color": "green", "hair": "brown"},' +
+            '{"name": "Philipp", "gender": "m", "color": "orange", "hair": "black"},' +
+            '{"name": "Olaf", "gender": "m", "color": "red", "hair": "brown"},' +
+            '{"name": "Manuel", "gender": "m", "color": "yellow", "hair": "black"},' +
+            '{"name": "Lea", "gender": "f", "color": "green", "hair": "brown"}' +
+            ']'
+        mqttHandler.sendMessage('Kegelbahn/Management', jsonString);
+    };
+
+    const handleSendPlayerListSingle = () => {
+        const jsonString =
+            '[' +
             //'{"name": "Hans", "gender": "m", "color": "blue", "hair": "blond"},' +
             //'{"name": "Sabrine", "gender": "f", "color": "blue", "hair": "black"},' +
             //'{"name": "Franziska", "gender": "f", "color": "yellow", "hair": "brown"},' +
             //'{"name": "Jörg", "gender": "m", "color": "green", "hair": "brown"},' +
             //'{"name": "Philipp", "gender": "m", "color": "orange", "hair": "black"},' +
-            '{"name": "Olaf", "gender": "m", "color": "red", "hair": "brown"}' +
+            '{"name": "Herbert", "gender": "m", "color": "orange", "hair": "brown"}' +
             //'{"name": "Manuel", "gender": "m", "color": "yellow", "hair": "black"},' +
             //'{"name": "Lea", "gender": "f", "color": "green", "hair": "brown"}' +
             ']'
@@ -49,7 +64,7 @@ const Debug = () => {
         else if (sensorNumber == '6'){
             sensorString = '{"sensors":[true,true,true,false,false,false,false,false,false],"rounds_played":7,"total_pins_downed":0,"pins_downed":6}'
         }
-        else if (sensorNumber == '7s'){
+        else if (sensorNumber == '7'){
             sensorString = '{"sensors":[true,true,false,false,false,false,false,false,false],"rounds_played":8,"total_pins_downed":0,"pins_downed":7}'
         }
         else if (sensorNumber == '8'){
@@ -68,7 +83,8 @@ const Debug = () => {
             <section className="playerlist-section">
                 <h2>PlayerList</h2>
                 <h4>Send mocked list of players, or empty the current Playerlist</h4>
-                <button onClick={handleSendPlayerList}>Send PlayerList</button>
+                <button onClick={handleSendPlayerList}>Send Full House</button>
+                <button onClick={handleSendPlayerListSingle}>Send One Player</button>
                 <button onClick={handleEmptyPlayerList}>Empty PlayerList</button>
             </section>
 
