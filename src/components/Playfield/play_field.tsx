@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useRef, useState} from "react";
 import { GameContext } from "../../api/GameLogicDataContext";
 import '../../styles/playfield.css'
 import Spritesheet from 'react-responsive-spritesheet';
+import {sortUserPlugins} from "vite";
 
 
 const PlayField: React.FC = () => {
@@ -17,7 +18,9 @@ const PlayField: React.FC = () => {
     const standUp = useRef(false)
     const standStill = useRef(true)
     const afterAnimation = useRef(true)
-
+    const targetScrollPosition = useRef(0)
+    const targetWindPositon = useRef(0)
+    const windLoopCycles = useRef(1)
     useEffect(() => {
         const unsubscribe = game.subscribeToScoreChanges(() => {
             setScrollPositionX(0);
@@ -26,7 +29,7 @@ const PlayField: React.FC = () => {
             console.log("Game turn: ", game.turn)
             console.log("animtationComplete state: ", animationComplete.current)
 
-            const targetScrollPosition = game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] * 1000;
+            targetScrollPosition.current = game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] * 1000;
             const startTime = performance.now();
 
 
@@ -34,6 +37,7 @@ const PlayField: React.FC = () => {
                 walking.current = true
                 standStill.current = false
                 console.log("-> starting sprite walking")
+                targetWindPositon.current = targetScrollPosition.current
             }
             else if(game.turn == 2 && !animationComplete.current){
                 console.log("-> starting sprite falling")
@@ -44,7 +48,7 @@ const PlayField: React.FC = () => {
                 const elapsedTime = currentTime - startTime;
                 const progress = elapsedTime / animationDuration;
                 const easedProgress = easeInOutQuad(progress);
-                const newScrollPosition = scrollPositionX + (targetScrollPosition - scrollPositionX) * easedProgress;
+                const newScrollPosition = scrollPositionX + (targetScrollPosition.current - scrollPositionX) * easedProgress;
 
                 setScrollPositionX(newScrollPosition);
 
@@ -101,7 +105,6 @@ const PlayField: React.FC = () => {
             spritesheet.setEndAt(12)
             setScrollPositionX(0)
         }
-
         if(animationComplete.current && standStill.current && afterAnimation.current && !showModal){
             afterAnimation.current = false
             setShowModal(true)
@@ -133,8 +136,8 @@ const PlayField: React.FC = () => {
         }
         // falling after standing still
         else if (!animationComplete.current && falling.current) {
-            falling.current = false
             sliding.current = true
+            falling.current = false
             spritesheet.goToAndPlay(1)
             spritesheet.setStartAt(1)
             spritesheet.setEndAt(4)
@@ -156,6 +159,14 @@ const PlayField: React.FC = () => {
         }
     }
 
+    function windFrames(spritesheet: Spritesheet){
+        if(windLoopCycles.current == 1){
+            windLoopCycles.current += 1
+        }else if (windLoopCycles.current == 2){
+            windLoopCycles.current = 1
+        }
+    }
+
     return (
         // <div>
         <div className="parallax">
@@ -171,8 +182,8 @@ const PlayField: React.FC = () => {
             <img className="Flowers" src={'src/sprites/Background/Background_Layer_Flowers_widened.png'}
                  style={{ left: `${-scrollPositionX * 0.18 - 130}px`, top: `${scrollPositionX * 0.036}px`}}></img>
             {/*player Sprite moves opposite of other layers*/}
-            <div className="sprite" style={{left: `${+scrollPositionX * 0.14}px`, top: `${-scrollPositionX * 0.028 }px`}}>
 
+            <div className="player" style={{left: `${scrollPositionX * 0.14 - 50}px`, top: `${-scrollPositionX * 0.028 + 10}px`}} >
                 <Spritesheet
                     image={`src/sprites/playerSprites/Male/orange/brown/spritesheet.png`}
                     widthFrame={96}
@@ -186,6 +197,28 @@ const PlayField: React.FC = () => {
                     loop={true}
                     onLoopComplete={handleFrames}
                 />
+            </div>
+            <div className="wind" style={{left: `${targetWindPositon.current * 0.14 - 50}px`, top: `${-targetWindPositon.current * 0.028 + 520}px` }}>
+                <Spritesheet
+                    style={{
+                        display: game.getPlayers()[game.currentPlayer].turn == 2 && !animationComplete.current ?
+                        "block" : "none"
+                    }}
+                    image={`src/sprites/animations/wind.png`}
+                    widthFrame={96}
+                    heightFrame={96}
+                    steps={6}
+                    fps={6}
+                    startAt={1}
+                    endAt={6}
+                    direction={"forward"}
+                    autoplay={true}
+                    loop={true}
+                    onLoopComplete={windFrames}
+                />
+                {String(animationComplete.current)}
+                {game.getPlayers()[game.currentPlayer].turn}
+                {String(windLoopCycles.current == 2)}
             </div>
             {/*front Grass Layer Fastest*/}
             <img className="Grass" src={'src/sprites/Background/Background_Layer_Grass_widened.png'}

@@ -74,10 +74,16 @@
     font-weight: bolder;
     margin: 0;
 }
-
-.sprite{
+.player{
+    height: 200px;
+    width: 200px;
     position: absolute;
-    width: 144px;
+    transform: translateY(270%);
+}
+.wind{
+    position: absolute;
     height: 144px;
-    transform: translateY(410%);
+    width: 144px;
+    transform: translateX(70%) translateY(5%);
+    border: black 2px solid;
 }
