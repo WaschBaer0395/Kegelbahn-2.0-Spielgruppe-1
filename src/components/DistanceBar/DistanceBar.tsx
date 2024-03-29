@@ -8,11 +8,6 @@ type DistanceBarProps = {}
 export default function DistanceBar({ }: DistanceBarProps) {
     const game = useGameContext()
     const [updateFlag, setUpdateFlag] = useState(false);
-    const [playerPositions, setPlayerPositions] = useState<number[]>([]);
-
-    useEffect(() => {
-        console.log(playerPositions)
-    }, []);
 
     useEffect(() => {
         // Subscribe to score changes in GameLogic and trigger re-render
@@ -30,7 +25,6 @@ export default function DistanceBar({ }: DistanceBarProps) {
         const newPlayerPositions = game.getPlayers().map(player => {
             return (((player.getTotalScore() * game.getMultiplier())) / (game.getMultiplier() * game.getMaxScore()))*100;
         });
-        setPlayerPositions(newPlayerPositions);
     }, [game, updateFlag]);
 
     return (
