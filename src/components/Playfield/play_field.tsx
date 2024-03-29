@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import { GameContext } from "../../api/GameLogicDataContext";
 import '../../styles/playfield.css'
 import Spritesheet from 'react-responsive-spritesheet';
@@ -8,21 +8,38 @@ const PlayField: React.FC = () => {
     const game = useContext(GameContext);
     const [scrollPositionX, setScrollPositionX] = useState(0);
     const animationDuration = Number(import.meta.env.VITE_ANIMATIONSPEED) * 1000;
-    const [showModal, setShowModal] = useState(true);
+    const [showModal, setShowModal] = useState(false);
     const [countdown, setCountdown] = useState(10);
-    const [animationComplete, setAnimationComplete] = useState(true);
-    let spriteArray: Spritesheet[] = []; //Array, containing the Spritesheets of all players
-
+    const animationComplete = useRef(true)
+    const sliding = useRef(false)
+    const falling = useRef(false)
+    const walking = useRef(false)
+    const standUp = useRef(false)
+    const standStill = useRef(true)
+    const afterAnimation = useRef(true)
 
     useEffect(() => {
         const unsubscribe = game.subscribeToScoreChanges(() => {
             setScrollPositionX(0);
             setShowModal(false)
-            setAnimationComplete(false);
+            animationComplete.current = false
+            console.log("Game turn: ", game.turn)
+            console.log("animtationComplete state: ", animationComplete.current)
 
             const targetScrollPosition = game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] * 1000;
             const startTime = performance.now();
 
+
+            if(game.turn == 1 && !animationComplete.current) {
+                walking.current = true
+                standStill.current = false
+                console.log("-> starting sprite walking")
+            }
+            else if(game.turn == 2 && !animationComplete.current){
+                console.log("-> starting sprite falling")
+                falling.current = true
+                standStill.current = false
+            }
             function animateScroll(currentTime: number) {
                 const elapsedTime = currentTime - startTime;
                 const progress = elapsedTime / animationDuration;
@@ -34,10 +51,8 @@ const PlayField: React.FC = () => {
                 if (elapsedTime < animationDuration) {
                     requestAnimationFrame(animateScroll);
                 } else {
-                    setAnimationComplete(true);
-                    setShowModal(true);
+                    animationComplete.current = true
                     // here: add trigger for next animation and animation end, then continue the rest!
-                    if(game.turn == 2){setScrollPositionX(0)}
                     game.nextThrow();
                 }
             }
@@ -72,19 +87,72 @@ const PlayField: React.FC = () => {
     }
     // return this, return that but nobody asks about how return is doing :(
 
-
-    function initSpriteArray(spritesheet: Spritesheet){
-        spriteArray.push(spritesheet);
-    }
-
     function handleFrames(spritesheet: Spritesheet){
         //console.log(animationComplete);
-        if(!animationComplete) {
-            spritesheet.setStartAt(13);
-            spritesheet.setEndAt(18);
-        } else {
-            spritesheet.setStartAt(12);
-            spritesheet.setEndAt(12);
+        //stand up at: 8-11
+        //stand still at: 12 and 19
+        //walking at:  13-18
+        //falling at: 1-4
+        //sliding at: 5-7
+
+        if(spritesheet.getInfo("frame") == 11){
+            spritesheet.goToAndPlay(12)
+            spritesheet.setStartAt(12)
+            spritesheet.setEndAt(12)
+            setScrollPositionX(0)
+        }
+
+        if(animationComplete.current && standStill.current && afterAnimation.current && !showModal){
+            afterAnimation.current = false
+            setShowModal(true)
+        }
+        //after standing up, prepare for showing modal
+        if(animationComplete.current && !standStill.current && standUp.current){
+            standUp.current = false
+            standStill.current = true
+            afterAnimation.current = true
+        }
+        // standing still
+        else if (animationComplete.current && standStill.current){
+            spritesheet.goToAndPlay(12)
+            spritesheet.setStartAt(12)
+            spritesheet.setEndAt(12)
+        }
+        // walking
+        else if (!animationComplete.current && walking.current){
+            spritesheet.goToAndPlay(13)
+            spritesheet.setStartAt(13)
+            spritesheet.setEndAt(18)
+        }
+        // standing still after walking
+        else if(animationComplete.current && walking.current){
+            standStill.current = true
+            walking.current = false
+            afterAnimation.current = true
+
+        }
+        // falling after standing still
+        else if (!animationComplete.current && falling.current) {
+            falling.current = false
+            sliding.current = true
+            spritesheet.goToAndPlay(1)
+            spritesheet.setStartAt(1)
+            spritesheet.setEndAt(4)
+        }
+        // sliding after falling
+        else if(!animationComplete.current && sliding.current) {
+            spritesheet.goToAndPlay(5)
+            spritesheet.setStartAt(5)
+            spritesheet.setEndAt(7)
+        }
+        // standing up after sliding for a while
+        else if(animationComplete.current && sliding.current) {
+            console.log("Standing up!")
+            sliding.current = false
+            standUp.current = true
+            spritesheet.goToAndPlay(8)
+            spritesheet.setStartAt(8)
+            spritesheet.setEndAt(11)
         }
     }
 
@@ -104,10 +172,7 @@ const PlayField: React.FC = () => {
                  style={{ left: `${-scrollPositionX * 0.18 - 130}px`, top: `${scrollPositionX * 0.036}px`}}></img>
             {/*player Sprite moves opposite of other layers*/}
             <div className="sprite" style={{left: `${+scrollPositionX * 0.14}px`, top: `${-scrollPositionX * 0.028 }px`}}>
-                {/*/stand still at: 1 and 8/*/}
-                {/*/walking at:  2-7 /*/}
-                {/*/falling at: tbd /*/}
-                {/*/stand up at: tbd /*/}
+
                 <Spritesheet
                     image={`src/sprites/playerSprites/Male/orange/brown/spritesheet.png`}
                     widthFrame={96}
@@ -119,8 +184,7 @@ const PlayField: React.FC = () => {
                     direction={"forward"}
                     autoplay={true}
                     loop={true}
-                    onInit={initSpriteArray}
-                    onEachFrame={handleFrames}
+                    onLoopComplete={handleFrames}
                 />
             </div>
             {/*front Grass Layer Fastest*/}
@@ -128,13 +192,15 @@ const PlayField: React.FC = () => {
                  style={{ left: `${-scrollPositionX * 0.19 - 130}px`, top: `${scrollPositionX * 0.038}px`}}></img>
             {/*Modal showing info about the next throw and player*/}
             {showModal && (
-                <div className="roundInfo">
-                    <h3 style={{ whiteSpace: 'pre-line' }}>
-                        {game.getPlayers()[game.currentPlayer].turn === 2 ?
-                            `aktueller Spieler:\n${game.getPlayers()[game.currentPlayer].name}\n\nAchtung! dieser Wurf zählt negativ! ${game.getPlayers()[game.currentPlayer].turn}` :
-                            `aktueller Spieler:\n${game.getPlayers()[game.currentPlayer].name}\ndieser wurf geht in die Vollen!`}
-                    </h3>
-                    <p>bitte warten {countdown}!</p>
+                <div className="roundInfoModal">
+                    <p className="playerNameModal">
+                        {game.getPlayers()[game.currentPlayer].name}
+                    </p>
+                    <p className="throwModal">{game.getPlayers()[game.currentPlayer].turn === 2 ?
+                        `Achtung! dieser Wurf zählt negativ!`:
+                        `dieser Wurf geht in die Vollen!`
+                    }</p>
+                    <p className="countdownModal">bitte warten {countdown}!</p>
                 </div>
             )}
         </div>
