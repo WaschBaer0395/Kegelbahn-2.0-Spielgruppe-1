@@ -43,6 +43,7 @@ const PlayField: React.FC = () => {
                 console.log("-> starting sprite falling")
                 falling.current = true
                 standStill.current = false
+                windLoopCycles.current = 1
             }
             function animateScroll(currentTime: number) {
                 const elapsedTime = currentTime - startTime;
@@ -160,10 +161,17 @@ const PlayField: React.FC = () => {
     }
 
     function windFrames(spritesheet: Spritesheet){
-        if(windLoopCycles.current == 1){
-            windLoopCycles.current += 1
-        }else if (windLoopCycles.current == 2){
-            windLoopCycles.current = 1
+        console.log(spritesheet.getInfo("completeLoopCicles"))
+        if(windLoopCycles.current == 2){
+            console.log("loops 2")
+            windLoopCycles.current =3
+        }else if (windLoopCycles.current == 1){
+            console.log("loops 1")
+            windLoopCycles.current = 2
+        }
+        else if(windLoopCycles.current == 3){
+            console.log("Halt animation!")
+            return
         }
     }
 
@@ -198,12 +206,13 @@ const PlayField: React.FC = () => {
                     onLoopComplete={handleFrames}
                 />
             </div>
-            <div className="wind" style={{left: `${targetWindPositon.current * 0.14 - 50}px`, top: `${-targetWindPositon.current * 0.028 + 520}px` }}>
+            <div className="wind" style={{
+                left: `${targetWindPositon.current * 0.14 - 50}px`,
+                top: `${-targetWindPositon.current * 0.028 + 520}px`,
+                zIndex: game.getPlayers()[game.currentPlayer].turn == 2 && !animationComplete.current && windLoopCycles.current <=2 ?
+                "99" : "-1"
+            }}>
                 <Spritesheet
-                    style={{
-                        display: game.getPlayers()[game.currentPlayer].turn == 2 && !animationComplete.current ?
-                        "block" : "none"
-                    }}
                     image={`src/sprites/animations/wind.png`}
                     widthFrame={96}
                     heightFrame={96}
@@ -216,9 +225,6 @@ const PlayField: React.FC = () => {
                     loop={true}
                     onLoopComplete={windFrames}
                 />
-                {String(animationComplete.current)}
-                {game.getPlayers()[game.currentPlayer].turn}
-                {String(windLoopCycles.current == 2)}
             </div>
             {/*front Grass Layer Fastest*/}
             <img className="Grass" src={'src/sprites/Background/Background_Layer_Grass_widened.png'}
