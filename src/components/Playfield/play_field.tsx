@@ -193,7 +193,7 @@ const PlayField: React.FC = () => {
 
             <div className="player" style={{left: `${scrollPositionX * 0.14 - 50}px`, top: `${-scrollPositionX * 0.028 + 10}px`}} >
                 <Spritesheet
-                    image={`src/sprites/playerSprites/Male/orange/brown/spritesheet.png`}
+                    image={game.getPlayers()[game.currentPlayer].spriteSheet}
                     widthFrame={96}
                     heightFrame={96}
                     steps={19}
