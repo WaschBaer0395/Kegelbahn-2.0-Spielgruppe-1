@@ -34,7 +34,7 @@ export default function DistanceBar({ }: DistanceBarProps) {
             {game.getPlayers().map((player, index) => (
                 <div key={player.id} className="marker-pin" style={{ left: `${(((player.getTotalScore() * game.getMultiplier())) / (game.getMultiplier() * game.getMaxScore()))*100+1}%`, zIndex: index , transition: `left ${import.meta.env.VITE_ANIMATIONSPEED}s ease`}}>
                     <div className="marker-pin-circle">
-                        <img src={player.spriteLoc + "/preview.png"} alt={player.name} className="avatar" />
+                        <img src={player.preview + "/preview.png"} alt={player.name} className="avatar" />
                     </div>
                 </div>
             ))}

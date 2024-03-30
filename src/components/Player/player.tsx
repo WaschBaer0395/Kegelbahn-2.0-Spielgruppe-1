@@ -9,7 +9,8 @@ export class Player {
     id: number
     turn: number = 1
     scores: number[]
-    spriteLoc: string
+    preview: string
+    spriteSheet: string
     playerIcon: JSX.Element
 
     constructor(id: number, name: string, gender: string, color: string, hair: string) {
@@ -20,13 +21,13 @@ export class Player {
         this.gender = gender
         this.turn = 1
         this.scores = [0,0,0,0,0,0,0,0]
-        this.spriteLoc = this.findSprite(this.gender, this.color, this.hair)
+        this.preview = this.findSprite(this.gender, this.color, this.hair)
         this.playerIcon = this.getPlayerIcon()
-        // Initialize other properties as needed
+        this.spriteSheet = this.findSpriteSheet()
     }
 
     getPlayerIcon() {
-        const previewImagePath = `${this.spriteLoc}/preview.png`;
+        const previewImagePath = `${this.preview}/preview.png`;
         return (
             <img src={previewImagePath} alt="Player Icon/Sprite" width={96} height={96} />
         );
@@ -47,30 +48,27 @@ export class Player {
         // setting gender
         if (gender == 'm'){
             this.gender = 'Male'
-            this.hair = '/' + hair
+            this.hair = hair
         }
         else if (gender == 'f') {
             this.gender = 'Female'
-            this.hair = ''
+            this.hair = hair
         }
         else {
             this.gender = 'Female'
-            this.hair = ''
+            this.hair = 'blond'
         }
 
-        // determine player color hair is not used yet!
+        //Player color
         if (availableColors.indexOf(color) < 0) {
             this.color = 'blue' //default if wrong color was given
         }
 
+        return 'src/sprites/playerSprites/' + this.gender + '/' + this.color + '/' + this.hair
+    }
 
-        //for testing purposes while not all sprite colors are available
-        if (this.gender == 'Female' && this.color != 'blue' && this.color != 'green') {
-            this.gender = 'Female'
-            this.color = 'green'
-        }
-
-        return 'src/sprites/playerSprites/' + this.gender + '/' + this.color + this.hair
+    findSpriteSheet(){
+        return 'src/sprites/playerSprites/' + this.gender + '/' + this.color + '/' + this.hair + '/spritesheet.png'
     }
 
     public updateScore(currentRound: number, score: number): void{
