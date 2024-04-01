@@ -67,11 +67,6 @@ class MqttHandler {
     }
   }
 
-  private manageData(sensordata: SensorData) {
-    // Add your data management logic here
-    return true
-  }
-
   public closeConnection() {
     if (this.mqttClient) {
       this.mqttClient.end()

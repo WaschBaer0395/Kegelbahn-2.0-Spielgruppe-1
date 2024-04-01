@@ -59,17 +59,18 @@ const MainScreen = () => {
     const unsubscribe = game.subscribeToChanges(() => {
       console.log(game.isGameOver())
       if (game.isGameOver()) {
-        //handleGameOver()
+        console.log('Gameover In MainScreen Triggered')
+        //Generate final score
+        let finalScore = game.calculateScoreTable()
         const mqttHandler = new MqttHandler(
           ['Kegelbahn/Management'],
-          'Spiel_1_GAMEOVER',
+          'Spiel_1_GAMEOVER'
         )
         mqttHandler.connectToBroker()
         mqttHandler.sendMessage(
           'Kegelbahn/Management',
-          game.calculateScoreTable(),
+          finalScore
         )
-        console.log('Gameover In MainScreen Triggered')
         setIsPlayersReceived(false)
         setHasStarted(false)
         setShowPlayers(false)
@@ -80,23 +81,6 @@ const MainScreen = () => {
       unsubscribe()
     }
   }, [game])
-/*
-async function handleGameOver(){
-  const mqttHandler = new MqttHandler(
-    ['Kegelbahn/Management'],
-    'Spiel_1_GAMEOVER',
-  )
-  mqttHandler.connectToBroker()
-  mqttHandler.sendMessage(
-    'Kegelbahn/Management',
-    game.calculateScoreTable(),
-  )
-  console.log('Gameover In MainScreen Triggered')
-  setIsPlayersReceived(false)
-  setHasStarted(false)
-  setShowPlayers(false)
-}
-*/
 
   // Players received trigger
   useEffect(() => {

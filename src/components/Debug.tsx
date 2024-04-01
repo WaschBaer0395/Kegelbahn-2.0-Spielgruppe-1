@@ -27,14 +27,7 @@ const Debug = () => {
   const handleSendPlayerListSingle = () => {
     const jsonString =
       '[' +
-      //'{"name": "Hans", "gender": "m", "color": "blue", "hair": "blond"},' +
       '{"name": "Sabrine", "gender": "f", "color": "red", "hair": "brown"}' +
-      //'{"name": "Franziska", "gender": "f", "color": "yellow", "hair": "brown"},' +
-      //'{"name": "Jörg", "gender": "m", "color": "green", "hair": "brown"},' +
-      //'{"name": "Philipp", "gender": "m", "color": "orange", "hair": "black"},' +
-      //'{"name": "Herbert", "gender": "m", "color": "orange", "hair": "brown"}' +
-      //'{"name": "Manuel", "gender": "m", "color": "yellow", "hair": "black"},' +
-      //'{"name": "Lea", "gender": "f", "color": "green", "hair": "brown"}' +
       ']'
     mqttHandler.sendMessage('Kegelbahn/Management', jsonString)
   }

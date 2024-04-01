@@ -59,7 +59,6 @@ export default function DistanceBar({}: DistanceBarProps) {
           </div>
         </div>
       ))}
-      {/*<img src={"src/sprites/start.png"} className="start" style={{ left: `${-25}px` }} alt={"start Flag"}></img>*/}
     </div>
   )
 }
