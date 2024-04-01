@@ -1,1 +1,1 @@
-import { Stage, Sprite} from '@inlet/react-pixi'
+import { Stage, Sprite } from '@inlet/react-pixi'
