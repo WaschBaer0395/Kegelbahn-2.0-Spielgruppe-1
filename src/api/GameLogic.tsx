@@ -140,5 +140,6 @@ export class GameLogic {
       player.resetScore()
     })
     this.gameOver = true
+    this.triggerChange();
   }
 }
