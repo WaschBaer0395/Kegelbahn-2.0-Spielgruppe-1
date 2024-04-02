@@ -16,6 +16,8 @@ class MqttHandler {
   } = {}
   private readonly topic: string[]
   private readonly id: string
+  private connectionPromise: Promise<void> | null = null; // Add a property to hold the connection promise
+
 
   constructor(topic_: string[], id_: string) {
     this.topic = topic_
@@ -23,33 +25,39 @@ class MqttHandler {
   }
 
   // topics 'Kegelbahn/Kegel', 'Kegelbahn/Player', 'Kegelbahn/Management'
-  public connectToBroker() {
-    this.mqttClient = mqtt.connect('mqtt://localhost:10443', {
-      clientId: this.id,
-    })
-    let playerList: Player[] = []
-    this.mqttClient.once('error', () => {
-      this.mqttClient!.eventNames()
-      console.log(this.mqttClient!.eventNames())
-    })
+  public connectToBroker(): Promise<void> { // Return a promise from this method
+    this.connectionPromise = new Promise<void>((resolve, reject) => {
+      this.mqttClient = mqtt.connect('mqtt://localhost:10443', {
+        clientId: this.id,
+      })
 
-    this.mqttClient.on('connect', () => {
-      console.log('Connected to MQTT broker')
-      this.mqttClient!.subscribe(this.topic)
-    })
+      this.mqttClient.once('error', (error) => {
+        reject(error); // Reject the promise on error
+      });
 
-    this.mqttClient.on('message', (topic: string, message: Buffer) => {
-      const messageHandler = this.messageHandlers[topic]
-      if (messageHandler) {
-        messageHandler(topic, message.toString())
-      }
-    })
+      this.mqttClient.on('connect', () => {
+        console.log('Connected to MQTT broker');
+        this.mqttClient!.subscribe(this.topic, (err) => {
+          if (err) {
+            reject(err); // Reject the promise if subscription fails
+          } else {
+            resolve(); // Resolve the promise on successful connection and subscription
+          }
+        });
+      });
+    });
+
+    return this.connectionPromise;
   }
 
   public onMessage(callback: (topic: string, message: string) => void) {
-    this.messageHandlers['Kegelbahn/Kegel'] = callback
-    this.messageHandlers['Kegelbahn/Player'] = callback
-    this.messageHandlers['Kegelbahn/Management'] = callback
+    if (this.mqttClient) {
+      this.mqttClient.on('message', (topic, message) => {
+        if (this.topic.includes(topic)) {
+          callback(topic, message.toString());
+        }
+      });
+    }
   }
 
   public offMessage(callback: (topic: string, message: string) => void) {
@@ -58,12 +66,19 @@ class MqttHandler {
     delete this.messageHandlers['Kegelbahn/Management']
   }
 
-  public sendMessage(topic: string, message: string) {
-    if (this.mqttClient) {
-      this.mqttClient.publish(topic, message)
-      console.log(`Message sent to topic ${topic}: ${message}`)
-    } else {
-      console.error('Error: MQTT client not connected')
+  public async sendMessage(topic: string, message: string) {
+    if (!this.connectionPromise) {
+      console.error('Connection has not been initiated. Call connectToBroker first.');
+      return;
+    }
+    try {
+      await this.connectionPromise; // Wait for the connection to be established
+      if (this.mqttClient) {
+        this.mqttClient.publish(topic, message);
+        console.log(`Message sent to topic ${topic}: ${message}`);
+      }
+    } catch (error) {
+      console.error('Error waiting for MQTT client to connect:', error);
     }
   }
 

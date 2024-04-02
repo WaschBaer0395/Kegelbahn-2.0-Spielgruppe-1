@@ -26,33 +26,45 @@ const MainScreen = () => {
 
   useEffect(() => {
     const mqttHandler = new MqttHandler(
-      ['Kegelbahn/Management'],
-      'Spiel_1_WAITING_FOR_PLAYERS',
-    )
+        ['Kegelbahn/Management'],
+        'Spiel_1_WAITING_FOR_PLAYERS',
+    );
 
     mqttHandler.connectToBroker()
-    mqttHandler.onMessage((topic, message) => {
-      if (topic === 'Kegelbahn/Management') {
-        try {
-          const parsePlayers = JSON.parse(message) as Player[]
-          const parsedPlayers = convertPlayers(parsePlayers)
+        .then(() => {
+          console.log('MQTT Connection Established');
 
-          // Check if the parsed message contains player objects
-          if (Array.isArray(parsedPlayers) && parsedPlayers.length > 0) {
-            game?.setPlayers(parsedPlayers) // Update player list
-            setIsPlayersReceived(true) // Set flag to indicate players are received
-            setShowPlayers(false)
-            game?.startGame()
-            setHasStarted(true)
-            mqttHandler.closeConnection()
-          }
-        } catch (error) {
-          console.error('Error parsing players:', error)
-        }
-      }
-    })
-    return () => {}
-  }, [])
+          mqttHandler.onMessage((topic, message) => {
+            if (topic === 'Kegelbahn/Management') {
+              console.log("Management message received")
+              try {
+                const parsePlayers = JSON.parse(message); // Assuming convertPlayers and other necessary functions/logic are defined elsewhere.
+                const parsedPlayers = convertPlayers(parsePlayers);
+
+                // Check if the parsed message contains player objects
+                if (Array.isArray(parsedPlayers) && parsedPlayers.length > 0) {
+                  game?.setPlayers(parsedPlayers); // Update player list
+                  setIsPlayersReceived(true); // Set flag to indicate players are received
+                  setShowPlayers(false);
+                  game?.startGame();
+                  setHasStarted(true);
+                  mqttHandler.closeConnection(); // Optionally close connection if it's no longer needed
+                }
+              } catch (error) {
+                console.error('Error parsing players:', error);
+              }
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Failed to connect to MQTT Broker:', error);
+        });
+
+    // Clean up function to close MQTT connection when the component unmounts
+    return () => {
+      mqttHandler.closeConnection();
+    };
+  }, []);
 
   useEffect(() => {
     // Subscribe to score changes in GameLogic and trigger re-render
@@ -60,17 +72,21 @@ const MainScreen = () => {
       console.log(game.isGameOver())
       if (game.isGameOver()) {
         console.log('Gameover In MainScreen Triggered')
-        //Generate final score
+        // Generate final score
         let finalScore = game.calculateScoreTable()
         const mqttHandler = new MqttHandler(
-          ['Kegelbahn/Management'],
-          'Spiel_1_GAMEOVER'
+            ['Kegelbahn/Management'],
+            'Spiel_1_GAMEOVER'
         )
-        mqttHandler.connectToBroker()
-        mqttHandler.sendMessage(
-          'Kegelbahn/Management',
-          finalScore
-        )
+        mqttHandler.connectToBroker().then(() => {
+          mqttHandler.sendMessage(
+              'Kegelbahn/Management',
+              finalScore
+          )
+        }).catch(error => {
+          console.error('Failed to connect to MQTT broker:', error);
+        });
+
         setIsPlayersReceived(false)
         setHasStarted(false)
         setShowPlayers(false)
@@ -78,9 +94,9 @@ const MainScreen = () => {
     })
 
     return () => {
-      unsubscribe()
-    }
-  }, [game])
+      unsubscribe(); // Make sure to unsubscribe when the component unmounts
+    };
+  }, [game]); // Make sure dependencies are correct
 
   // Players received trigger
   useEffect(() => {
