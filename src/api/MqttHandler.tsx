@@ -27,7 +27,7 @@ class MqttHandler {
   // topics 'Kegelbahn/Kegel', 'Kegelbahn/Player', 'Kegelbahn/Management'
   public connectToBroker(): Promise<void> { // Return a promise from this method
     this.connectionPromise = new Promise<void>((resolve, reject) => {
-      this.mqttClient = mqtt.connect('mqtt://localhost:10443', {
+      this.mqttClient = mqtt.connect(import.meta.env.VITE_MQTT_BROKER, {
         clientId: this.id,
       })
 

@@ -2,12 +2,15 @@
 import React from 'react'
 import MQTTDebugComponent from '../api/MQTTDebugComponent' // Import the component
 import MqttHandler from '../api/MqttHandler'
+import { makeId } from '../api/UniversalFunctions'
 
 const Debug = () => {
+  const debugId = makeId()
   const mqttHandler = new MqttHandler(
     ['Kegelbahn/Management', 'Kegelbahn/Kegel'],
-    'Debugg_Page',
+    `Debugg_Page${debugId}`,
   ) // Create an instance of MqttHandler
+
 
   const handleSendPlayerList = () => {
     const jsonString =
@@ -32,8 +35,13 @@ const Debug = () => {
     mqttHandler.sendMessage('Kegelbahn/Management', jsonString)
   }
 
-  const handleEmptyPlayerList = () => {
-    console.log('Emptying player list...')
+  const handleSendPlayerListDouble = () => {
+    const jsonString =
+        '[' +
+        '{"name": "Franziska", "gender": "f", "color": "red", "hair": "brown"},' +
+        '{"name": "Jörg", "gender": "m", "color": "green", "hair": "brown"}' +
+        ']'
+    mqttHandler.sendMessage('Kegelbahn/Management', jsonString)
   }
 
   const handleSensorButtonClick = (sensorNumber: string) => {
@@ -82,7 +90,7 @@ const Debug = () => {
         <h4>Send mocked list of players, or empty the current Playerlist</h4>
         <button onClick={handleSendPlayerList}>Send Full House</button>
         <button onClick={handleSendPlayerListSingle}>Send One Player</button>
-        <button onClick={handleEmptyPlayerList}>Empty PlayerList</button>
+        <button onClick={handleSendPlayerListDouble}>2 Players</button>
       </section>
 
       <section className="sensordata-section">

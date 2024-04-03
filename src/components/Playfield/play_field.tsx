@@ -10,6 +10,7 @@ const PlayField: React.FC = () => {
   const [scrollPositionX, setScrollPositionX] = useState(0)
   const animationDuration = Number(import.meta.env.VITE_ANIMATIONSPEED) * 1000
   const [showModal, setShowModal] = useState(false)
+  const [showModalNegative, setShowModalNegative] = useState(false)
   const [countdown, setCountdown] = useState(10)
   const animationComplete = useRef(true)
   const sliding = useRef(false)
@@ -22,51 +23,80 @@ const PlayField: React.FC = () => {
   const targetWindPositon = useRef(0)
   const windLoopCycles = useRef(1)
 
+
+  // Resetting this component back to its initial state
   useEffect(() => {
     const unsubscribe = game.subscribeToChanges(() => {
-      setScrollPositionX(0)
-      setShowModal(false)
-      animationComplete.current = false
-
-      targetScrollPosition.current =
-        game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] *
-        1000
-      const startTime = performance.now()
-
-      if (game.turn == 1 && !animationComplete.current) {
-        walking.current = true
-        standStill.current = false
-        targetWindPositon.current = targetScrollPosition.current
-      } else if (game.turn == 2 && !animationComplete.current) {
-        falling.current = true
-        standStill.current = false
+      if (game.isGameOver()) {
+        setScrollPositionX(0)
+        setShowModal(false)
+        setCountdown(0)
+        animationComplete.current = true
+        sliding.current = false
+        falling.current = false
+        walking.current = false
+        standUp.current = false
+        standStill.current = true
+        afterAnimation.current = true
+        targetScrollPosition.current = 0
+        targetWindPositon.current = 0
         windLoopCycles.current = 1
       }
-      function animateScroll(currentTime: number) {
-        const elapsedTime = currentTime - startTime
-        const progress = elapsedTime / animationDuration
-        const easedProgress = easeInOutQuad(progress)
-        const newScrollPosition =
-          scrollPositionX +
-          (targetScrollPosition.current - scrollPositionX) * easedProgress
+    })
+    return () => {
+      unsubscribe();
+    };
+  }, [game]);
 
-        setScrollPositionX(newScrollPosition)
 
-        if (elapsedTime < animationDuration) {
-          requestAnimationFrame(animateScroll)
-        } else {
-          animationComplete.current = true
+  useEffect(() => {
+    const unsubscribe = game.subscribeToChanges(() => {
+      if(game.gameStarted) {
+        setScrollPositionX(0)
+        setShowModal(false)
+        animationComplete.current = false
 
-          game.nextThrow()
+        targetScrollPosition.current =
+            game?.getPlayers()[game.currentPlayer]?.scores[game.currentRound - 1] *
+            1000
+        const startTime = performance.now()
 
-          if (game.currentRound > game.maxRounds) {
-            console.log('GAME OVER!')
-            game.resetGame()
+        if (game.turn == 1 && !animationComplete.current) {
+          walking.current = true
+          standStill.current = false
+          targetWindPositon.current = targetScrollPosition.current
+        } else if (game.turn == 2 && !animationComplete.current) {
+          falling.current = true
+          standStill.current = false
+          windLoopCycles.current = 1
+          setShowModalNegative(true)
+        }
+
+        function animateScroll(currentTime: number) {
+          const elapsedTime = currentTime - startTime
+          const progress = elapsedTime / animationDuration
+          const easedProgress = easeInOutQuad(progress)
+          const newScrollPosition =
+              scrollPositionX +
+              (targetScrollPosition.current - scrollPositionX) * easedProgress
+
+          setScrollPositionX(newScrollPosition)
+
+          if (elapsedTime < animationDuration) {
+            requestAnimationFrame(animateScroll)
+          } else {
+            animationComplete.current = true
+            setShowModalNegative(false)
+            setTimeout(() => {
+              game.nextThrow()
+            }, 2000);
           }
         }
+
+        requestAnimationFrame(animateScroll)
       }
-      requestAnimationFrame(animateScroll)
     })
+
     return () => {
       unsubscribe()
     }
@@ -87,6 +117,7 @@ const PlayField: React.FC = () => {
       setShowModal(false)
       setCountdown(10) // Reset countdown when complete
     }
+
     return () => clearInterval(timer)
   }, [countdown, showModal])
 
@@ -106,7 +137,9 @@ const PlayField: React.FC = () => {
       spritesheet.goToAndPlay(12)
       spritesheet.setStartAt(12)
       spritesheet.setEndAt(12)
-      setScrollPositionX(0)
+      setTimeout(() => {
+        setScrollPositionX(0)
+      }, 2000);
     }
     if (
       animationComplete.current &&
@@ -284,6 +317,17 @@ const PlayField: React.FC = () => {
             bitte warten während die Bahn vorbereitet wird {countdown}!
           </p>
         </div>
+      )}
+      {showModalNegative && (
+          <div className="roundInfoModal">
+            <p className="playerNameModal">
+              {game.getPlayers()[game.currentPlayer].name}
+            </p>
+            <p className="throwModal">
+              Eine Windböhe hat dich erfasst
+              du fällst hin und rutschst auf {game?.getPlayers()[game.currentPlayer]?.scores[game.currentRound - 1]*10} Meter wieder den Berg wieder herunter
+            </p>
+          </div>
       )}
     </div>
   )

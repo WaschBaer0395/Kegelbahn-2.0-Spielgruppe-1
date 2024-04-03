@@ -9,8 +9,20 @@ export default function DistanceBar({}: DistanceBarProps) {
   const game = useGameContext()
   const [updateFlag, setUpdateFlag] = useState(false)
 
+  // Resetting this component back to its initial state
   useEffect(() => {
-    // Subscribe to score changes in GameLogic and trigger re-render
+    const unsubscribe = game.subscribeToChanges(() => {
+      if (game.isGameOver()) {
+        setUpdateFlag(false)
+      }
+    })
+    return () => {
+      unsubscribe();
+    };
+  }, [game]);
+
+
+  useEffect(() => {
     const unsubscribe = game.subscribeToChanges(() => {
       setUpdateFlag((prevFlag) => !prevFlag)
     })
@@ -45,7 +57,7 @@ export default function DistanceBar({}: DistanceBarProps) {
           key={player.id}
           className="marker-pin"
           style={{
-            left: `${((player.getTotalScore() * game.getMultiplier()) / (game.getMultiplier() * game.getMaxScore())) * 100 + 1}%`,
+            left: `${((player.getTotalScore() / game.getMaxScore())) * 90}%`,
             zIndex: index,
             transition: `left ${import.meta.env.VITE_ANIMATIONSPEED}s ease`,
           }}
