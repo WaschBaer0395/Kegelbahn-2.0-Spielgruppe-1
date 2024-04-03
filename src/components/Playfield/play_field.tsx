@@ -291,7 +291,7 @@ const PlayField: React.FC = () => {
         />
       </div>
       {/*front Grass Layer Fastest*/}
-      <img
+      <img  alt="Grass Layer"
         className="Grass"
         src={'src/sprites/Background/Background_Layer_Grass_widened.png'}
         style={{
