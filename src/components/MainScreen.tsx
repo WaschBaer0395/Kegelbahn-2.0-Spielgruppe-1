@@ -13,7 +13,6 @@ const MainScreen = () => {
   const [hasStarted, setHasStarted] = useState(false)
   const [showPlayers, setShowPlayers] = useState(false)
   const gameId = makeId()
-  const [triggerWait, setTrigger] = useState(0)
 
   function convertPlayers(players: Player[]): Player[] {
     return players.map((player, index): any => {

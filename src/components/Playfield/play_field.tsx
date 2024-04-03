@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { GameContext } from '../../api/GameLogicDataContext'
 import '../../styles/playfield.css'
 import Spritesheet from 'react-responsive-spritesheet'
-import { sortUserPlugins } from 'vite'
-import MqttHandler from '../../api/MqttHandler'
 
 const PlayField: React.FC = () => {
   const game = useContext(GameContext)
@@ -197,7 +195,7 @@ const PlayField: React.FC = () => {
     }
   }
 
-  function windFrames(spritesheet: Spritesheet) {
+  function windFrames() {
     if (windLoopCycles.current == 2) {
       windLoopCycles.current = 3
     } else if (windLoopCycles.current == 1) {
@@ -211,30 +209,30 @@ const PlayField: React.FC = () => {
     // <div>
     <div className="parallax">
       {/*Slowest layer, Mountains in the back*/}
-      <img
+      <img alt="Moutain Layer"
         className="Mountains1"
         src={'src/sprites/Background/Background_Layer_Mountains_1_widened.png'}
         style={{ left: `${-scrollPositionX * 0.1}px` }}
       ></img>
       {/*2nd Slowest layer, Mountains in the front*/}
-      <img
+      <img  alt="Moutain Layer 2"
         className="Mountains2"
         src={'src/sprites/Background/Background_Layer_Mountains_2_widened.png'}
         style={{ left: `${-scrollPositionX * 0.12}px` }}
       ></img>
       {/*3rd slowest layer, clouds in front of mountains*/}
-      <img
+      <img  alt="Cloud Layer"
         className="Clouds"
         src={'src/sprites/Background/Background_Layer_Clouds_widened.png'}
         style={{ left: `${-scrollPositionX * 0.14}px` }}
       ></img>
       {/*4th slowestl layer Ground (its standing still)*/}
-      <img
+      <img  alt="Ground Layer"
         className="Ground"
         src={'src/sprites/Background/Background_Layer_Ground.png'}
       ></img>
       {/*front flower Layer 2nd fastest*/}
-      <img
+      <img  alt="Flower Layer"
         className="Flowers"
         src={'src/sprites/Background/Background_Layer_Flowers_widened.png'}
         style={{

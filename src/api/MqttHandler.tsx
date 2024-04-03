@@ -1,6 +1,5 @@
 // MqttHandler.ts
 import mqtt, { MqttClient } from 'mqtt'
-import { Player } from '../components/Player/player'
 
 export interface SensorData {
   sensors: boolean[]
