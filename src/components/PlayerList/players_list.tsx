@@ -4,12 +4,21 @@ import { GameContext } from '../../api/GameLogicDataContext'
 
 const PlayerList: React.FC = () => {
   const game = useContext(GameContext)
-  const [updateFlag, setUpdateFlag] = useState(false)
-
+  const [currentTurn, setCurrentTurn] = useState(game.turn) // State to hold current turn
+  const [currentPlayer, setCurrentPlayer] = useState(game.currentPlayer)
+  // Subscribe to changes in game.turn
   useEffect(() => {
-    // Subscribe to score changes in GameLogic and trigger re-render
     const unsubscribe = game.subscribeToChanges(() => {
-      setUpdateFlag((prevFlag) => !prevFlag)
+      if (game.turn == 2) {
+        setCurrentTurn(1)
+        if (game.currentPlayer == game.players.length) {
+          setCurrentPlayer(0)
+        } else {
+          setCurrentPlayer(game.currentPlayer + 1)
+        }
+      } else if (game.turn == 1) {
+        setCurrentTurn(2)
+      }
     })
 
     return () => {
@@ -23,12 +32,12 @@ const PlayerList: React.FC = () => {
         {game.getPlayers().map((player, index) => (
           <div
             key={index}
-            className={`grid-item ${index === game.currentPlayer ? 'current-player' : ''}`}
+            className={`grid-item ${index == currentPlayer ? 'current-player' : ''}`}
             style={{
               borderColor:
-                index === game.currentPlayer && game.turn === 1
+                index == currentPlayer && currentTurn == 1
                   ? '#3333cc'
-                  : index === game.currentPlayer && game.turn === 2
+                  : index == currentPlayer && currentTurn == 2
                     ? '#ff5050'
                     : 'black',
             }}
@@ -39,19 +48,25 @@ const PlayerList: React.FC = () => {
               <div className="playerScores">
                 Distanz: {player?.getTotalScore() * 10}m
               </div>
-              {game.turn === 1 && (
+              {currentTurn == 1 && (
                 <div
                   className="positiveThrow"
                   style={{
-                    visibility:
-                      game.currentPlayer === index ? 'visible' : 'hidden',
+                    visibility: currentPlayer == index ? 'visible' : 'hidden',
                   }}
                 >
-                  Positiver Wurf!
+                  nächster Wurf positiv!
                 </div>
               )}
-              {player.getTurn() === 2 && (
-                <div className="negativeThrow">Negativer Wurf!</div>
+              {currentTurn == 2 && (
+                <div
+                  className="negativeThrow"
+                  style={{
+                    visibility: currentPlayer == index ? 'visible' : 'hidden',
+                  }}
+                >
+                  nächster Wurf negativ!
+                </div>
               )}
             </div>
           </div>
