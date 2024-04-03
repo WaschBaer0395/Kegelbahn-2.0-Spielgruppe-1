@@ -43,7 +43,7 @@ html, body, #root, .App{
   margin: 0;
   padding: 0;
   height: 100vh;
-  overflow: hidden; /* Hide scrollbars */
+  overflow: hidden;
   position: relative;
 }
 
@@ -89,7 +89,7 @@ html, body, #root, .App{
   position: absolute;
   top: 20px;
   height: calc(85vh - 40px);
-  width: calc(100vw - 20vw - 80px); /* Adjusted width with margin */
+  width: calc(100vw - 20vw - 80px);
   background-color: #616161;
   background-size: cover;
   overflow: hidden;
@@ -101,7 +101,7 @@ html, body, #root, .App{
   height: calc(15vh - 20px);
   top: calc(85vh - 20px);
   bottom: 20px;
-  width: calc(100vw - 20vw - 80px); /* Adjusted width with margin */
+  width: calc(100vw - 20vw - 80px);
 }
 
 .playField{

@@ -2,14 +2,13 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { GameContext } from '../../api/GameLogicDataContext'
 import '../../styles/playfield.css'
 import Spritesheet from 'react-responsive-spritesheet'
-import { sortUserPlugins } from 'vite'
-import MqttHandler from '../../api/MqttHandler'
 
 const PlayField: React.FC = () => {
   const game = useContext(GameContext)
   const [scrollPositionX, setScrollPositionX] = useState(0)
   const animationDuration = Number(import.meta.env.VITE_ANIMATIONSPEED) * 1000
   const [showModal, setShowModal] = useState(false)
+  const [showModalNegative, setShowModalNegative] = useState(false)
   const [countdown, setCountdown] = useState(10)
   const animationComplete = useRef(true)
   const sliding = useRef(false)
@@ -22,51 +21,79 @@ const PlayField: React.FC = () => {
   const targetWindPositon = useRef(0)
   const windLoopCycles = useRef(1)
 
+  // Resetting this component back to its initial state
   useEffect(() => {
     const unsubscribe = game.subscribeToChanges(() => {
-      setScrollPositionX(0)
-      setShowModal(false)
-      animationComplete.current = false
-
-      targetScrollPosition.current =
-        game.getPlayers()[game.currentPlayer].scores[game.currentRound - 1] *
-        1000
-      const startTime = performance.now()
-
-      if (game.turn == 1 && !animationComplete.current) {
-        walking.current = true
-        standStill.current = false
-        targetWindPositon.current = targetScrollPosition.current
-      } else if (game.turn == 2 && !animationComplete.current) {
-        falling.current = true
-        standStill.current = false
+      if (game.isGameOver()) {
+        setScrollPositionX(0)
+        setShowModal(false)
+        setCountdown(0)
+        animationComplete.current = true
+        sliding.current = false
+        falling.current = false
+        walking.current = false
+        standUp.current = false
+        standStill.current = true
+        afterAnimation.current = true
+        targetScrollPosition.current = 0
+        targetWindPositon.current = 0
         windLoopCycles.current = 1
       }
-      function animateScroll(currentTime: number) {
-        const elapsedTime = currentTime - startTime
-        const progress = elapsedTime / animationDuration
-        const easedProgress = easeInOutQuad(progress)
-        const newScrollPosition =
-          scrollPositionX +
-          (targetScrollPosition.current - scrollPositionX) * easedProgress
+    })
+    return () => {
+      unsubscribe()
+    }
+  }, [game])
 
-        setScrollPositionX(newScrollPosition)
+  useEffect(() => {
+    const unsubscribe = game.subscribeToChanges(() => {
+      if (game.gameStarted) {
+        setScrollPositionX(0)
+        setShowModal(false)
+        animationComplete.current = false
 
-        if (elapsedTime < animationDuration) {
-          requestAnimationFrame(animateScroll)
-        } else {
-          animationComplete.current = true
+        targetScrollPosition.current =
+          game?.getPlayers()[game.currentPlayer]?.scores[
+            game.currentRound - 1
+          ] * 1000
+        const startTime = performance.now()
 
-          game.nextThrow()
+        if (game.turn == 1 && !animationComplete.current) {
+          walking.current = true
+          standStill.current = false
+          targetWindPositon.current = targetScrollPosition.current
+        } else if (game.turn == 2 && !animationComplete.current) {
+          falling.current = true
+          standStill.current = false
+          windLoopCycles.current = 1
+          setShowModalNegative(true)
+        }
 
-          if (game.currentRound > game.maxRounds) {
-            console.log('GAME OVER!')
-            game.resetGame()
+        function animateScroll(currentTime: number) {
+          const elapsedTime = currentTime - startTime
+          const progress = elapsedTime / animationDuration
+          const easedProgress = easeInOutQuad(progress)
+          const newScrollPosition =
+            scrollPositionX +
+            (targetScrollPosition.current - scrollPositionX) * easedProgress
+
+          setScrollPositionX(newScrollPosition)
+
+          if (elapsedTime < animationDuration) {
+            requestAnimationFrame(animateScroll)
+          } else {
+            animationComplete.current = true
+            setShowModalNegative(false)
+            setTimeout(() => {
+              game.nextThrow()
+            }, 2000)
           }
         }
+
+        requestAnimationFrame(animateScroll)
       }
-      requestAnimationFrame(animateScroll)
     })
+
     return () => {
       unsubscribe()
     }
@@ -87,6 +114,7 @@ const PlayField: React.FC = () => {
       setShowModal(false)
       setCountdown(10) // Reset countdown when complete
     }
+
     return () => clearInterval(timer)
   }, [countdown, showModal])
 
@@ -106,7 +134,9 @@ const PlayField: React.FC = () => {
       spritesheet.goToAndPlay(12)
       spritesheet.setStartAt(12)
       spritesheet.setEndAt(12)
-      setScrollPositionX(0)
+      setTimeout(() => {
+        setScrollPositionX(0)
+      }, 2000)
     }
     if (
       animationComplete.current &&
@@ -165,7 +195,7 @@ const PlayField: React.FC = () => {
     }
   }
 
-  function windFrames(spritesheet: Spritesheet) {
+  function windFrames() {
     if (windLoopCycles.current == 2) {
       windLoopCycles.current = 3
     } else if (windLoopCycles.current == 1) {
@@ -179,30 +209,30 @@ const PlayField: React.FC = () => {
     // <div>
     <div className="parallax">
       {/*Slowest layer, Mountains in the back*/}
-      <img
+      <img alt="Moutain Layer"
         className="Mountains1"
         src={'src/sprites/Background/Background_Layer_Mountains_1_widened.png'}
         style={{ left: `${-scrollPositionX * 0.1}px` }}
       ></img>
       {/*2nd Slowest layer, Mountains in the front*/}
-      <img
+      <img  alt="Moutain Layer 2"
         className="Mountains2"
         src={'src/sprites/Background/Background_Layer_Mountains_2_widened.png'}
         style={{ left: `${-scrollPositionX * 0.12}px` }}
       ></img>
       {/*3rd slowest layer, clouds in front of mountains*/}
-      <img
+      <img  alt="Cloud Layer"
         className="Clouds"
         src={'src/sprites/Background/Background_Layer_Clouds_widened.png'}
         style={{ left: `${-scrollPositionX * 0.14}px` }}
       ></img>
       {/*4th slowestl layer Ground (its standing still)*/}
-      <img
+      <img  alt="Ground Layer"
         className="Ground"
         src={'src/sprites/Background/Background_Layer_Ground.png'}
       ></img>
       {/*front flower Layer 2nd fastest*/}
-      <img
+      <img  alt="Flower Layer"
         className="Flowers"
         src={'src/sprites/Background/Background_Layer_Flowers_widened.png'}
         style={{
@@ -261,7 +291,7 @@ const PlayField: React.FC = () => {
         />
       </div>
       {/*front Grass Layer Fastest*/}
-      <img
+      <img  alt="Grass Layer"
         className="Grass"
         src={'src/sprites/Background/Background_Layer_Grass_widened.png'}
         style={{
@@ -282,6 +312,20 @@ const PlayField: React.FC = () => {
           </p>
           <p className="countdownModal">
             bitte warten während die Bahn vorbereitet wird {countdown}!
+          </p>
+        </div>
+      )}
+      {showModalNegative && (
+        <div className="roundInfoModal">
+          <p className="playerNameModal">
+            {game.getPlayers()[game.currentPlayer].name}
+          </p>
+          <p className="throwModal">
+            Eine Windböhe hat dich erfasst du fällst hin und rutschst auf{' '}
+            {game?.getPlayers()[game.currentPlayer]?.scores[
+              game.currentRound - 1
+            ] * 10}{' '}
+            Meter wieder den Berg wieder herunter
           </p>
         </div>
       )}

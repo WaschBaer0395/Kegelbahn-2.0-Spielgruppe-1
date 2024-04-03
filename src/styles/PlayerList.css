@@ -1,6 +1,6 @@
 .playerListContainer {
     display: grid;
-    grid-template-rows: repeat(8, 1fr); /* 8 equal-height rows */
+    grid-template-rows: repeat(8, 1fr);
 }
 
 .grid-item{
@@ -9,9 +9,9 @@
     border-radius: 8px;
     border: solid 5px black;
     box-shadow:
-            0 0 10px rgba(0, 0, 0, 0.1), /* Inner shadow */
-            0 0 5px rgba(255, 255, 255, 0.5) inset, /* Highlight from the top */
-            0 0 5px rgba(0, 0, 0, 0.5) inset; /* Shadow from the bottom */
+            0 0 10px rgba(0, 0, 0, 0.1),
+            0 0 5px rgba(255, 255, 255, 0.5) inset,
+            0 0 5px rgba(0, 0, 0, 0.5) inset;
     transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
     margin-bottom: 10px;
     position: relative;
@@ -25,7 +25,7 @@
     display: grid;
     flex-direction: column;
     align-items: center;
-    grid-template-columns: 2fr 3fr 4fr; /* 1:2:4 ratio columns */
+    grid-template-columns: 2fr 3fr 4fr;
     margin-bottom: 1px;
 
 }
@@ -40,8 +40,8 @@
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center; /* Horizontal centering */
-    align-items: center; /* Vertical centering */
+    justify-content: center;
+    align-items: center;
 }
 
 .playerName {
@@ -98,8 +98,8 @@
 }
 
 .playerListContainer.blurred {
-    filter: blur(5px); /* Adjust the blur amount as needed */
-    transition: filter 0.3s ease-in-out; /* Add a smooth transition effect */
+    filter: blur(5px);
+    transition: filter 0.3s ease-in-out;
 }
 
 .modal-container {
@@ -107,7 +107,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 1); /* Semi-transparent white background */
+    background: rgba(255, 255, 255, 1);
     padding: 20px;
     border-radius: 8px;
     border: 3px solid black;
@@ -132,19 +132,18 @@
 }
 
 .sprite-selection .sprite-variant .rounded-square {
-    border: 0px solid #000; /* Set the border color as needed */
-    border-radius: 8px; /* Adjust the border-radius to make it rounded */
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Add a light shadow for a 3D effect */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .sprite-selection .sprite-variant img {
-    width: 100%; /* Ensure the image takes up the entire space of the rounded square */
+    width: 100%;
 }
 
 .sprite-selection .sprite-variant.selected .rounded-square {
-    border-color: #000; /* Set a more subtle highlight color */
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6); /* Adjust the shadow for the selected effect */
+    border-color: #000;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
 }
 
 .sprite-selection {
@@ -172,5 +171,5 @@
 }
 
 .sprite-variant.selected .rounded-square {
-    border: 2px solid #000; /* Highlight color */
+    border: 2px solid #000;
 }
