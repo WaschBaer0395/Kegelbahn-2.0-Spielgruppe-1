@@ -105,7 +105,8 @@ export class GameLogic {
     }
     // even throw = scores are negative
     else {
-      currentPlayer.updateScore(this.currentRound, 0 - score)
+      if(score == 0)currentPlayer.updateScore(this.currentRound, 0 - 9)
+      else currentPlayer.updateScore(this.currentRound, 0 - score)
     }
     this.triggerChange()
   }

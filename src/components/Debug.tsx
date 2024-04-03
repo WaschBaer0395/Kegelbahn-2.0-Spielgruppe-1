@@ -29,7 +29,7 @@ const Debug = () => {
   const handleSendPlayerListSingle = () => {
     const jsonString =
       '[' +
-      '{"name": "Sabrine", "gender": "f", "color": "red", "hair": "brown"}' +
+      '{"name": "Sabrine", "gender": "f", "color": "blue", "hair": "blond"}' +
       ']'
     mqttHandler.sendMessage('Kegelbahn/Management', jsonString)
   }
