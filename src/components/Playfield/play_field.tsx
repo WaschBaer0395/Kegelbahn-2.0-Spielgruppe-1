@@ -23,7 +23,6 @@ const PlayField: React.FC = () => {
   const targetWindPositon = useRef(0)
   const windLoopCycles = useRef(1)
 
-
   // Resetting this component back to its initial state
   useEffect(() => {
     const unsubscribe = game.subscribeToChanges(() => {
@@ -44,21 +43,21 @@ const PlayField: React.FC = () => {
       }
     })
     return () => {
-      unsubscribe();
-    };
-  }, [game]);
-
+      unsubscribe()
+    }
+  }, [game])
 
   useEffect(() => {
     const unsubscribe = game.subscribeToChanges(() => {
-      if(game.gameStarted) {
+      if (game.gameStarted) {
         setScrollPositionX(0)
         setShowModal(false)
         animationComplete.current = false
 
         targetScrollPosition.current =
-            game?.getPlayers()[game.currentPlayer]?.scores[game.currentRound - 1] *
-            1000
+          game?.getPlayers()[game.currentPlayer]?.scores[
+            game.currentRound - 1
+          ] * 1000
         const startTime = performance.now()
 
         if (game.turn == 1 && !animationComplete.current) {
@@ -77,8 +76,8 @@ const PlayField: React.FC = () => {
           const progress = elapsedTime / animationDuration
           const easedProgress = easeInOutQuad(progress)
           const newScrollPosition =
-              scrollPositionX +
-              (targetScrollPosition.current - scrollPositionX) * easedProgress
+            scrollPositionX +
+            (targetScrollPosition.current - scrollPositionX) * easedProgress
 
           setScrollPositionX(newScrollPosition)
 
@@ -89,7 +88,7 @@ const PlayField: React.FC = () => {
             setShowModalNegative(false)
             setTimeout(() => {
               game.nextThrow()
-            }, 2000);
+            }, 2000)
           }
         }
 
@@ -139,7 +138,7 @@ const PlayField: React.FC = () => {
       spritesheet.setEndAt(12)
       setTimeout(() => {
         setScrollPositionX(0)
-      }, 2000);
+      }, 2000)
     }
     if (
       animationComplete.current &&
@@ -319,15 +318,18 @@ const PlayField: React.FC = () => {
         </div>
       )}
       {showModalNegative && (
-          <div className="roundInfoModal">
-            <p className="playerNameModal">
-              {game.getPlayers()[game.currentPlayer].name}
-            </p>
-            <p className="throwModal">
-              Eine Windböhe hat dich erfasst
-              du fällst hin und rutschst auf {game?.getPlayers()[game.currentPlayer]?.scores[game.currentRound - 1]*10} Meter wieder den Berg wieder herunter
-            </p>
-          </div>
+        <div className="roundInfoModal">
+          <p className="playerNameModal">
+            {game.getPlayers()[game.currentPlayer].name}
+          </p>
+          <p className="throwModal">
+            Eine Windböhe hat dich erfasst du fällst hin und rutschst auf{' '}
+            {game?.getPlayers()[game.currentPlayer]?.scores[
+              game.currentRound - 1
+            ] * 10}{' '}
+            Meter wieder den Berg wieder herunter
+          </p>
+        </div>
       )}
     </div>
   )

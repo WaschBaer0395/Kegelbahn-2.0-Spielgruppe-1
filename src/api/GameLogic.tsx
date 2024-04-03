@@ -87,10 +87,9 @@ export class GameLogic {
 
       // check if last player has done their throw, and switch to new round and begin with player 0 again
       if (this.currentPlayer == this.players.length) {
-        if(this.currentRound == this.maxRounds){
+        if (this.currentRound == this.maxRounds) {
           this.resetGame()
-        }
-        else{
+        } else {
           this.currentPlayer = 0
           this.currentRound += 1
         }
@@ -137,7 +136,6 @@ export class GameLogic {
   }
 
   resetGame() {
-
     this.turn = 1
     this.currentPlayer = 0
     this.currentRound = 1
@@ -145,6 +143,6 @@ export class GameLogic {
     this.totalThrows = 1
     this.gameOver = true
     this.gameStarted = false
-    this.triggerChange();
+    this.triggerChange()
   }
 }

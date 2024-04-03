@@ -11,7 +11,6 @@ const Debug = () => {
     `Debugg_Page${debugId}`,
   ) // Create an instance of MqttHandler
 
-
   const handleSendPlayerList = () => {
     const jsonString =
       '[' +
@@ -37,10 +36,10 @@ const Debug = () => {
 
   const handleSendPlayerListDouble = () => {
     const jsonString =
-        '[' +
-        '{"name": "Franziska", "gender": "f", "color": "red", "hair": "brown"},' +
-        '{"name": "Jörg", "gender": "m", "color": "green", "hair": "brown"}' +
-        ']'
+      '[' +
+      '{"name": "Franziska", "gender": "f", "color": "red", "hair": "brown"},' +
+      '{"name": "Jörg", "gender": "m", "color": "green", "hair": "brown"}' +
+      ']'
     mqttHandler.sendMessage('Kegelbahn/Management', jsonString)
   }
 

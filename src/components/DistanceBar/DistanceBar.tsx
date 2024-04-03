@@ -17,10 +17,9 @@ export default function DistanceBar({}: DistanceBarProps) {
       }
     })
     return () => {
-      unsubscribe();
-    };
-  }, [game]);
-
+      unsubscribe()
+    }
+  }, [game])
 
   useEffect(() => {
     const unsubscribe = game.subscribeToChanges(() => {
@@ -57,7 +56,7 @@ export default function DistanceBar({}: DistanceBarProps) {
           key={player.id}
           className="marker-pin"
           style={{
-            left: `${((player.getTotalScore() / game.getMaxScore())) * 90}%`,
+            left: `${(player.getTotalScore() / game.getMaxScore()) * 90}%`,
             zIndex: index,
             transition: `left ${import.meta.env.VITE_ANIMATIONSPEED}s ease`,
           }}
