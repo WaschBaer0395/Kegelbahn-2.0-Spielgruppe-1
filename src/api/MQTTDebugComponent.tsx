@@ -6,6 +6,7 @@ interface MqttComponentProps {
   mqttHandler: MqttHandler
 }
 
+// Connects and displays MQTT Messages on Debug Page
 const MQTTDebugComponent: React.FC<MqttComponentProps> = ({ mqttHandler }) => {
   const [mqttMessages, setMqttMessages] = useState<string[]>([])
 

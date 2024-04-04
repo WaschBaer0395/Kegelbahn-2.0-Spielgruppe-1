@@ -22,6 +22,7 @@ class MqttHandler {
     this.id = id_
   }
 
+  // Connect to MQTT Broker
   // topics 'Kegelbahn/Kegel', 'Kegelbahn/Player', 'Kegelbahn/Management'
   public connectToBroker(): Promise<void> {
     // Return a promise from this method
@@ -65,6 +66,7 @@ class MqttHandler {
     delete this.messageHandlers['Kegelbahn/Management']
   }
 
+  // Sends message to topic per MQTT
   public async sendMessage(topic: string, message: string) {
     if (!this.connectionPromise) {
       console.error(

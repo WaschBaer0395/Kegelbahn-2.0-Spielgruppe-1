@@ -6,6 +6,7 @@ const gameLogicInstance: GameLogic = new GameLogic([])
 
 export const GameContext = createContext(gameLogicInstance)
 
+// Provides Gameobjekt (with Players) to all children components through useGameContext()
 // @ts-ignore
 export const GameLogicDataProvider = ({ children }) => {
   const gameLogic = useMemo(() => gameLogicInstance, []) // Initialize once
