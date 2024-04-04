@@ -26,6 +26,7 @@ const PlayField: React.FC = () => {
   const animationDurationWalkIn = 2000; // Duration of the animation in milliseconds (change as needed)
 
   // Resetting this component back to its initial state
+  // to prepare the game for a new set of players after a GameOver
   useEffect(() => {
     const unsubscribe = game.subscribeToChanges(() => {
       if (game.isGameOver()) {
@@ -49,31 +50,46 @@ const PlayField: React.FC = () => {
     }
   }, [game])
 
+
+  // main useEffect for running the animations
   useEffect(() => {
+    // subscribe to changes in the game logic
     const unsubscribe = game.subscribeToChanges(() => {
       if (game.gameStarted) {
+        // some initialization
         setScrollPositionX(0)
         setShowModal(false)
         animationComplete.current = false
 
+        // calculate the target scroll position of the player and parallax scroll
+        // based on the player score
         targetScrollPosition.current =
           game?.getPlayers()[game.currentPlayer]?.scores[
             game.currentRound - 1
           ] * 1000
         const startTime = performance.now()
 
+
+        // handle animation/scrolling for odd and even turns
+        // for positive rounds
         if (game.turn == 1 && !animationComplete.current) {
           walking.current = true
           standStill.current = false
           targetWindPositon.current = targetScrollPosition.current
-        } else if (game.turn == 2 && !animationComplete.current) {
+        }
+        // for negative rounds
+        else if (game.turn == 2 && !animationComplete.current) {
           falling.current = true
           standStill.current = false
           windLoopCycles.current = 1
           setShowModalNegative(true)
         }
 
+        // function that does the main scroll animation for the background
+        // this loops until the animation is completed
         function animateScroll(currentTime: number) {
+
+          // handle the smooth paralax scrolling
           const elapsedTime = currentTime - startTime
           const progress = elapsedTime / animationDuration
           const easedProgress = easeInOutQuad(progress)
@@ -81,11 +97,13 @@ const PlayField: React.FC = () => {
             scrollPositionX +
             (targetScrollPosition.current - scrollPositionX) * easedProgress
 
-          setScrollPositionX(newScrollPosition)
+          setScrollPositionX(newScrollPosition) // final next scroll position in the cycle gets calculated here
 
           if (elapsedTime < animationDuration) {
             requestAnimationFrame(animateScroll)
           } else {
+            // once the animation is complete, trigger the state complete and timeout the next throw calculation,
+            // to give the player more time to observe the playfield
             animationComplete.current = true
             setShowModalNegative(false)
             setTimeout(() => {
@@ -114,14 +132,15 @@ const PlayField: React.FC = () => {
     }
 
     if (countdown === 0) {
-      clearInterval(timer)
-      setShowModal(false)
+      clearInterval(timer) // reset the timer
+      setShowModal(false) // turn modal off once countdown complete
       setCountdown(10) // Reset countdown when complete
     }
 
     return () => clearInterval(timer)
   }, [countdown, showModal])
 
+  // obviously a ease in ease out function
   function easeInOutQuad(t: number) {
     return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
   }
