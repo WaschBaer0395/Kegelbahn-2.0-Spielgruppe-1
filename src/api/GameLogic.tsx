@@ -22,7 +22,7 @@ export class GameLogic {
     this.turn = 1
     this.currentPlayer = 0
     this.currentRound = 1
-    this.maxRounds = 1 // means 8 throws total, 2 throws per person
+    this.maxRounds = 8 // means 8 throws total, 2 throws per person
     this.gameLogicChangeListener = []
     this.maxScore = this.maxRounds * 8
     this.totalThrows = 1
