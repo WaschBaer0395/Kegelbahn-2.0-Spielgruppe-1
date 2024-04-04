@@ -21,6 +21,10 @@ const PlayField: React.FC = () => {
   const targetWindPositon = useRef(0)
   const windLoopCycles = useRef(1)
 
+  const [playerStartPosition, setPlayerStartPosition] = useState(0); // New state for player position
+  const startPosition = -700; // Define the start position
+  const animationDurationWalkIn = 2000; // Duration of the animation in milliseconds (change as needed)
+
   // Resetting this component back to its initial state
   useEffect(() => {
     const unsubscribe = game.subscribeToChanges(() => {
@@ -205,6 +209,33 @@ const PlayField: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    animationComplete.current = false;
+    walking.current = true;
+    const animatePlayerPosition = (startTime: number) => {
+      requestAnimationFrame((timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const timeElapsed = timestamp - startTime;
+        const progress = Math.min(timeElapsed / animationDurationWalkIn, 1);
+
+        setPlayerStartPosition(startPosition + progress * (0 - startPosition));
+
+        if (progress < 1) {
+          animatePlayerPosition(startTime);
+        } else {
+          // Animation is complete
+          animationComplete.current = true;
+          walking.current = false;
+          // Any additional actions to take after animation completes can go here
+        }
+      });
+    };
+
+    // Start the animation
+    setPlayerStartPosition(startPosition); // Ensure the initial position is set
+    animatePlayerPosition(performance.now());
+  }, [game.currentPlayer, animationDurationWalkIn, startPosition]);
+
   return (
     // <div>
     <div className="parallax">
@@ -245,8 +276,8 @@ const PlayField: React.FC = () => {
       <div
         className="player"
         style={{
-          left: `${scrollPositionX * 0.14 - 50}px`,
-          top: `${-scrollPositionX * 0.028 + 10}px`,
+          left: `${playerStartPosition * 0.14 + (scrollPositionX * 0.14 - 50)}px`,
+          top: `${-playerStartPosition * 0.028 + (-scrollPositionX * 0.028 + 10)}px`,
         }}
       >
         <Spritesheet
