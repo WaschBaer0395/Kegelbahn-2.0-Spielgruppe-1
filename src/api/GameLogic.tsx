@@ -37,6 +37,7 @@ export class GameLogic {
     return this.players
   }
 
+  // changes bool to allow game start
   startGame() {
     this.gameStarted = true
     //console.log('startGame: ' + this.gameStarted)
@@ -49,6 +50,7 @@ export class GameLogic {
   getMaxScore() {
     return this.maxScore
   }
+
   stopGame() {
     this.gameStarted = false
     //console.log('stopGame: ' + this.gameStarted)
@@ -76,6 +78,7 @@ export class GameLogic {
     this.gameLogicChangeListener.forEach((listener) => listener())
   }
 
+  // changes turn according to with round type is next
   nextThrow() {
     if (this.turn % 2) {
       this.turn = 2
@@ -97,6 +100,7 @@ export class GameLogic {
     }
   }
 
+  // changes score for positive or negative round
   makeMove(score: number) {
     const currentPlayer: Player = this.players[this.currentPlayer]
     // odd throw = scores are positive
@@ -111,10 +115,12 @@ export class GameLogic {
     this.triggerChange()
   }
 
+  // return Player[] sorted by score
   sortPlayers() {
     return this.players.sort((a, b) => b.getTotalScore() - a.getTotalScore())
   }
 
+  // return players name and their standing 
   playerStandingFormated() {
     return this.sortPlayers().map((player, index) => ({
       name: player.name,
@@ -132,10 +138,12 @@ export class GameLogic {
     return this.convertToJSONString()
   }
 
+  // return bool
   isGameOver() {
     return this.gameOver
   }
 
+  // sets all variables to init state
   resetGame() {
     this.turn = 1
     this.currentPlayer = 0
