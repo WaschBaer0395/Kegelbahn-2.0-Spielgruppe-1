@@ -75,10 +75,10 @@
     margin: 0;
 }
 .player{
-    height: 200px;
-    width: 200px;
+    height: 250px;
+    width: 250px;
     position: absolute;
-    transform: translateY(275%);
+    transform: translateY(200%);
 }
 .wind{
     position: absolute;
