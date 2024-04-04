@@ -41,17 +41,17 @@ const MainScreen = () => {
           if (topic === 'Kegelbahn/Management') {
             console.log('Management message received')
             try {
-              const parsePlayers = JSON.parse(message) // Assuming convertPlayers and other necessary functions/logic are defined elsewhere.
+              const parsePlayers = JSON.parse(message)
               const parsedPlayers = convertPlayers(parsePlayers)
 
               // Check if the parsed message contains player objects
               if (Array.isArray(parsedPlayers) && parsedPlayers.length > 0) {
                 game?.setPlayers(parsedPlayers) // Update player list
                 setIsPlayersReceived(true) // Set flag to indicate players are received
-                setShowPlayers(false)
+                setShowPlayers(false) // Set flag to show Playerlist
                 game?.startGame()
                 setHasStarted(true)
-                mqttHandler.closeConnection() // Optionally close connection if it's no longer needed
+                mqttHandler.closeConnection()
               }
             } catch (error) {
               console.error('Error parsing players:', error)
