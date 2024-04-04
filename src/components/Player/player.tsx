@@ -51,6 +51,10 @@ export class Player {
     return this.turn
   }
 
+
+  // getting the correct preview sprite for the selected combination of color hair and gender
+  // this can be shortened a lot! we left it this big to account for inaccuracies with the management
+  // like colors that we do not support
   findSprite(gender: string, color: string, hair: string) {
     let availableColors = ['blue', 'green', 'pink', 'red', 'orange', 'yellow']
 
@@ -80,7 +84,7 @@ export class Player {
       this.hair
     )
   }
-
+  // same like above just easier to get the spritesheet needed
   findSpriteSheet() {
     return (
       'src/sprites/playerSprites/' +

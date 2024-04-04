@@ -6,7 +6,11 @@ const PlayerList: React.FC = () => {
   const game = useContext(GameContext)
   const [currentTurn, setCurrentTurn] = useState(game.turn) // State to hold current turn
   const [currentPlayer, setCurrentPlayer] = useState(game.currentPlayer)
-  // Subscribe to changes in game.turn
+
+
+  // Subscribe to changes in game object
+  // handling the states to highlight the current player
+  // and if its a negative or positive throw
   useEffect(() => {
     const unsubscribe = game.subscribeToChanges(() => {
       if (game.turn == 2) {

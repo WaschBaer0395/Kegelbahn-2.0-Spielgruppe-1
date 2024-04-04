@@ -26,6 +26,7 @@ const MainScreen = () => {
     })
   }
 
+  // call this to setup a new connection to the management, once gameover is triggered ( and also during first boot )
   const setupWaitingConnection = async () => {
     const mqttHandler = new MqttHandler(
       ['Kegelbahn/Management'],
@@ -41,17 +42,17 @@ const MainScreen = () => {
           if (topic === 'Kegelbahn/Management') {
             console.log('Management message received')
             try {
-              const parsePlayers = JSON.parse(message) // Assuming convertPlayers and other necessary functions/logic are defined elsewhere.
+              const parsePlayers = JSON.parse(message)
               const parsedPlayers = convertPlayers(parsePlayers)
 
               // Check if the parsed message contains player objects
               if (Array.isArray(parsedPlayers) && parsedPlayers.length > 0) {
                 game?.setPlayers(parsedPlayers) // Update player list
                 setIsPlayersReceived(true) // Set flag to indicate players are received
-                setShowPlayers(false)
-                game?.startGame()
-                setHasStarted(true)
-                mqttHandler.closeConnection() // Optionally close connection if it's no longer needed
+                setShowPlayers(false) // Set flag to show Playerlist
+                game?.startGame() // initiate gamestart
+                setHasStarted(true) // set flag for started game
+                mqttHandler.closeConnection() // close connection to the management
               }
             } catch (error) {
               console.error('Error parsing players:', error)
@@ -78,7 +79,7 @@ const MainScreen = () => {
     const unsubscribe = game.subscribeToChanges(() => {
       if (game.isGameOver()) {
         console.log('Gameover In MainScreen Triggered')
-        // Generate final score
+        // Generate final score on gameover
         let finalScore = game.calculateScoreTable()
         const mqttHandler = new MqttHandler(
           ['Kegelbahn/Management'],
@@ -92,13 +93,14 @@ const MainScreen = () => {
           .catch((error) => {
             console.error('Failed to connect to MQTT broker:', error)
           })
+        // set some flags to reset the game
         game.gameStarted = false
         game.players = []
         game.gameOver = false
         setIsPlayersReceived(false)
         setHasStarted(false)
         setShowPlayers(false)
-        setupWaitingConnection()
+        setupWaitingConnection() // re-establish connection to management
       }
     })
 
@@ -125,9 +127,9 @@ const MainScreen = () => {
     mqttHandler.onMessage((topic, message) => {
       if (topic === 'Kegelbahn/Kegel') {
         try {
-          const jsonObject = JSON.parse(message)
+          const jsonObject = JSON.parse(message) //parse the sensor info
           const score = jsonObject.pins_downed
-          game?.makeMove(score)
+          game?.makeMove(score) // calculate move, pins etc
         } catch (error) {
           console.error(error)
         }

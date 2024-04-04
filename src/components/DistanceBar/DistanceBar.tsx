@@ -21,6 +21,9 @@ export default function DistanceBar({}: DistanceBarProps) {
     }
   }, [game])
 
+
+  // main subscription to changes in game
+  // currently unused
   useEffect(() => {
     const unsubscribe = game.subscribeToChanges(() => {
       setUpdateFlag((prevFlag) => !prevFlag)
