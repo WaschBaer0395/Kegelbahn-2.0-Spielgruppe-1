@@ -1,6 +1,7 @@
 # Kegelbahn-2.0-Spielgruppe-1
 Kegelbahn 2.0 Spielgruppe 1 das Spiel der Gruppe 1, basierend auf einer React app mit Typescript, realisiert durch das Vite frontent
 
+Finale Präsentation: [Finale Präsentation](Kegelbahn2.0.pdf)
 
 ##Installation
 Node installieren (min version 20.9.0)
